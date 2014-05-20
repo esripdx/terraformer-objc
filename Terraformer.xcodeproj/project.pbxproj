@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9442E128192C180100CAC58B /* TFGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 9442E127192C180100CAC58B /* TFGeometry.m */; };
+		9442E12B192C183E00CAC58B /* TFPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9442E12A192C183E00CAC58B /* TFPolygon.m */; };
 		94D59AD6192C06A400A8E6F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AD5192C06A400A8E6F8 /* Foundation.framework */; };
 		94D59ADB192C06A400A8E6F8 /* Terraformer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94D59ADA192C06A400A8E6F8 /* Terraformer.h */; };
 		94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D59ADC192C06A400A8E6F8 /* Terraformer.m */; };
@@ -42,6 +44,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9442E123192C0FF500CAC58B /* TFPrimitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPrimitive.h; sourceTree = "<group>"; };
+		9442E126192C180100CAC58B /* TFGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFGeometry.h; sourceTree = "<group>"; };
+		9442E127192C180100CAC58B /* TFGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometry.m; sourceTree = "<group>"; };
+		9442E129192C183E00CAC58B /* TFPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPolygon.h; sourceTree = "<group>"; };
+		9442E12A192C183E00CAC58B /* TFPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPolygon.m; sourceTree = "<group>"; };
 		94D59AD2192C06A400A8E6F8 /* libTerraformer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTerraformer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		94D59AD5192C06A400A8E6F8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		94D59AD9192C06A400A8E6F8 /* Terraformer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Terraformer-Prefix.pch"; sourceTree = "<group>"; };
@@ -78,6 +85,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9442E12C192C188600CAC58B /* Geometries */ = {
+			isa = PBXGroup;
+			children = (
+				9442E126192C180100CAC58B /* TFGeometry.h */,
+				9442E129192C183E00CAC58B /* TFPolygon.h */,
+				9442E12A192C183E00CAC58B /* TFPolygon.m */,
+				9442E127192C180100CAC58B /* TFGeometry.m */,
+			);
+			name = Geometries;
+			sourceTree = "<group>";
+		};
 		94D59AC9192C06A400A8E6F8 = {
 			isa = PBXGroup;
 			children = (
@@ -110,8 +128,10 @@
 		94D59AD7192C06A400A8E6F8 /* Terraformer */ = {
 			isa = PBXGroup;
 			children = (
+				9442E12C192C188600CAC58B /* Geometries */,
 				94D59ADA192C06A400A8E6F8 /* Terraformer.h */,
 				94D59ADC192C06A400A8E6F8 /* Terraformer.m */,
+				9442E123192C0FF500CAC58B /* TFPrimitive.h */,
 				94D59AD8192C06A400A8E6F8 /* Supporting Files */,
 			);
 			path = Terraformer;
@@ -187,6 +207,7 @@
 		94D59ACA192C06A400A8E6F8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = TF;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = pdx.esri.com;
 			};
@@ -225,6 +246,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */,
+				9442E128192C180100CAC58B /* TFGeometry.m in Sources */,
+				9442E12B192C183E00CAC58B /* TFPolygon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +428,7 @@
 				94D59AF7192C06A400A8E6F8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		94D59AF8192C06A400A8E6F8 /* Build configuration list for PBXNativeTarget "TerraformerTests" */ = {
 			isa = XCConfigurationList;
@@ -413,6 +437,7 @@
 				94D59AFA192C06A400A8E6F8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
