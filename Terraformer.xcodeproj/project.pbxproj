@@ -89,9 +89,9 @@
 			isa = PBXGroup;
 			children = (
 				9442E126192C180100CAC58B /* TFGeometry.h */,
+				9442E127192C180100CAC58B /* TFGeometry.m */,
 				9442E129192C183E00CAC58B /* TFPolygon.h */,
 				9442E12A192C183E00CAC58B /* TFPolygon.m */,
-				9442E127192C180100CAC58B /* TFGeometry.m */,
 			);
 			name = Geometries;
 			sourceTree = "<group>";
