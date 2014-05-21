@@ -55,9 +55,9 @@
 - (BOOL)isEqual:(id)other
 {
     if ([self x] == [other x] && [self y] == [other y]) {
-        return true;
+        return YES;
     } else {
-        return false;
+        return NO;
     }
 }
 

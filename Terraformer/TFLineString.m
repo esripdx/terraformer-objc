@@ -82,11 +82,11 @@ NSString const static *kGeoJsonType = @"LineString";
     if ([other isKindOfClass:[TFLineString class]]) {
         TFLineString *otherLineString = (TFLineString *)other;
         if ([self.coordinates isEqual:otherLineString.coordinates]) {
-            return true;
+            return YES;
         }
     }
 
-    return false;
+    return NO;
 }
 
 /*
@@ -103,10 +103,10 @@ NSString const static *kGeoJsonType = @"LineString";
         TFCoordinate *first = (TFCoordinate *)self.coordinates[0];
         TFCoordinate *last = (TFCoordinate *)self.coordinates[[self.coordinates count]-1];
         if ([first isEqual:last]) {
-            return true;
+            return YES;
         }
     }
-    return false;
+    return NO;
 }
 
 @end

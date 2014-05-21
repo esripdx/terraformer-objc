@@ -54,21 +54,21 @@
     
     // todo
     
-    return false;
+    return NO;
 }
 
 - (BOOL)within:(TFGeometry *)geometry {
     
     // todo
     
-    return false;
+    return NO;
 }
 
 - (BOOL)intersects:(TFGeometry *)geometry {
     
     // todo
     
-    return false;
+    return NO;
 }
 
 @end
