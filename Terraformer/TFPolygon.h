@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 pdx.esri.com. All rights reserved.
 //
 
-#import "TFPrimitive.h"
+#import "TFGeometry.h"
 
-@interface TFPolygon : TFPrimitive
+@interface TFPolygon : TFGeometry
 
 @end
