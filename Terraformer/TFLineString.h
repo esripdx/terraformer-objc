@@ -10,4 +10,8 @@
 
 @interface TFLineString : TFGeometry
 
+- (instancetype)initWithCoordinates:(NSArray *)coordinates;
+- (instancetype)initWithXYs:(NSArray *)xys;
+- (BOOL)isLinearRing;
+
 @end

@@ -7,8 +7,11 @@
 //
 
 #import <XCTest/XCTest.h>
+<<<<<<< HEAD
 #import "TFCoordinate.h"
 #import "TFGeometry.h"
+=======
+>>>>>>> LineString basics, LineString tests, Coordinate tests
 
 @interface TerraformerTests : XCTestCase
 
@@ -26,12 +29,6 @@
 {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
-}
-
-- (void)testCoordinate {
-    TFCoordinate *c = [TFCoordinate coordinateWithX:5 y:10];
-    XCTAssertEqual(5, c.x);
-    XCTAssertEqual(10, c.y);
 }
 
 - (void)testGeometryBbox {
