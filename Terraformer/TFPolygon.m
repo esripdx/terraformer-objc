@@ -34,8 +34,7 @@
     
     NSMutableArray *storage = [[NSMutableArray alloc] initWithObjects:coordinates, nil];
     
-    for ( NSArray *array in polygons )
-    {
+    for ( NSArray *array in polygons ) {
         NSParameterAssert( [array isKindOfClass:[NSArray class]] );
         [storage addObject:array];
     }
@@ -66,16 +65,26 @@
 
 - (void)insertVertex:(TFCoordinate *)coordinate atIndex:(NSUInteger)index;
 {
-    NSMutableArray *vertices = [[self.coordinates firstObject] mutableCopy];
+    NSParameterAssert( coordinate != nil );
+    
+    NSMutableArray *storage = [self.coordinates mutableCopy];
+    NSMutableArray *vertices = [storage[0] mutableCopy];
+    
     [vertices insertObject:coordinate atIndex:index];
-    self.coordinates = [vertices copy];
+    [storage replaceObjectAtIndex:0 withObject:[vertices copy]];
+    
+    self.coordinates = [storage copy];
 }
 
 - (void)removeVertexAtIndex:(NSUInteger)index;
 {
-    NSMutableArray *vertices = [[self.coordinates firstObject] mutableCopy];
+    NSMutableArray *storage = [self.coordinates mutableCopy];
+    NSMutableArray *vertices = [storage[0] mutableCopy];
+    
     [vertices removeObjectAtIndex:index];
-    self.coordinates = [vertices copy];
+    [storage replaceObjectAtIndex:0 withObject:[vertices copy]];
+    
+    self.coordinates = [storage copy];
 }
 
 - (void)close;

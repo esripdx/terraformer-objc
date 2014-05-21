@@ -74,6 +74,11 @@
     return result;
 }
 
+- (NSString *)debugDescription;
+{
+    return [NSString stringWithFormat:@"<%@: %p, x=%f y=%f>", NSStringFromClass( [self class] ), self, self.x, self.y];
+}
+
 #pragma mark NSCopying
 
 - (id)copyWithZone:(NSZone *)zone;
