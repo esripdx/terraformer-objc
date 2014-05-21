@@ -28,12 +28,6 @@
     [super tearDown];
 }
 
-- (void)testCoordinate {
-    TFCoordinate *c = [TFCoordinate coordinateWithX:5 y:10];
-    XCTAssertEqual(5, c.x);
-    XCTAssertEqual(10, c.y);
-}
-
 - (void)testGeometryBbox {
     // TODO: Add more types here, and use their specific subclasses.
 

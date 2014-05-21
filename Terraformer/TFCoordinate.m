@@ -52,4 +52,13 @@
     return [[self.coordinates objectAtIndex:1] doubleValue];
 }
 
+- (BOOL)isEqual:(id)other
+{
+    if ([self x] == [other x] && [self y] == [other y]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 @end
