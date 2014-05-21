@@ -18,5 +18,5 @@
 @property (readonly) double y;
 
 - (NSArray *)encodeJSON;
-- (instancetype)decodeJSON:(NSArray *)json;
++ (instancetype)decodeJSON:(NSArray *)json;
 @end
