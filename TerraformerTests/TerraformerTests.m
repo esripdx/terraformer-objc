@@ -66,4 +66,24 @@
     XCTAssertEqualObjects(expected, bbox);
 }
 
+- (void)testEnvelope {
+    // TODO: Add more types here, and use their specific subclasses.
+    
+    TFGeometry *point = [[TFGeometry alloc] initWithType:@"point" coordinates:@[[TFCoordinate coordinateWithX:5 y:10]]];
+    NSArray *bbox = [point envelope];
+    NSArray *expected = @[@(5), @(10), @(0), @(0)];
+    XCTAssertEqualObjects(expected, bbox);
+    
+    TFGeometry *polygon = [[TFGeometry alloc] initWithType:@"polygon" coordinates:@[
+            [TFCoordinate coordinateWithX:-5 y:-10],
+            [TFCoordinate coordinateWithX:-2 y:-40],
+            [TFCoordinate coordinateWithX:0 y:35],
+            [TFCoordinate coordinateWithX:5 y:10],
+            [TFCoordinate coordinateWithX:25 y:5]
+    ]];
+    bbox = [polygon envelope];
+    expected = @[@(-5), @(-40), @(30), @(75)];
+    XCTAssertEqualObjects(expected, bbox);
+}
+
 @end

@@ -35,11 +35,7 @@
 }
 
 - (NSArray *)envelope {
-    NSArray *envelope;
-    
-    // todo
-    
-    return envelope;
+    return [[self class] envelopeForArray:self.coordinates];
 }
 
 - (TFPolygon *)convexHull {
@@ -54,21 +50,21 @@
     
     // todo
     
-    return false;
+    return NO;
 }
 
 - (BOOL)within:(TFGeometry *)geometry {
     
     // todo
     
-    return false;
+    return NO;
 }
 
 - (BOOL)intersects:(TFGeometry *)geometry {
     
     // todo
     
-    return false;
+    return NO;
 }
 
 @end
