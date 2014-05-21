@@ -98,6 +98,11 @@
     [self insertVertex:origin atIndex:[vertices count]];
 }
 
+- (NSUInteger)numberOfVertices;
+{
+    return [[self.coordinates firstObject] count];
+}
+
 #pragma mark TFGeometry
 #pragma mark TFPrimitive
 

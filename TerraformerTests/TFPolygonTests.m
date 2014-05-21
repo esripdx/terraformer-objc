@@ -44,12 +44,33 @@
 
 - (void)testRemoveVertex;
 {
+    TFCoordinate *removed = [self.closedPolygon vertexAtIndex:1];
     
+    [self.closedPolygon removeVertexAtIndex:1];
+    
+    NSUInteger idx, count;
+    
+    for ( idx = 0, count = [self.closedPolygon numberOfVertices]; idx < count; idx++ ) {
+        TFCoordinate *coordinate = [self.closedPolygon vertexAtIndex:idx];
+        XCTAssertNotEqualObjects( removed, coordinate );
+    }
 }
 
 - (void)testAddVertex;
 {
+    TFCoordinate *newVertex = [TFCoordinate coordinateWithX:2.0 y:0.2];
     
+    [self.closedPolygon insertVertex:newVertex atIndex:2];
+    
+    BOOL found = NO;
+    NSUInteger idx, count;
+    
+    for ( idx = 0, count = [self.closedPolygon numberOfVertices]; idx < count; idx++ ) {
+        TFCoordinate *coordinate = [self.closedPolygon vertexAtIndex:idx];
+        found = found || [coordinate isEqual:newVertex];
+    }
+
+    XCTAssertTrue( found );
 }
 
 - (void)testClosePolygon;
