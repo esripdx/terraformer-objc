@@ -49,12 +49,12 @@
 - (void)testGeometryBbox {
     // TODO: Add more types here, and use their specific subclasses.
 
-    TFGeometry *point = [[TFGeometry alloc] initWithType:@"point" coordinates:@[[TFCoordinate coordinateWithX:5 y:10]]];
+    TFGeometry *point = [[TFGeometry alloc] initWithType:@"Point" coordinates:@[[TFCoordinate coordinateWithX:5 y:10]]];
     NSArray *bbox = [point bbox];
     NSArray *expected = @[@(5), @(10), @(5), @(10)];
     XCTAssertEqualObjects(expected, bbox);
 
-    TFGeometry *polygon = [[TFGeometry alloc] initWithType:@"polygon" coordinates:@[
+    TFGeometry *polygon = [[TFGeometry alloc] initWithType:@"Polygon" coordinates:@[
             [TFCoordinate coordinateWithX:-5 y:-10],
             [TFCoordinate coordinateWithX:-2 y:-40],
             [TFCoordinate coordinateWithX:0 y:35],
