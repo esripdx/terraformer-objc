@@ -55,4 +55,17 @@
     }
 }
 
++ (NSArray *)envelopeForArray:(NSArray *)array
+{
+    NSArray *bounds = [self boundsForArray:array];
+    if (bounds == nil) {
+        return nil;
+    }
+    
+    return @[bounds[0],
+             bounds[1],
+             @(ABS([bounds[0] doubleValue] - [bounds[2] doubleValue])),
+             @(ABS([bounds[1] doubleValue] - [bounds[3] doubleValue]))];
+}
+
 @end

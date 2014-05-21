@@ -35,11 +35,7 @@
 }
 
 - (NSArray *)envelope {
-    NSArray *envelope;
-    
-    // todo
-    
-    return envelope;
+    return [[self class] envelopeForArray:self.coordinates];
 }
 
 - (TFPolygon *)convexHull {
