@@ -41,15 +41,15 @@
                 break;
             }
             
-            double val = [[array objectAtIndex:i] doubleValue];
+            double val = [array[i] doubleValue];
             
             // if the lower X/Y is empty, or the current X/Y is less, keep it
-            if ([box[i] isEqual:[NSNull null]] || (val < [[box objectAtIndex:i] doubleValue])) {
+            if ([box[i] isEqual:[NSNull null]] || (val < [box[i] doubleValue])) {
                 box[i] = array[i];
             }
             
             // if the upper X/Y is empty, or the current X/Y is greater, keep it
-            if ([box[i + 2] isEqual:[NSNull null]] || (val > [[box objectAtIndex:(i + 2)] doubleValue])) {
+            if ([box[i + 2] isEqual:[NSNull null]] || (val > [box[i + 2] doubleValue])) {
                 box[i + 2] = array[i];
             }
         }
