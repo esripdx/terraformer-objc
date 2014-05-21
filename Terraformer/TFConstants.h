@@ -10,6 +10,6 @@
 #define Terraformer_TFConstants_h
 
 static NSString *const TFTypeKey = @"type";
-static NSString *const TFCoordinatesKey = @"type";
+static NSString *const TFCoordinatesKey = @"coordinates";
 
 #endif
