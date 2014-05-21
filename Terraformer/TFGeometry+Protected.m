@@ -16,11 +16,8 @@
         return nil;
     }
 
-    NSMutableArray *box = [NSMutableArray new];
-    // fill with NSNulls as initial comparison values
-    for (int i = 0; i < 4; i++) {
-        [box addObject:[NSNull null]];
-    }
+    // fill with initial comparable values for xmin, ymin, xmax, ymax
+    NSMutableArray *box = [NSMutableArray arrayWithArray:@[@(DBL_MAX), @(DBL_MAX), @(DBL_MIN), @(DBL_MIN)]];
 
     [self boundsForArray:array box:box];
     return box;
@@ -43,15 +40,10 @@
             
             double val = [array[i] doubleValue];
             
-            // if the lower X/Y is empty, or the current X/Y is less, keep it
-            if ([box[i] isEqual:[NSNull null]] || (val < [box[i] doubleValue])) {
-                box[i] = array[i];
-            }
-            
-            // if the upper X/Y is empty, or the current X/Y is greater, keep it
-            if ([box[i + 2] isEqual:[NSNull null]] || (val > [box[i + 2] doubleValue])) {
-                box[i + 2] = array[i];
-            }
+            // keep lesser X/Y at indexes 0 and 1
+            box[i] = @(MIN(val, [box[i] doubleValue]));
+            // keep greater X/Y at indexes 2 and 3
+            box[i+2] = @(MAX(val, [box[i+2] doubleValue]));
         }
     }
 }
