@@ -7,6 +7,7 @@
 //
 
 #import "TFPolygon.h"
+#import "TFGeometry+Protected.h"
 
 @implementation TFPolygon
 

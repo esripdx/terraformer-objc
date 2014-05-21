@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		200B46A4192C2308009C5B22 /* TFGeometry+Protected.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B46A3192C2308009C5B22 /* TFGeometry+Protected.m */; };
 		9442E128192C180100CAC58B /* TFGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 9442E127192C180100CAC58B /* TFGeometry.m */; };
 		9442E12B192C183E00CAC58B /* TFPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9442E12A192C183E00CAC58B /* TFPolygon.m */; };
 		94D59AD6192C06A400A8E6F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AD5192C06A400A8E6F8 /* Foundation.framework */; };
@@ -44,6 +45,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		200B46A2192C2308009C5B22 /* TFGeometry+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFGeometry+Protected.h"; sourceTree = "<group>"; };
+		200B46A3192C2308009C5B22 /* TFGeometry+Protected.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFGeometry+Protected.m"; sourceTree = "<group>"; };
 		9442E123192C0FF500CAC58B /* TFPrimitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPrimitive.h; sourceTree = "<group>"; };
 		9442E126192C180100CAC58B /* TFGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFGeometry.h; sourceTree = "<group>"; };
 		9442E127192C180100CAC58B /* TFGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometry.m; sourceTree = "<group>"; };
@@ -90,6 +93,8 @@
 			children = (
 				9442E126192C180100CAC58B /* TFGeometry.h */,
 				9442E127192C180100CAC58B /* TFGeometry.m */,
+				200B46A2192C2308009C5B22 /* TFGeometry+Protected.h */,
+				200B46A3192C2308009C5B22 /* TFGeometry+Protected.m */,
 				9442E129192C183E00CAC58B /* TFPolygon.h */,
 				9442E12A192C183E00CAC58B /* TFPolygon.m */,
 			);
@@ -245,6 +250,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				200B46A4192C2308009C5B22 /* TFGeometry+Protected.m in Sources */,
 				94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */,
 				9442E128192C180100CAC58B /* TFGeometry.m in Sources */,
 				9442E12B192C183E00CAC58B /* TFPolygon.m in Sources */,
