@@ -1,5 +1,5 @@
 //
-//  TFCGeometryTests.m
+//  TFGeometryTests.m
 //  Terraformer
 //
 //  Created by Ryan Arana on 5/21/14.
@@ -10,11 +10,11 @@
 #import "TFGeometry.h"
 #import "TFCoordinate.h"
 
-@interface TFCGeometryTests : XCTestCase
+@interface TFGeometryTests : XCTestCase
 
 @end
 
-@implementation TFCGeometryTests
+@implementation TFGeometryTests
 
 - (void)setUp
 {

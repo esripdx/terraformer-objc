@@ -12,7 +12,7 @@
 		67EF26771008039AF67B5DDB /* TFGeometryCollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF2721182CD736DD336732 /* TFGeometryCollectionTests.m */; };
 		67EF29AD81CC2928D4623CB5 /* TFCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF2B866248864DF38AF06A /* TFCoordinate.m */; };
 		67EF2A218ED5B59149A30024 /* TFGeometryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF2CFE90DD91CA99018A3F /* TFGeometryCollection.m */; };
-		67EF2BB2F667FDF33F4020F4 /* TFCGeometryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF22635E82A1E8D9306C4B /* TFCGeometryTests.m */; };
+		67EF2BB2F667FDF33F4020F4 /* TFGeometryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF22635E82A1E8D9306C4B /* TFGeometryTests.m */; };
 		9442E128192C180100CAC58B /* TFGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 9442E127192C180100CAC58B /* TFGeometry.m */; };
 		9442E12B192C183E00CAC58B /* TFPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9442E12A192C183E00CAC58B /* TFPolygon.m */; };
 		949E5406192D3A110095526D /* TFGeometry+Protected.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B46A3192C2308009C5B22 /* TFGeometry+Protected.m */; };
@@ -59,7 +59,7 @@
 		48CFCC95192D632D00028043 /* TFPolygonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPolygonTests.m; sourceTree = "<group>"; };
 		202A6207192D613000A0E84F /* TFPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPoint.h; sourceTree = "<group>"; };
 		202A6208192D613000A0E84F /* TFPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPoint.m; sourceTree = "<group>"; };
-		67EF22635E82A1E8D9306C4B /* TFCGeometryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCGeometryTests.m; sourceTree = "<group>"; };
+		67EF22635E82A1E8D9306C4B /* TFGeometryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometryTests.m; sourceTree = "<group>"; };
 		67EF2448696DC7CA30A76ED4 /* TFGeometryCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFGeometryCollection.h; sourceTree = "<group>"; };
 		67EF2721182CD736DD336732 /* TFGeometryCollectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometryCollectionTests.m; sourceTree = "<group>"; };
 		67EF2B866248864DF38AF06A /* TFCoordinate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCoordinate.m; sourceTree = "<group>"; };
@@ -190,7 +190,7 @@
 				BDED1CAA192D5EAF005F7477 /* TFCoordinateTests.m */,
 				BDED1CA8192D5677005F7477 /* TFLineStringTests.m */,
 				94D59AEC192C06A400A8E6F8 /* Supporting Files */,
-				67EF22635E82A1E8D9306C4B /* TFCGeometryTests.m */,
+				67EF22635E82A1E8D9306C4B /* TFGeometryTests.m */,
 				67EF2721182CD736DD336732 /* TFGeometryCollectionTests.m */,
 			);
 			path = TerraformerTests;
@@ -306,7 +306,7 @@
 				BDED1CA9192D5677005F7477 /* TFLineStringTests.m in Sources */,
 				BDED1CAB192D5EAF005F7477 /* TFCoordinateTests.m in Sources */,
 				94D59AF2192C06A400A8E6F8 /* TerraformerTests.m in Sources */,
-				67EF2BB2F667FDF33F4020F4 /* TFCGeometryTests.m in Sources */,
+				67EF2BB2F667FDF33F4020F4 /* TFGeometryTests.m in Sources */,
 				67EF26771008039AF67B5DDB /* TFGeometryCollectionTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
