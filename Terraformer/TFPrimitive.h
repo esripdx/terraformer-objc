@@ -14,7 +14,7 @@
 @protocol TFPrimitive <NSObject>
 
 - (NSDictionary *)encodeJSON;
-- (id <TFPrimitive>)decodeJSON:(NSDictionary *)geoJSON;
+- (id <TFPrimitive>)decodeJSON:(NSDictionary *)geojson;
 
 - (NSArray *)bbox;
 - (NSArray *)envelope;

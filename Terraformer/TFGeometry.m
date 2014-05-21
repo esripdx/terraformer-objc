@@ -10,4 +10,68 @@
 
 @implementation TFGeometry
 
+- (TFGeometry *)initWithType:(NSString *)type coordinates:(NSArray *)coordinates {
+    if (self = [super init]) {
+        _type = type;
+        _coordinates = coordinates;
+    }
+    return self;
+}
+
+#pragma mark - TFPrimitive
+
+- (NSDictionary *)encodeJSON {
+    return @{TFTypeKey: self.type,
+             TFCoordinatesKey: self.coordinates};
+}
+
+- (id <TFPrimitive>)decodeJSON:(NSDictionary *)geojson {
+    return [[TFGeometry alloc] initWithType:geojson[TFTypeKey] coordinates:geojson[TFCoordinatesKey]];
+}
+
+- (NSArray *)bbox {
+    NSArray *bbox;
+    
+    // todo
+    
+    return bbox;
+}
+
+- (NSArray *)envelope {
+    NSArray *envelope;
+    
+    // todo
+    
+    return envelope;
+}
+
+- (TFPolygon *)convexHull {
+    TFPolygon *hull;
+    
+    // todo
+    
+    return hull;
+}
+
+- (BOOL)contains:(TFGeometry *)geometry {
+    
+    // todo
+    
+    return false;
+}
+
+- (BOOL)within:(TFGeometry *)geometry {
+    
+    // todo
+    
+    return false;
+}
+
+- (BOOL)intersects:(TFGeometry *)geometry {
+    
+    // todo
+    
+    return false;
+}
+
 @end

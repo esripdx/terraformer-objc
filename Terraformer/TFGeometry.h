@@ -11,4 +11,9 @@
 
 @interface TFGeometry : NSObject <TFPrimitive>
 
+- (TFGeometry *)initWithType:(NSString *)type coordinates:(NSArray *)coordinates;
+
+@property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) NSArray *coordinates;
+
 @end
