@@ -101,8 +101,8 @@
 				200B46A3192C2308009C5B22 /* TFGeometry+Protected.m */,
 				9442E129192C183E00CAC58B /* TFPolygon.h */,
 				9442E12A192C183E00CAC58B /* TFPolygon.m */,
-				67EF2B866248864DF38AF06A /* TFCoordinate.m */,
 				67EF2F0D32160786F253213E /* TFCoordinate.h */,
+				67EF2B866248864DF38AF06A /* TFCoordinate.m */,
 				BE6DD6F2192D1B72002DAE4D /* TFConstants.h */,
 			);
 			name = Geometries;
