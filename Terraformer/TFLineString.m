@@ -106,7 +106,6 @@ NSString const static *kGeoJsonType = @"LineString";
             return true;
         }
     }
-
     return false;
 }
 

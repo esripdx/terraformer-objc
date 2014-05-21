@@ -7,11 +7,8 @@
 //
 
 #import <XCTest/XCTest.h>
-<<<<<<< HEAD
 #import "TFCoordinate.h"
 #import "TFGeometry.h"
-=======
->>>>>>> LineString basics, LineString tests, Coordinate tests
 
 @interface TerraformerTests : XCTestCase
 
