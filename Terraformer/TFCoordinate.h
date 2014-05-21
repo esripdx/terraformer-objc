@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface TFCoordinate : NSObject
+@interface TFCoordinate : NSObject <NSCopying>
 
 + (instancetype)coordinateWithX:(double)x y:(double)y;
 - (instancetype)initWithX:(double)x y:(double)y;

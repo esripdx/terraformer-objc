@@ -13,9 +13,7 @@
 @property (strong, nonatomic) NSArray *coordinates;
 @end
 
-@implementation TFCoordinate {
-
-}
+@implementation TFCoordinate
 
 + (instancetype)coordinateWithX:(double)x y:(double)y {
     return [[self alloc] initWithX:x y:y];
@@ -50,6 +48,38 @@
 
 - (double)y {
     return [[self.coordinates objectAtIndex:1] doubleValue];
+}
+
+#pragma mark NSObject
+
+- (BOOL)isEqual:(id)object;
+{
+    if ( object == self )
+        return YES;
+    
+    if ( object == nil || ![object isKindOfClass:[self class]] )
+        return NO;
+    
+    return ( self.x == [object x] && self.y == [object y] );
+}
+
+- (NSUInteger)hash;
+{
+    NSUInteger prime = 31;
+    NSUInteger result = 1;
+    
+    result = prime * result + self.x;
+    result = prime * result + self.y;
+
+    return result;
+}
+
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone *)zone;
+{
+    // As long as TFCoordinate is immutable, we can return self.
+    return self;
 }
 
 @end
