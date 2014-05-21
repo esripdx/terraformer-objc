@@ -46,4 +46,21 @@
     XCTAssertEqualObjects(expected, [gc bbox]);
 }
 
+- (void)testEnvelope {
+    TFGeometryCollection *gc = [[TFGeometryCollection alloc] initWithGeometries:@[
+            [[TFGeometry alloc] initWithType:@"Polygon" coordinates:@[
+                    [TFCoordinate coordinateWithX:-5 y:-10],
+                    [TFCoordinate coordinateWithX:-2 y:-40],
+                    [TFCoordinate coordinateWithX:0 y:35],
+                    [TFCoordinate coordinateWithX:5 y:10],
+                    [TFCoordinate coordinateWithX:25 y:5]
+            ]],
+            [[TFGeometry alloc] initWithType:@"Point" coordinates:@[
+                    [TFCoordinate coordinateWithX:34 y:0]
+            ]]
+    ]];
+    NSArray *expected = @[@(-5), @(-40), @(39), @(75)];
+    XCTAssertEqualObjects(expected, [gc envelope]);
+}
+
 @end

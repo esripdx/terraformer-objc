@@ -86,8 +86,13 @@
 }
 
 - (NSArray *)envelope {
-    // TODO
-    return nil;
+    NSArray *bbox = [self bbox];
+    return @[
+            bbox[0],
+            bbox[1],
+            @(ABS([bbox[0] doubleValue] - [bbox[2] doubleValue])),
+            @(ABS([bbox[1] doubleValue] - [bbox[3] doubleValue]))
+    ];
 }
 
 - (TFPolygon *)convexHull {
