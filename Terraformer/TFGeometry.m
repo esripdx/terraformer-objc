@@ -7,6 +7,7 @@
 //
 
 #import "TFGeometry.h"
+#import "TFGeometry+Protected.h"
 
 @implementation TFGeometry
 
@@ -30,11 +31,7 @@
 }
 
 - (NSArray *)bbox {
-    NSArray *bbox;
-    
-    // todo
-    
-    return bbox;
+    return [[self class] boundsForArray:self.coordinates];
 }
 
 - (NSArray *)envelope {
