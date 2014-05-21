@@ -25,8 +25,8 @@
              TFCoordinatesKey: self.coordinates};
 }
 
-- (id <TFPrimitive>)decodeJSON:(NSDictionary *)geojson {
-    return [[TFGeometry alloc] initWithType:geojson[TFTypeKey] coordinates:geojson[TFCoordinatesKey]];
++ (id <TFPrimitive>)decodeJSON:(NSDictionary *)json {
+    return [[TFGeometry alloc] initWithType:json[TFTypeKey] coordinates:json[TFCoordinatesKey]];
 }
 
 - (NSArray *)bbox {
