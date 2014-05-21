@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "TFCoordinate.h"
 
 @interface TerraformerTests : XCTestCase
 
@@ -26,9 +27,10 @@
     [super tearDown];
 }
 
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+- (void)testCoordinate {
+    TFCoordinate *c = [TFCoordinate coordinateWithX:5 y:10];
+    XCTAssertEqual(5, c.x);
+    XCTAssertEqual(10, c.y);
 }
 
 @end

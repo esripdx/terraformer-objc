@@ -25,7 +25,7 @@
 
 + (void)boundsForArray:(NSArray *)array box:(NSMutableArray *)box
 {
-    for (int i = 0; i < [array count]; i++) {
+    for (NSUInteger i = 0; i < [array count]; i++) {
         if ([array[i] isKindOfClass:[NSArray class]]) {
 
             // we are iterating over an array of arrays: recurse!
