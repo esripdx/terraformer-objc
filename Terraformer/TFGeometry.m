@@ -10,7 +10,7 @@
 
 @implementation TFGeometry
 
-- (TFGeometry *)initWithType:(NSString *)type coordinates:(NSArray *)coordinates {
+- (instancetype)initWithType:(NSString *)type coordinates:(NSArray *)coordinates {
     if (self = [super init]) {
         _type = type;
         _coordinates = coordinates;
