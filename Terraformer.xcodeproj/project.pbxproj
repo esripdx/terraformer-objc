@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		200B46A4192C2308009C5B22 /* TFGeometry+Protected.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B46A3192C2308009C5B22 /* TFGeometry+Protected.m */; };
 		67EF29AD81CC2928D4623CB5 /* TFCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF2B866248864DF38AF06A /* TFCoordinate.m */; };
 		9442E128192C180100CAC58B /* TFGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 9442E127192C180100CAC58B /* TFGeometry.m */; };
 		9442E12B192C183E00CAC58B /* TFPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9442E12A192C183E00CAC58B /* TFPolygon.m */; };
+		949E5406192D3A110095526D /* TFGeometry+Protected.m in Sources */ = {isa = PBXBuildFile; fileRef = 200B46A3192C2308009C5B22 /* TFGeometry+Protected.m */; };
 		94D59AD6192C06A400A8E6F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AD5192C06A400A8E6F8 /* Foundation.framework */; };
 		94D59ADB192C06A400A8E6F8 /* Terraformer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94D59ADA192C06A400A8E6F8 /* Terraformer.h */; };
 		94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D59ADC192C06A400A8E6F8 /* Terraformer.m */; };
@@ -257,7 +257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				200B46A4192C2308009C5B22 /* TFGeometry+Protected.m in Sources */,
+				949E5406192D3A110095526D /* TFGeometry+Protected.m in Sources */,
 				94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */,
 				9442E128192C180100CAC58B /* TFGeometry.m in Sources */,
 				9442E12B192C183E00CAC58B /* TFPolygon.m in Sources */,
@@ -402,6 +402,12 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "TerraformerTests/TerraformerTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					XCTest,
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -418,6 +424,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Terraformer/Terraformer-Prefix.pch";
 				INFOPLIST_FILE = "TerraformerTests/TerraformerTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					XCTest,
+					"-ObjC",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
