@@ -7,6 +7,7 @@
 //
 
 #import "TFGeometry+Protected.h"
+#import "TFCoordinate.h"
 
 @implementation TFGeometry (Protected)
 
@@ -17,7 +18,7 @@
     }
 
     // fill with initial comparable values for xmin, ymin, xmax, ymax
-    NSMutableArray *box = [NSMutableArray arrayWithArray:@[@(DBL_MAX), @(DBL_MAX), @(DBL_MIN), @(DBL_MIN)]];
+    NSMutableArray *box = [NSMutableArray arrayWithObjects:@(DBL_MAX), @(DBL_MAX), @(DBL_MIN), @(DBL_MIN), nil];
 
     [self boundsForArray:array box:box];
     return box;
@@ -31,15 +32,21 @@
             // we are iterating over an array of arrays: recurse!
             [self boundsForArray:(NSArray *)array[i] box:box];
 
+        } else if ([array[i] isKindOfClass:[TFCoordinate class]]) {
+            TFCoordinate *coord = array[i];
+            box[0] = @(MIN(coord.x, [box[0] doubleValue]));
+            box[1] = @(MIN(coord.y, [box[1] doubleValue]));
+            box[2] = @(MAX(coord.x, [box[2] doubleValue]));
+            box[3] = @(MAX(coord.y, [box[3] doubleValue]));
         } else if ([array[i] isKindOfClass:[NSNumber class]]) {
 
             // we only want to compare with X, Y from the coordinate array
             if (i > 1) {
                 break;
             }
-            
+
             double val = [array[i] doubleValue];
-            
+
             // keep lesser X/Y at indexes 0 and 1
             box[i] = @(MIN(val, [box[i] doubleValue]));
             // keep greater X/Y at indexes 2 and 3
