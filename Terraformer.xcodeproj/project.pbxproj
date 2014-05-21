@@ -66,6 +66,7 @@
 		94D59AED192C06A400A8E6F8 /* TerraformerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TerraformerTests-Info.plist"; sourceTree = "<group>"; };
 		94D59AEF192C06A400A8E6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		94D59AF1192C06A400A8E6F8 /* TerraformerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TerraformerTests.m; sourceTree = "<group>"; };
+		BE6DD6F2192D1B72002DAE4D /* TFConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFConstants.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +103,7 @@
 				9442E12A192C183E00CAC58B /* TFPolygon.m */,
 				67EF2B866248864DF38AF06A /* TFCoordinate.m */,
 				67EF2F0D32160786F253213E /* TFCoordinate.h */,
+				BE6DD6F2192D1B72002DAE4D /* TFConstants.h */,
 			);
 			name = Geometries;
 			sourceTree = "<group>";
