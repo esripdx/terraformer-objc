@@ -12,8 +12,8 @@
 @interface TFFeature : NSObject
 
 @property (readonly) NSString *type;
-@property (readonly) NSString *id;
-@property (readonly) NSObject<TFPrimitive> *geometry;
+@property (readonly) NSString *identifier;
+@property (readonly) id <TFPrimitive> geometry;
 @property (readonly) NSDictionary *properties;
 
 @end

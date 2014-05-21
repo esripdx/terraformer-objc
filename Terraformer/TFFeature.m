@@ -8,18 +8,18 @@
 
 @implementation TFFeature
 
-- (instancetype)initWithGeometry:(NSObject<TFPrimitive> *)geometry {
+- (instancetype)initWithGeometry:(id <TFPrimitive>)geometry {
     return [self initWithId:nil geometry:geometry properties:[NSDictionary new]];
 }
 
-- (instancetype)initWithGeometry:(NSObject<TFPrimitive> *)geometry properties:(NSDictionary *)properties {
+- (instancetype)initWithGeometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
     return [self initWithId:nil geometry:geometry properties:properties];
 }
 
-- (instancetype)initWithId:(NSString *)id geometry:(NSObject<TFPrimitive> *)geometry properties:(NSDictionary *)properties {
+- (instancetype)initWithID:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
     if (self = [super init]) {
         _type = @"feature";
-        _id = id;
+        _identifier = identifier;
         _geometry = geometry;
         _properties = properties;
     }
