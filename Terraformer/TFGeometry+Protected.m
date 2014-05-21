@@ -10,7 +10,7 @@
 
 @implementation TFGeometry (Protected)
 
-+ (NSArray *)boundsForArray:(NSArray *)array;
++ (NSArray *)boundsForArray:(NSArray *)array
 {
     if (array == nil || [array count] == 0) {
         return nil;
@@ -23,7 +23,7 @@
     return box;
 }
 
-+ (void)boundsForArray:(NSArray *)array box:(NSMutableArray *)box;
++ (void)boundsForArray:(NSArray *)array box:(NSMutableArray *)box
 {
     for (int i = 0; i < [array count]; i++) {
         if ([array[i] isKindOfClass:[NSArray class]]) {
