@@ -106,7 +106,6 @@
     return [[self.coordinates firstObject] count];
 }
 
-#pragma mark TFGeometry
 #pragma mark TFPrimitive
 
 - (NSDictionary *)encodeJSON;
@@ -119,6 +118,32 @@
 {
 #warning stub method
     return nil;
+}
+
+- (BOOL)contains:(TFGeometry *)geometry;
+{
+#warning stub method
+    return NO;
+}
+
+- (BOOL)within:(TFGeometry *)geometry;
+{
+#warning stub method
+    return NO;
+}
+
+#pragma mark NSObject
+
+- (BOOL)isEqual:(id)object;
+{
+#warning stub
+    return NO;
+}
+
+- (NSUInteger)hash;
+{
+#warning stub
+    return 1;
 }
 
 @end
