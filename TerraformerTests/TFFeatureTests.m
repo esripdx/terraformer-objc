@@ -7,6 +7,7 @@
 #import "TFGeometry.h"
 #import "TFCoordinate.h"
 #import "TFFeature.h"
+#import "TFPoint.h"
 
 @interface TFFeatureTests : XCTestCase
 @end
@@ -14,7 +15,7 @@
 @implementation TFFeatureTests
 
 - (void)testFeature {
-    TFGeometry *point = [[TFGeometry alloc] initWithType:@"point" coordinates:@[[TFCoordinate coordinateWithX:5 y:10]]];
+    TFGeometry *point = [TFPoint pointWithX:5 y:10];
     NSDictionary *properties = @{@"key": @"val"};
     NSString *identifier = @"identifier";
 
