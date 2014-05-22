@@ -32,18 +32,6 @@
     self.geometries = geoms;
 }
 
-- (void)removeGeometryAtIndex:(NSUInteger)index {
-    NSMutableArray *geoms = [self.geometries mutableCopy];
-    [geoms removeObjectAtIndex:index];
-    self.geometries = geoms;
-}
-
-- (void)removeGeometriesAtIndexes:(NSIndexSet *)indexes {
-    NSMutableArray *geoms = [self.geometries mutableCopy];
-    [geoms removeObjectsAtIndexes:indexes];
-    self.geometries = geoms;
-}
-
 - (NSArray *)geometriesWhichContain:(TFGeometry *)geometry {
     NSMutableArray *found = [NSMutableArray new];
     for (TFGeometry *geo in self.geometries) {

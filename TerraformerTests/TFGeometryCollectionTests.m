@@ -16,14 +16,41 @@
 
 @interface TFGeometryCollectionTests : XCTestCase
 
+@property (strong, nonatomic) TFPoint *p0;
+@property (strong, nonatomic) TFPoint *p1;
+@property (strong, nonatomic) TFPoint *p2;
+@property (strong, nonatomic) TFPoint *p3;
+@property (strong, nonatomic) TFGeometryCollection *gc;
+@property (strong, nonatomic) TFGeometryCollection *bboxGC;
+@property (copy, nonatomic) NSArray *expectedBBox;
+@property (copy, nonatomic) NSArray *expectedEnvelope;
 @end
 
 @implementation TFGeometryCollectionTests
 
-- (void)setUp
-{
+- (void)setUp {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
+
+    self.p0 = [TFPoint pointWithX:0 y:0];
+    self.p1 = [TFPoint pointWithX:1 y:1];
+    self.p2 = [TFPoint pointWithX:2 y:2];
+    self.p3 = [TFPoint pointWithX:3 y:3];
+    self.gc = [[TFGeometryCollection alloc] initWithGeometries:@[self.p0, self.p1, self.p2, self.p3]];
+    self.bboxGC = [[TFGeometryCollection alloc] initWithGeometries:@[
+            [TFGeometry geometryWithType:TFPrimitiveTypePolygon coordinates:@[
+                    [TFCoordinate coordinateWithX:-5 y:-10],
+                    [TFCoordinate coordinateWithX:-2 y:-40],
+                    [TFCoordinate coordinateWithX:0 y:35],
+                    [TFCoordinate coordinateWithX:5 y:10],
+                    [TFCoordinate coordinateWithX:25 y:5]
+            ]],
+            [TFGeometry geometryWithType:TFPrimitiveTypePoint coordinates:@[
+                    [TFCoordinate coordinateWithX:34 y:0]
+            ]]
+    ]];
+    self.expectedBBox = @[@(-5), @(-40), @(34), @(35)];
+    self.expectedEnvelope = @[@(-5), @(-40), @(39), @(75)];
 }
 
 - (void)tearDown
@@ -33,76 +60,30 @@
 }
 
 - (void)testBBox {
-    TFGeometryCollection *gc = [[TFGeometryCollection alloc] initWithGeometries:@[
-            [TFGeometry geometryWithType:TFPrimitiveTypePolygon coordinates:@[
-                    [TFCoordinate coordinateWithX:-5 y:-10],
-                    [TFCoordinate coordinateWithX:-2 y:-40],
-                    [TFCoordinate coordinateWithX:0 y:35],
-                    [TFCoordinate coordinateWithX:5 y:10],
-                    [TFCoordinate coordinateWithX:25 y:5]
-            ]],
-            [TFGeometry geometryWithType:TFPrimitiveTypePoint coordinates:@[
-                    [TFCoordinate coordinateWithX:34 y:0]
-            ]]
-    ]];
-    NSArray *expected = @[@(-5), @(-40), @(34), @(35)];
-    XCTAssertEqualObjects(expected, [gc bbox]);
+    XCTAssertEqualObjects(self.expectedBBox, [self.bboxGC bbox]);
 }
 
 - (void)testEnvelope {
-    TFGeometryCollection *gc = [[TFGeometryCollection alloc] initWithGeometries:@[
-            [TFGeometry geometryWithType:TFPrimitiveTypePolygon coordinates:@[
-                    [TFCoordinate coordinateWithX:-5 y:-10],
-                    [TFCoordinate coordinateWithX:-2 y:-40],
-                    [TFCoordinate coordinateWithX:0 y:35],
-                    [TFCoordinate coordinateWithX:5 y:10],
-                    [TFCoordinate coordinateWithX:25 y:5]
-            ]],
-            [TFGeometry geometryWithType:TFPrimitiveTypePoint coordinates:@[
-                    [TFCoordinate coordinateWithX:34 y:0]
-            ]]
-    ]];
-    NSArray *expected = @[@(-5), @(-40), @(39), @(75)];
-    XCTAssertEqualObjects(expected, [gc envelope]);
+    XCTAssertEqualObjects(self.expectedEnvelope, [self.bboxGC envelope]);
 }
 
 - (void)testAddGeometry {
-    TFGeometryCollection *gc = [[TFGeometryCollection alloc] initWithGeometries:@[
-            [TFPoint pointWithX:5 y:10]
-    ]];
     TFPoint *p2 = [TFPoint pointWithX:-1 y:0];
-    [gc addGeometry:p2];
-    XCTAssertEqual(2, [gc.geometries count]);
-    XCTAssertTrue([gc.geometries containsObject:p2]);
+    // sanity check
+    XCTAssertEqual(4, [self.gc.geometries count]);
+    [self.gc addGeometry:p2];
+    XCTAssertEqual(5, [self.gc.geometries count]);
+    XCTAssertTrue([self.gc.geometries containsObject:p2]);
 }
 
 - (void)testRemoveGeometry {
-    TFPoint *p0 = [TFPoint pointWithX:0 y:0];
-    TFPoint *p1 = [TFPoint pointWithX:1 y:1];
-    TFPoint *p2 = [TFPoint pointWithX:2 y:2];
-    TFPoint *p3 = [TFPoint pointWithX:3 y:3];
-    TFGeometryCollection *gc = [[TFGeometryCollection alloc] initWithGeometries:@[ p0, p1, p2, p3 ]];
-
     // sanity check
-    XCTAssertEqual(4, [gc.geometries count]);
+    XCTAssertEqual(4, [self.gc.geometries count]);
 
-    XCTAssertTrue([gc.geometries containsObject:p3]);
-    [gc removeGeometry:p3];
-    XCTAssertEqual(3, [gc.geometries count]);
-    XCTAssertFalse([gc.geometries containsObject:p3]);
-
-    XCTAssertTrue([gc.geometries containsObject:p2]);
-    [gc removeGeometryAtIndex:2];
-    XCTAssertEqual(2, [gc.geometries count]);
-    XCTAssertFalse([gc.geometries containsObject:p2]);
-
-    gc = [[TFGeometryCollection alloc] initWithGeometries:@[ p0, p1, p2, p3 ]];
-    XCTAssertEqual(4, [gc.geometries count]);
-    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)];
-    [gc removeGeometriesAtIndexes:indexes];
-    XCTAssertEqual(2, [gc.geometries count]);
-    XCTAssertFalse([gc.geometries containsObject:p1]);
-    XCTAssertFalse([gc.geometries containsObject:p2]);
+    XCTAssertTrue([self.gc.geometries containsObject:self.p3]);
+    [self.gc removeGeometry:self.p3];
+    XCTAssertEqual(3, [self.gc.geometries count]);
+    XCTAssertFalse([self.gc.geometries containsObject:self.p3]);
 }
 
 - (void)testGeometriesWhichContainGeometry {
