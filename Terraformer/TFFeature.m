@@ -16,8 +16,8 @@
     return [[TFFeature alloc] initWithGeometry:geometry properties:properties];
 }
 
-+ (TFFeature *)featureWithID:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
-    return [[TFFeature alloc] initWithID:identifier geometry:geometry properties:properties];
++ (TFFeature *)featureWithIdentifier:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
+    return [[TFFeature alloc] initWithIdentifier:identifier geometry:geometry properties:properties];
 }
 
 - (instancetype)initWithGeometry:(id <TFPrimitive>)geometry {
