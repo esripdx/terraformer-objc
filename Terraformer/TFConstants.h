@@ -17,7 +17,9 @@ typedef NS_ENUM( NSInteger, TFPrimitiveType )
     TFPrimitiveTypeMultiLineString,
     TFPrimitiveTypePolygon,
     TFPrimitiveTypeMultiPolygon,
-    TFPrimitiveTypeGeometryCollection
+    TFPrimitiveTypeGeometryCollection,
+    TFPrimitiveTypeFeature,
+    TFPrimitiveTypeFeatureCollection
 };
 
 static NSString *const TFTypeKey = @"type";

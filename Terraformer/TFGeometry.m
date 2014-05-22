@@ -40,6 +40,12 @@
         case TFPrimitiveTypeGeometryCollection:
             name = @"GeometryCollection";
             break;
+        case TFPrimitiveTypeFeature:
+            name = @"Feature";
+            break;
+        case TFPrimitiveTypeFeatureCollection:
+            name = @"FeatureCollection";
+            break;
         default:
             NSAssert( NO, @"unhandled type" );
             break;
@@ -66,6 +72,10 @@
         type = TFPrimitiveTypeMultiPolygon;
     } else if ( [string isEqualToString:@"GeometryCollection"] ) {
         type = TFPrimitiveTypeGeometryCollection;
+    } else if ( [string isEqualToString:@"Feature"] ) {
+        type = TFPrimitiveTypeFeature;
+    } else if ( [string isEqualToString:@"FeatureCollection"] ) {
+        type = TFPrimitiveTypeFeatureCollection;
     } else {
         NSAssert( NO, @"unhandled type" );
     }
@@ -91,6 +101,8 @@
         case TFPrimitiveTypeMultiPoint:
         case TFPrimitiveTypeMultiPolygon:
         case TFPrimitiveTypeMultiLineString:
+        case TFPrimitiveTypeFeature:
+        case TFPrimitiveTypeFeatureCollection:
         default:
             NSAssert( NO, @"not yet implemented" );
             break;

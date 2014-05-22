@@ -18,12 +18,16 @@
 
 - (instancetype)initWithIdentifier:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
     if (self = [super init]) {
-        _type = @"feature";
         _identifier = identifier;
         _geometry = geometry;
         _properties = properties;
     }
     return self;
+}
+
+- (TFPrimitiveType)type;
+{
+    return TFPrimitiveTypeFeature;
 }
 
 @end

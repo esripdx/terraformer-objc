@@ -5,13 +5,13 @@
 
 #import <Foundation/Foundation.h>
 #import "TFPrimitive.h"
+#import "TFConstants.h"
 
 @class TFGeometry;
 
-
 @interface TFFeature : NSObject
 
-@property (readonly) NSString *type;
+@property (readonly) TFPrimitiveType type;
 @property (readonly) NSString *identifier;
 @property (readonly) id <TFPrimitive> geometry;
 @property (readonly) NSDictionary *properties;
