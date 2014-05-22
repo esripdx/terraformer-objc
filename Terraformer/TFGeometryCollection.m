@@ -87,6 +87,7 @@
 
 - (NSArray *)envelope {
     NSArray *bbox = [self bbox];
+    // Envelope is the xmin, ymin coord with a distance to the corresponding max coord.
     return @[
             bbox[0],
             bbox[1],
