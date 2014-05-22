@@ -22,17 +22,16 @@
         case TFGeometryTypePoint:
             geometry = [[TFPoint alloc] initSubclassWithCoordinates:coordinates];
             break;
-        case TFGeometryTypeMultiPoint:
-            break;
         case TFGeometryTypeLineString:
-            break;
-        case TFGeometryTypeMultiLineString:
+            geometry = [[TFLineString alloc] initSubclassWithCoordinates:coordinates];
             break;
         case TFGeometryTypePolygon:
             geometry = [[TFPolygon alloc] initSubclassWithCoordinates:coordinates];
             break;
+        case TFGeometryTypeGeometryCollection:
+        case TFGeometryTypeMultiPoint:
         case TFGeometryTypeMultiPolygon:
-            break;
+        case TFGeometryTypeMultiLineString:
         default:
             NSAssert( NO, @"not yet implemented" );
             break;
