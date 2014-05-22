@@ -34,14 +34,14 @@
 
 - (void)testBBox {
     TFGeometryCollection *gc = [[TFGeometryCollection alloc] initWithGeometries:@[
-            [[TFGeometry alloc] initWithType:@"Polygon" coordinates:@[
+            [TFGeometry geometryWithType:TFPrimitiveTypePolygon coordinates:@[
                     [TFCoordinate coordinateWithX:-5 y:-10],
                     [TFCoordinate coordinateWithX:-2 y:-40],
                     [TFCoordinate coordinateWithX:0 y:35],
                     [TFCoordinate coordinateWithX:5 y:10],
                     [TFCoordinate coordinateWithX:25 y:5]
             ]],
-            [[TFGeometry alloc] initWithType:@"Point" coordinates:@[
+            [TFGeometry geometryWithType:TFPrimitiveTypePoint coordinates:@[
                     [TFCoordinate coordinateWithX:34 y:0]
             ]]
     ]];
@@ -51,14 +51,14 @@
 
 - (void)testEnvelope {
     TFGeometryCollection *gc = [[TFGeometryCollection alloc] initWithGeometries:@[
-            [[TFGeometry alloc] initWithType:@"Polygon" coordinates:@[
+            [TFGeometry geometryWithType:TFPrimitiveTypePolygon coordinates:@[
                     [TFCoordinate coordinateWithX:-5 y:-10],
                     [TFCoordinate coordinateWithX:-2 y:-40],
                     [TFCoordinate coordinateWithX:0 y:35],
                     [TFCoordinate coordinateWithX:5 y:10],
                     [TFCoordinate coordinateWithX:25 y:5]
             ]],
-            [[TFGeometry alloc] initWithType:@"Point" coordinates:@[
+            [TFGeometry geometryWithType:TFPrimitiveTypePoint coordinates:@[
                     [TFCoordinate coordinateWithX:34 y:0]
             ]]
     ]];

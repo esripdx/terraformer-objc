@@ -21,21 +21,25 @@
 }
 
 - (instancetype)initWithGeometry:(id <TFPrimitive>)geometry {
-    return [self initWithID:nil geometry:geometry properties:[NSDictionary new]];
+    return [self initWithIdentifier:nil geometry:geometry properties:[NSDictionary new]];
 }
 
 - (instancetype)initWithGeometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
-    return [self initWithID:nil geometry:geometry properties:properties];
+    return [self initWithIdentifier:nil geometry:geometry properties:properties];
 }
 
-- (instancetype)initWithID:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
+- (instancetype)initWithIdentifier:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
     if (self = [super init]) {
-        _type = @"feature";
         _identifier = identifier;
         _geometry = geometry;
         _properties = properties;
     }
     return self;
+}
+
+- (TFPrimitiveType)type;
+{
+    return TFPrimitiveTypeFeature;
 }
 
 @end

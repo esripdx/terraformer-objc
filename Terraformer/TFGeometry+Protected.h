@@ -20,4 +20,8 @@
  */
 + (NSArray *)envelopeForArray:(NSArray *)array;
 
+/** Designated initializer for TFGeometry subclasses.
+ */
+- (instancetype)initSubclassWithCoordinates:(NSArray *)coordinates;
+
 @end

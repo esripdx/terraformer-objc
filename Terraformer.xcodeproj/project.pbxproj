@@ -136,9 +136,9 @@
 				202A6208192D613000A0E84F /* TFPoint.m */,
 				67EF2F0D32160786F253213E /* TFCoordinate.h */,
 				67EF2B866248864DF38AF06A /* TFCoordinate.m */,
-				BE6DD6F2192D1B72002DAE4D /* TFConstants.h */,
-				67EF2CFE90DD91CA99018A3F /* TFGeometryCollection.m */,
 				67EF2448696DC7CA30A76ED4 /* TFGeometryCollection.h */,
+				67EF2D753B7FFE63FDFBBAE0 /* TFFeature.h */,
+				67EF2ECF276F3949981EA8FE /* TFFeature.m */,
 			);
 			name = Geometries;
 			sourceTree = "<group>";
@@ -178,6 +178,7 @@
 				9442E12C192C188600CAC58B /* Geometries */,
 				94D59ADA192C06A400A8E6F8 /* Terraformer.h */,
 				94D59ADC192C06A400A8E6F8 /* Terraformer.m */,
+				BE6DD6F2192D1B72002DAE4D /* TFConstants.h */,
 				9442E123192C0FF500CAC58B /* TFPrimitive.h */,
 				94D59AD8192C06A400A8E6F8 /* Supporting Files */,
 				31DE58CF01AF87210C5283BD /* TFFeatureCollection.m */,

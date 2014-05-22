@@ -8,12 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "TFPrimitive.h"
+#import "TFConstants.h"
 
 @interface TFGeometry : NSObject <TFPrimitive>
 
-- (instancetype)initWithType:(NSString *)type coordinates:(NSArray *)coordinates;
++ (NSString *)geoJSONStringForType:(TFPrimitiveType)type;
++ (TFPrimitiveType)geometryTypeForString:(NSString *)string;
++ (instancetype)geometryWithType:(TFPrimitiveType)type coordinates:(NSArray *)coordinates;
 
-@property (readonly) NSString *type;
 @property (nonatomic, strong) NSArray *coordinates;
+
 
 @end

@@ -58,14 +58,14 @@
 
 #pragma mark TFPrimitive
 
-- (NSString *)type {
-    return @"GeometryCollection";
+- (TFPrimitiveType)type {
+    return TFPrimitiveTypeGeometryCollection;
 }
 
 - (NSDictionary *)encodeJSON {
     return @{
-            TFTypeKey: self.type,
-            TFGeometriesKey: self.geometries
+             TFTypeKey: [[self class] geoJSONStringForType:self.type],
+             TFGeometriesKey: self.geometries
     };
 }
 

@@ -9,6 +9,19 @@
 #ifndef Terraformer_TFConstants_h
 #define Terraformer_TFConstants_h
 
+typedef NS_ENUM( NSInteger, TFPrimitiveType )
+{
+    TFPrimitiveTypePoint,
+    TFPrimitiveTypeMultiPoint,
+    TFPrimitiveTypeLineString,
+    TFPrimitiveTypeMultiLineString,
+    TFPrimitiveTypePolygon,
+    TFPrimitiveTypeMultiPolygon,
+    TFPrimitiveTypeGeometryCollection,
+    TFPrimitiveTypeFeature,
+    TFPrimitiveTypeFeatureCollection
+};
+
 static NSString *const TFTypeKey = @"type";
 static NSString *const TFCoordinatesKey = @"coordinates";
 static NSString *const TFGeometryKey = @"geometry";

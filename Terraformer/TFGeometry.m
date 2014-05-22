@@ -8,26 +8,124 @@
 
 #import "TFGeometry.h"
 #import "TFGeometry+Protected.h"
+#import "TFLineString.h"
+#import "TFPoint.h"
+#import "TFPolygon.h"
 
 @implementation TFGeometry
 
-- (instancetype)initWithType:(NSString *)type coordinates:(NSArray *)coordinates {
-    if (self = [super init]) {
-        _type = type;
-        _coordinates = coordinates;
++ (NSString *)geoJSONStringForType:(TFPrimitiveType)type;
+{
+    NSString *name;
+    
+    switch ( type ) {
+        case TFPrimitiveTypePoint:
+            name = @"Point";
+            break;
+        case TFPrimitiveTypeMultiPoint:
+            name = @"MultiPoint";
+            break;
+        case TFPrimitiveTypeLineString:
+            name = @"LineString";
+            break;
+        case TFPrimitiveTypeMultiLineString:
+            name = @"MultiLineString";
+            break;
+        case TFPrimitiveTypePolygon:
+            name = @"Polygon";
+            break;
+        case TFPrimitiveTypeMultiPolygon:
+            name = @"MultiPolygon";
+            break;
+        case TFPrimitiveTypeGeometryCollection:
+            name = @"GeometryCollection";
+            break;
+        case TFPrimitiveTypeFeature:
+            name = @"Feature";
+            break;
+        case TFPrimitiveTypeFeatureCollection:
+            name = @"FeatureCollection";
+            break;
+        default:
+            NSAssert( NO, @"unhandled type" );
+            break;
     }
-    return self;
+    
+    return name;
+}
+
++ (TFPrimitiveType)geometryTypeForString:(NSString *)string;
+{
+    TFPrimitiveType type;
+    
+    if ( [string isEqualToString:@"Point"] ) {
+        type = TFPrimitiveTypePoint;
+    } else if ( [string isEqualToString:@"MultiPoint"] ) {
+        type = TFPrimitiveTypeMultiPoint;
+    } else if ( [string isEqualToString:@"LineString"] ) {
+        type = TFPrimitiveTypeLineString;
+    } else if ( [string isEqualToString:@"MultiLineString"] ) {
+        type = TFPrimitiveTypeMultiLineString;
+    } else if ( [string isEqualToString:@"Polygon"] ) {
+        type = TFPrimitiveTypePolygon;
+    } else if ( [string isEqualToString:@"MultiPolygon"] ) {
+        type = TFPrimitiveTypeMultiPolygon;
+    } else if ( [string isEqualToString:@"GeometryCollection"] ) {
+        type = TFPrimitiveTypeGeometryCollection;
+    } else if ( [string isEqualToString:@"Feature"] ) {
+        type = TFPrimitiveTypeFeature;
+    } else if ( [string isEqualToString:@"FeatureCollection"] ) {
+        type = TFPrimitiveTypeFeatureCollection;
+    } else {
+        NSAssert( NO, @"unhandled type" );
+    }
+    
+    return type;
+}
+
++ (instancetype)geometryWithType:(TFPrimitiveType)type coordinates:(NSArray *)coordinates;
+{
+    TFGeometry *geometry = nil;
+    
+    switch ( type ) {
+        case TFPrimitiveTypePoint:
+            geometry = [[TFPoint alloc] initSubclassWithCoordinates:coordinates];
+            break;
+        case TFPrimitiveTypeLineString:
+            geometry = [[TFLineString alloc] initSubclassWithCoordinates:coordinates];
+            break;
+        case TFPrimitiveTypePolygon:
+            geometry = [[TFPolygon alloc] initSubclassWithCoordinates:coordinates];
+            break;
+        case TFPrimitiveTypeGeometryCollection:
+        case TFPrimitiveTypeMultiPoint:
+        case TFPrimitiveTypeMultiPolygon:
+        case TFPrimitiveTypeMultiLineString:
+        case TFPrimitiveTypeFeature:
+        case TFPrimitiveTypeFeatureCollection:
+        default:
+            NSAssert( NO, @"not yet implemented" );
+            break;
+    }
+
+    return geometry;
 }
 
 #pragma mark - TFPrimitive
 
+- (TFPrimitiveType)type {
+    NSAssert( NO, @"abstract method" );
+    return 0;
+}
+
 - (NSDictionary *)encodeJSON {
-    return @{TFTypeKey: self.type,
+    return @{TFTypeKey: [[self class] geoJSONStringForType:self.type],
              TFCoordinatesKey: self.coordinates};
 }
 
 + (id <TFPrimitive>)decodeJSON:(NSDictionary *)json {
-    return [[TFGeometry alloc] initWithType:json[TFTypeKey] coordinates:json[TFCoordinatesKey]];
+    TFPrimitiveType type = [self geometryTypeForString:json[TFTypeKey]];
+    return [self geometryWithType:type coordinates:json[TFCoordinatesKey]];
 }
 
 - (NSArray *)bbox {

@@ -7,8 +7,11 @@
 //
 
 #import "TFPoint.h"
+#import "TFGeometry+Protected.h"
 
 @implementation TFPoint
+
+#pragma mark TFPoint
 
 + (instancetype)pointWithX:(double)x y:(double)y
 {
@@ -28,7 +31,13 @@
 - (instancetype)initWithCoordinate:(TFCoordinate *)coord
 {
     NSArray *coords = [NSArray arrayWithObject:coord];
-    return [super initWithType:@"Point" coordinates:coords];
+    return [super initSubclassWithCoordinates:coords];
+}
+
+#pragma mark TFPrimitive
+
+- (TFPrimitiveType)type {
+    return TFPrimitiveTypePoint;
 }
 
 - (NSArray *)bbox {

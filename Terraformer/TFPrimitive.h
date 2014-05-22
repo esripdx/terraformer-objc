@@ -13,7 +13,7 @@
 
 @protocol TFPrimitive <NSObject>
 
-@property (readonly) NSString *type;
+- (TFPrimitiveType)type;
 
 - (NSDictionary *)encodeJSON;
 + (id <TFPrimitive>)decodeJSON:(NSDictionary *)json;

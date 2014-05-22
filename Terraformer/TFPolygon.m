@@ -40,7 +40,7 @@
         [storage addObject:array];
     }
     
-    return [super initWithType:@"Polygon" coordinates:storage];
+    return [super initSubclassWithCoordinates:storage];
 }
 
 - (BOOL)hasHoles;
@@ -106,8 +106,34 @@
     return [[self.coordinates firstObject] count];
 }
 
-#pragma mark TFGeometry
+- (NSUInteger)numberOfHoles;
+{
+#warning stub method
+    return 0;
+}
+
+- (TFPolygon *)holeAtIndex;
+{
+#warning stub method
+    return nil;
+}
+
+- (void)insertHole:(TFPolygon *)hole atIndex:(NSUInteger)index;
+{
+#warning stub method
+}
+
+- (void)removeHoleAtIndex:(NSUInteger)index;
+{
+#warning stub method
+}
+
 #pragma mark TFPrimitive
+
+- (TFPrimitiveType)type;
+{
+    return TFPrimitiveTypePolygon;
+}
 
 - (NSDictionary *)encodeJSON;
 {
@@ -119,6 +145,32 @@
 {
 #warning stub method
     return nil;
+}
+
+- (BOOL)contains:(TFGeometry *)geometry;
+{
+#warning stub method
+    return NO;
+}
+
+- (BOOL)within:(TFGeometry *)geometry;
+{
+#warning stub method
+    return NO;
+}
+
+#pragma mark NSObject
+
+- (BOOL)isEqual:(id)object;
+{
+#warning stub
+    return NO;
+}
+
+- (NSUInteger)hash;
+{
+#warning stub
+    return 1;
 }
 
 @end

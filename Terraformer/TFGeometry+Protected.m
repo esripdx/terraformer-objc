@@ -68,4 +68,14 @@
              @(ABS([bounds[1] doubleValue] - [bounds[3] doubleValue]))];
 }
 
+- (instancetype)initSubclassWithCoordinates:(NSArray *)coordinates;
+{
+    if ( self = [super init] ) {
+        
+        self.coordinates = coordinates;
+    }
+    
+    return self;
+}
+
 @end
