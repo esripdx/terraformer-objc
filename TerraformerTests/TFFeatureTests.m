@@ -20,16 +20,16 @@
     NSString *identifier = @"identifier";
 
     TFFeature *feature1 = [TFFeature featureWithGeometry:point];
-    XCTAssertEqualObjects(@"feature", feature1.type);
+    XCTAssertEqual(TFPrimitiveTypeFeature, feature1.type);
     XCTAssertEqualObjects(point, feature1.geometry);
 
     TFFeature *feature2 = [TFFeature featureWithGeometry:point properties:properties];
-    XCTAssertEqualObjects(@"feature", feature2.type);
+    XCTAssertEqual(TFPrimitiveTypeFeature, feature2.type);
     XCTAssertEqualObjects(point, feature2.geometry);
     XCTAssertEqualObjects(properties, feature2.properties);
 
-    TFFeature *feature3 = [TFFeature featureWithID:identifier geometry:point properties:properties];
-    XCTAssertEqualObjects(@"feature", feature3.type);
+    TFFeature *feature3 = [TFFeature featureWithIdentifier:identifier geometry:point properties:properties];
+    XCTAssertEqual(TFPrimitiveTypeFeature, feature3.type);
     XCTAssertEqualObjects(point, feature3.geometry);
     XCTAssertEqualObjects(properties, feature3.properties);
     XCTAssertEqualObjects(identifier, feature3.identifier);

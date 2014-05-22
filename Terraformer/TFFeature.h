@@ -20,11 +20,11 @@
 
 - (instancetype)initWithGeometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
 
-- (instancetype)initWithID:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
+- (instancetype)initWithIdentifier:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
 
 + (TFFeature *)featureWithGeometry:(id <TFPrimitive>)geometry;
 
 + (TFFeature *)featureWithGeometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
 
-+ (TFFeature *)featureWithID:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
++ (TFFeature *)featureWithIdentifier:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
 @end
