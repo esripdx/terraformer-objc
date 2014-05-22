@@ -26,6 +26,7 @@ static NSString *const TFTypeKey = @"type";
 static NSString *const TFCoordinatesKey = @"coordinates";
 static NSString *const TFGeometryKey = @"geometry";
 static NSString *const TFGeometriesKey = @"geometries";
+static NSString *const TFFeaturesKey = @"features";
 static NSString *const TFIdKey = @"id";
 static NSString *const TFPropertiesKey = @"properties";
 
