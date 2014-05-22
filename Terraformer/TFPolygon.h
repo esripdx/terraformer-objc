@@ -23,4 +23,9 @@
 - (void)insertVertex:(TFCoordinate *)coordinate atIndex:(NSUInteger)index;
 - (void)removeVertexAtIndex:(NSUInteger)index;
 
+- (NSUInteger)numberOfHoles;
+- (TFPolygon *)holeAtIndex;
+- (void)insertHole:(TFPolygon *)hole atIndex:(NSUInteger)index;
+- (void)removeHoleAtIndex:(NSUInteger)index;
+
 @end

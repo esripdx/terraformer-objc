@@ -106,6 +106,28 @@
     return [[self.coordinates firstObject] count];
 }
 
+- (NSUInteger)numberOfHoles;
+{
+#warning stub method
+    return 0;
+}
+
+- (TFPolygon *)holeAtIndex;
+{
+#warning stub method
+    return nil;
+}
+
+- (void)insertHole:(TFPolygon *)hole atIndex:(NSUInteger)index;
+{
+#warning stub method
+}
+
+- (void)removeHoleAtIndex:(NSUInteger)index;
+{
+#warning stub method
+}
+
 #pragma mark TFPrimitive
 
 - (TFGeometryType)type;
