@@ -32,12 +32,6 @@
     self.features = f;
 }
 
-- (void)removeFeatureAtIndex:(NSUInteger)index {
-    NSMutableArray *f = [self.features mutableCopy];
-    [f removeObjectAtIndex:index];
-    self.features = f;
-}
-
 - (NSDictionary *)encodeJSON {
     return @{TFTypeKey: self.type,
              TFFeaturesKey: self.features};

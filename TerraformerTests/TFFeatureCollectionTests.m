@@ -45,17 +45,4 @@
     XCTAssertTrue(self.collection.features.count == 0);
 }
 
-- (void)testRemoveFeatureAtIndex {
-    // sanity
-    XCTAssertTrue(self.collection.features.count == 1);
-
-    [self.collection addFeature:self.anotherFeature];
-    XCTAssertTrue(self.collection.features.count == 2);
-
-    [self.collection removeFeatureAtIndex:1];
-    XCTAssertTrue(self.collection.features.count == 1);
-
-    XCTAssertEqualObjects(self.collection.features[0], self.feature);
-}
-
 @end

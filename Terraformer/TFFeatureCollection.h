@@ -14,7 +14,6 @@
 
 - (void) addFeature:(TFFeature *)feature;
 - (void) removeFeature:(TFFeature *)feature;
-- (void) removeFeatureAtIndex:(NSUInteger)index;
 - (NSDictionary *) encodeJSON;
 
 @property (nonatomic, copy) NSArray *features;
