@@ -130,9 +130,9 @@
 
 #pragma mark TFPrimitive
 
-- (TFGeometryType)type;
+- (TFPrimitiveType)type;
 {
-    return TFGeometryTypePolygon;
+    return TFPrimitiveTypePolygon;
 }
 
 - (NSDictionary *)encodeJSON;

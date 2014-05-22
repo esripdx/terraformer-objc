@@ -58,8 +58,8 @@
 
 #pragma mark TFPrimitive
 
-- (TFGeometryType)type {
-    return TFGeometryTypeGeometryCollection;
+- (TFPrimitiveType)type {
+    return TFPrimitiveTypeGeometryCollection;
 }
 
 - (NSDictionary *)encodeJSON {

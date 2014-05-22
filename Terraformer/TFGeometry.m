@@ -14,30 +14,30 @@
 
 @implementation TFGeometry
 
-+ (NSString *)geoJSONStringForType:(TFGeometryType)type;
++ (NSString *)geoJSONStringForType:(TFPrimitiveType)type;
 {
     NSString *name;
     
     switch ( type ) {
-        case TFGeometryTypePoint:
+        case TFPrimitiveTypePoint:
             name = @"Point";
             break;
-        case TFGeometryTypeMultiPoint:
+        case TFPrimitiveTypeMultiPoint:
             name = @"MultiPoint";
             break;
-        case TFGeometryTypeLineString:
+        case TFPrimitiveTypeLineString:
             name = @"LineString";
             break;
-        case TFGeometryTypeMultiLineString:
+        case TFPrimitiveTypeMultiLineString:
             name = @"MultiLineString";
             break;
-        case TFGeometryTypePolygon:
+        case TFPrimitiveTypePolygon:
             name = @"Polygon";
             break;
-        case TFGeometryTypeMultiPolygon:
+        case TFPrimitiveTypeMultiPolygon:
             name = @"MultiPolygon";
             break;
-        case TFGeometryTypeGeometryCollection:
+        case TFPrimitiveTypeGeometryCollection:
             name = @"GeometryCollection";
             break;
         default:
@@ -48,24 +48,24 @@
     return name;
 }
 
-+ (TFGeometryType)geometryTypeForString:(NSString *)string;
++ (TFPrimitiveType)geometryTypeForString:(NSString *)string;
 {
-    TFGeometryType type;
+    TFPrimitiveType type;
     
     if ( [string isEqualToString:@"Point"] ) {
-        type = TFGeometryTypePoint;
+        type = TFPrimitiveTypePoint;
     } else if ( [string isEqualToString:@"MultiPoint"] ) {
-        type = TFGeometryTypeMultiPoint;
+        type = TFPrimitiveTypeMultiPoint;
     } else if ( [string isEqualToString:@"LineString"] ) {
-        type = TFGeometryTypeLineString;
+        type = TFPrimitiveTypeLineString;
     } else if ( [string isEqualToString:@"MultiLineString"] ) {
-        type = TFGeometryTypeMultiLineString;
+        type = TFPrimitiveTypeMultiLineString;
     } else if ( [string isEqualToString:@"Polygon"] ) {
-        type = TFGeometryTypePolygon;
+        type = TFPrimitiveTypePolygon;
     } else if ( [string isEqualToString:@"MultiPolygon"] ) {
-        type = TFGeometryTypeMultiPolygon;
+        type = TFPrimitiveTypeMultiPolygon;
     } else if ( [string isEqualToString:@"GeometryCollection"] ) {
-        type = TFGeometryTypeGeometryCollection;
+        type = TFPrimitiveTypeGeometryCollection;
     } else {
         NSAssert( NO, @"unhandled type" );
     }
@@ -73,24 +73,24 @@
     return type;
 }
 
-+ (instancetype)geometryWithType:(TFGeometryType)type coordinates:(NSArray *)coordinates;
++ (instancetype)geometryWithType:(TFPrimitiveType)type coordinates:(NSArray *)coordinates;
 {
     TFGeometry *geometry = nil;
     
     switch ( type ) {
-        case TFGeometryTypePoint:
+        case TFPrimitiveTypePoint:
             geometry = [[TFPoint alloc] initSubclassWithCoordinates:coordinates];
             break;
-        case TFGeometryTypeLineString:
+        case TFPrimitiveTypeLineString:
             geometry = [[TFLineString alloc] initSubclassWithCoordinates:coordinates];
             break;
-        case TFGeometryTypePolygon:
+        case TFPrimitiveTypePolygon:
             geometry = [[TFPolygon alloc] initSubclassWithCoordinates:coordinates];
             break;
-        case TFGeometryTypeGeometryCollection:
-        case TFGeometryTypeMultiPoint:
-        case TFGeometryTypeMultiPolygon:
-        case TFGeometryTypeMultiLineString:
+        case TFPrimitiveTypeGeometryCollection:
+        case TFPrimitiveTypeMultiPoint:
+        case TFPrimitiveTypeMultiPolygon:
+        case TFPrimitiveTypeMultiLineString:
         default:
             NSAssert( NO, @"not yet implemented" );
             break;
@@ -101,7 +101,7 @@
 
 #pragma mark - TFPrimitive
 
-- (TFGeometryType)type {
+- (TFPrimitiveType)type {
     NSAssert( NO, @"abstract method" );
     return 0;
 }
@@ -112,7 +112,7 @@
 }
 
 + (id <TFPrimitive>)decodeJSON:(NSDictionary *)json {
-    TFGeometryType type = [self geometryTypeForString:json[TFTypeKey]];
+    TFPrimitiveType type = [self geometryTypeForString:json[TFTypeKey]];
     return [self geometryWithType:type coordinates:json[TFCoordinatesKey]];
 }
 

@@ -51,8 +51,8 @@ NSString const static *kGeoJsonType = @"LineString";
     return self;
 }
 
-- (TFGeometryType)type {
-    return TFGeometryTypeLineString;
+- (TFPrimitiveType)type {
+    return TFPrimitiveTypeLineString;
 }
 
 - (NSDictionary *)encodeJSON {

@@ -12,9 +12,9 @@
 
 @interface TFGeometry : NSObject <TFPrimitive>
 
-+ (NSString *)geoJSONStringForType:(TFGeometryType)type;
-+ (TFGeometryType)geometryTypeForString:(NSString *)string;
-+ (instancetype)geometryWithType:(TFGeometryType)type coordinates:(NSArray *)coordinates;
++ (NSString *)geoJSONStringForType:(TFPrimitiveType)type;
++ (TFPrimitiveType)geometryTypeForString:(NSString *)string;
++ (instancetype)geometryWithType:(TFPrimitiveType)type coordinates:(NSArray *)coordinates;
 
 @property (nonatomic, strong) NSArray *coordinates;
 

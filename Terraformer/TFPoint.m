@@ -36,8 +36,8 @@
 
 #pragma mark TFPrimitive
 
-- (TFGeometryType)type {
-    return TFGeometryTypePoint;
+- (TFPrimitiveType)type {
+    return TFPrimitiveTypePoint;
 }
 
 - (NSArray *)bbox {

@@ -31,12 +31,12 @@
 - (void)testBBox {
     // TODO: Add more types here.
 
-    TFGeometry *point = [TFGeometry geometryWithType:TFGeometryTypePoint coordinates:@[[TFCoordinate coordinateWithX:5 y:10]]];
+    TFGeometry *point = [TFGeometry geometryWithType:TFPrimitiveTypePoint coordinates:@[[TFCoordinate coordinateWithX:5 y:10]]];
     NSArray *bbox = [point bbox];
     NSArray *expected = @[@(5), @(10), @(5), @(10)];
     XCTAssertEqualObjects(expected, bbox);
 
-    TFGeometry *polygon = [TFGeometry geometryWithType:TFGeometryTypePolygon coordinates:@[
+    TFGeometry *polygon = [TFGeometry geometryWithType:TFPrimitiveTypePolygon coordinates:@[
             [TFCoordinate coordinateWithX:-5 y:-10],
             [TFCoordinate coordinateWithX:-2 y:-40],
             [TFCoordinate coordinateWithX:0 y:35],
@@ -51,12 +51,12 @@
 - (void)testEnvelope {
     // TODO: Add more types here.
 
-    TFGeometry *point = [TFGeometry geometryWithType:TFGeometryTypePoint coordinates:@[[TFCoordinate coordinateWithX:5 y:10]]];
+    TFGeometry *point = [TFGeometry geometryWithType:TFPrimitiveTypePoint coordinates:@[[TFCoordinate coordinateWithX:5 y:10]]];
     NSArray *bbox = [point envelope];
     NSArray *expected = @[@(5), @(10), @(0), @(0)];
     XCTAssertEqualObjects(expected, bbox);
 
-    TFGeometry *polygon = [TFGeometry geometryWithType:TFGeometryTypePolygon coordinates:@[
+    TFGeometry *polygon = [TFGeometry geometryWithType:TFPrimitiveTypePolygon coordinates:@[
             [TFCoordinate coordinateWithX:-5 y:-10],
             [TFCoordinate coordinateWithX:-2 y:-40],
             [TFCoordinate coordinateWithX:0 y:35],
