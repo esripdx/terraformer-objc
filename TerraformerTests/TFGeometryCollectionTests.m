@@ -72,8 +72,37 @@
     ]];
     TFPoint *p2 = [TFPoint pointWithX:-1 y:0];
     [gc addGeometry:p2];
-    XCTAssertTrue([gc.geometries count] == 2);
+    XCTAssertEqual(2, [gc.geometries count]);
     XCTAssertTrue([gc.geometries containsObject:p2]);
+}
+
+- (void)testRemoveGeometry {
+    TFPoint *p0 = [TFPoint pointWithX:0 y:0];
+    TFPoint *p1 = [TFPoint pointWithX:1 y:1];
+    TFPoint *p2 = [TFPoint pointWithX:2 y:2];
+    TFPoint *p3 = [TFPoint pointWithX:3 y:3];
+    TFGeometryCollection *gc = [[TFGeometryCollection alloc] initWithGeometries:@[ p0, p1, p2, p3 ]];
+
+    // sanity check
+    XCTAssertEqual(4, [gc.geometries count]);
+
+    XCTAssertTrue([gc.geometries containsObject:p3]);
+    [gc removeGeometry:p3];
+    XCTAssertEqual(3, [gc.geometries count]);
+    XCTAssertFalse([gc.geometries containsObject:p3]);
+
+    XCTAssertTrue([gc.geometries containsObject:p2]);
+    [gc removeGeometryAtIndex:2];
+    XCTAssertEqual(2, [gc.geometries count]);
+    XCTAssertFalse([gc.geometries containsObject:p2]);
+
+    gc = [[TFGeometryCollection alloc] initWithGeometries:@[ p0, p1, p2, p3 ]];
+    XCTAssertEqual(4, [gc.geometries count]);
+    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)];
+    [gc removeGeometriesAtIndexes:indexes];
+    XCTAssertEqual(2, [gc.geometries count]);
+    XCTAssertFalse([gc.geometries containsObject:p1]);
+    XCTAssertFalse([gc.geometries containsObject:p2]);
 }
 
 - (void)testGeometriesWhichContainGeometry {

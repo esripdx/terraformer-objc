@@ -13,13 +13,19 @@
 
 @interface TFGeometryCollection : NSObject <TFPrimitive>
 
-@property (strong, nonatomic) NSArray *geometries;
+@property (nonatomic, copy) NSArray *geometries;
 
 - (instancetype)initWithGeometries:(NSArray *)geometries;
 
 - (void)addGeometry:(TFGeometry *)geometry;
+
+- (void)removeGeometry:(TFGeometry *)geometry;
+
+- (void)removeGeometriesAtIndexes:(NSIndexSet *)indexes;
+
 - (NSArray *)geometriesWhichContain:(TFGeometry *)geometry;
 - (NSArray *)geometriesWhichIntersect:(TFGeometry *)geometry;
 - (NSArray *)geometriesWithin:(TFGeometry *)geometry;
 
+- (void)removeGeometryAtIndex:(NSUInteger)index;
 @end
