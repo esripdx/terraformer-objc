@@ -8,26 +8,49 @@
 
 #import "TFGeometry.h"
 #import "TFGeometry+Protected.h"
+#import "TFLineString.h"
+#import "TFPoint.h"
+#import "TFPolygon.h"
 
 @implementation TFGeometry
 
-- (instancetype)initWithType:(NSString *)type coordinates:(NSArray *)coordinates {
-    if (self = [super init]) {
-        _type = type;
-        _coordinates = coordinates;
++ (instancetype)geometryWithType:(TFGeometryType)type coordinates:(NSArray *)coordinates;
+{
+    TFGeometry *geometry = nil;
+    
+    switch ( type ) {
+        case TFGeometryTypePoint:
+            geometry = [[TFPoint alloc] initSubclassOfType:type coordinates:coordinates];
+            break;
+        case TFGeometryTypeMultiPoint:
+            break;
+        case TFGeometryTypeLineString:
+            break;
+        case TFGeometryTypeMultiLineString:
+            break;
+        case TFGeometryTypePolygon:
+            geometry = [[TFPolygon alloc] initSubclassOfType:type coordinates:coordinates];
+            break;
+        case TFGeometryTypeMultiPolygon:
+            break;
+        default:
+            NSAssert( NO, @"not yet implemented" );
+            break;
     }
-    return self;
+
+    return geometry;
 }
 
 #pragma mark - TFPrimitive
 
 - (NSDictionary *)encodeJSON {
-    return @{TFTypeKey: self.type,
+    return @{TFTypeKey: [[self class] geoJSONStringForType:self.type],
              TFCoordinatesKey: self.coordinates};
 }
 
 + (id <TFPrimitive>)decodeJSON:(NSDictionary *)json {
-    return [[TFGeometry alloc] initWithType:json[TFTypeKey] coordinates:json[TFCoordinatesKey]];
+    TFGeometryType type = [self geometryTypeForString:json[TFTypeKey]];
+    return [self geometryWithType:type coordinates:json[TFCoordinatesKey]];
 }
 
 - (NSArray *)bbox {

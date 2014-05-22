@@ -11,6 +11,60 @@
 
 @implementation TFGeometry (Protected)
 
++ (NSString *)geoJSONStringForType:(TFGeometryType)type;
+{
+    NSString *name;
+    
+    switch ( type ) {
+        case TFGeometryTypePoint:
+            name = @"Point";
+            break;
+        case TFGeometryTypeMultiPoint:
+            name = @"MultiPoint";
+           break;
+        case TFGeometryTypeLineString:
+            name = @"LineString";
+            break;
+        case TFGeometryTypeMultiLineString:
+            name = @"MultiLineString";
+            break;
+        case TFGeometryTypePolygon:
+            name = @"Polygon";
+            break;
+        case TFGeometryTypeMultiPolygon:
+            name = @"MultiPolygon";
+            break;
+        default:
+            NSAssert( NO, @"unhandled type" );
+            break;
+    }
+    
+    return name;
+}
+
++ (TFGeometryType)geometryTypeForString:(NSString *)string;
+{
+    TFGeometryType type;
+    
+    if ( [string isEqualToString:@"Point"] ) {
+        type = TFGeometryTypePoint;
+    } else if ( [string isEqualToString:@"MultiPoint"] ) {
+        type = TFGeometryTypeMultiPoint;
+    } else if ( [string isEqualToString:@"LineString"] ) {
+        type = TFGeometryTypeLineString;
+    } else if ( [string isEqualToString:@"MultiLineString"] ) {
+        type = TFGeometryTypeMultiLineString;
+    } else if ( [string isEqualToString:@"Polygon"] ) {
+        type = TFGeometryTypePolygon;
+    } else if ( [string isEqualToString:@"MultiPolygon"] ) {
+        type = TFGeometryTypeMultiPolygon;
+    } else {
+        NSAssert( NO, @"unhandled type" );
+    }
+    
+    return type;
+}
+
 + (NSArray *)boundsForArray:(NSArray *)array
 {
     if (array == nil || [array count] == 0) {
@@ -66,6 +120,17 @@
              bounds[1],
              @(ABS([bounds[0] doubleValue] - [bounds[2] doubleValue])),
              @(ABS([bounds[1] doubleValue] - [bounds[3] doubleValue]))];
+}
+
+- (instancetype)initSubclassOfType:(TFGeometryType)type coordinates:(NSArray *)coordinates;
+{
+    if ( self = [super init] ) {
+        
+        self.coordinates = coordinates;
+        self.type = type;
+    }
+    
+    return self;
 }
 
 @end

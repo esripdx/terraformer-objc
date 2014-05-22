@@ -7,6 +7,7 @@
 //
 
 #import "TFPoint.h"
+#import "TFGeometry+Protected.h"
 
 @implementation TFPoint
 
@@ -28,7 +29,7 @@
 - (instancetype)initWithCoordinate:(TFCoordinate *)coord
 {
     NSArray *coords = [NSArray arrayWithObject:coord];
-    return [super initWithType:@"Point" coordinates:coords];
+    return [super initSubclassOfType:TFGeometryTypePoint coordinates:coords];
 }
 
 - (NSArray *)bbox {

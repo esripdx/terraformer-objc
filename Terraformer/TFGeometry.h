@@ -9,11 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "TFPrimitive.h"
 
+typedef NS_ENUM( NSInteger, TFGeometryType )
+{
+    TFGeometryTypePoint,
+    TFGeometryTypeMultiPoint,
+    TFGeometryTypeLineString,
+    TFGeometryTypeMultiLineString,
+    TFGeometryTypePolygon,
+    TFGeometryTypeMultiPolygon
+};
+
 @interface TFGeometry : NSObject <TFPrimitive>
 
-- (instancetype)initWithType:(NSString *)type coordinates:(NSArray *)coordinates;
++ (instancetype)geometryWithType:(TFGeometryType)type coordinates:(NSArray *)coordinates;
 
-@property (nonatomic, strong) NSString *type;
+@property (nonatomic, assign) TFGeometryType type;
 @property (nonatomic, strong) NSArray *coordinates;
 
 @end

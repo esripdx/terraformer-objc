@@ -40,7 +40,7 @@
         [storage addObject:array];
     }
     
-    return [super initWithType:@"Polygon" coordinates:storage];
+    return [super initSubclassOfType:TFGeometryTypePolygon coordinates:storage];
 }
 
 - (BOOL)hasHoles;
