@@ -142,6 +142,8 @@
 				31DE58CF01AF87210C5283BD /* TFFeatureCollection.m */,
 				48838E58192EB2A400EB093A /* TFGeometryCollection.h */,
 				48838E59192EB2A400EB093A /* TFGeometryCollection.m */,
+				67EF2D753B7FFE63FDFBBAE0 /* TFFeature.h */,
+				67EF2ECF276F3949981EA8FE /* TFFeature.m */,
 			);
 			name = Geometries;
 			sourceTree = "<group>";
