@@ -14,6 +14,65 @@
 
 @implementation TFGeometry
 
++ (NSString *)geoJSONStringForType:(TFGeometryType)type;
+{
+    NSString *name;
+    
+    switch ( type ) {
+        case TFGeometryTypePoint:
+            name = @"Point";
+            break;
+        case TFGeometryTypeMultiPoint:
+            name = @"MultiPoint";
+            break;
+        case TFGeometryTypeLineString:
+            name = @"LineString";
+            break;
+        case TFGeometryTypeMultiLineString:
+            name = @"MultiLineString";
+            break;
+        case TFGeometryTypePolygon:
+            name = @"Polygon";
+            break;
+        case TFGeometryTypeMultiPolygon:
+            name = @"MultiPolygon";
+            break;
+        case TFGeometryTypeGeometryCollection:
+            name = @"GeometryCollection";
+            break;
+        default:
+            NSAssert( NO, @"unhandled type" );
+            break;
+    }
+    
+    return name;
+}
+
++ (TFGeometryType)geometryTypeForString:(NSString *)string;
+{
+    TFGeometryType type;
+    
+    if ( [string isEqualToString:@"Point"] ) {
+        type = TFGeometryTypePoint;
+    } else if ( [string isEqualToString:@"MultiPoint"] ) {
+        type = TFGeometryTypeMultiPoint;
+    } else if ( [string isEqualToString:@"LineString"] ) {
+        type = TFGeometryTypeLineString;
+    } else if ( [string isEqualToString:@"MultiLineString"] ) {
+        type = TFGeometryTypeMultiLineString;
+    } else if ( [string isEqualToString:@"Polygon"] ) {
+        type = TFGeometryTypePolygon;
+    } else if ( [string isEqualToString:@"MultiPolygon"] ) {
+        type = TFGeometryTypeMultiPolygon;
+    } else if ( [string isEqualToString:@"GeometryCollection"] ) {
+        type = TFGeometryTypeGeometryCollection;
+    } else {
+        NSAssert( NO, @"unhandled type" );
+    }
+    
+    return type;
+}
+
 + (instancetype)geometryWithType:(TFGeometryType)type coordinates:(NSArray *)coordinates;
 {
     TFGeometry *geometry = nil;

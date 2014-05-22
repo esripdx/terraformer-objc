@@ -10,11 +10,6 @@
 
 @interface TFGeometry (Protected)
 
-/** Convert a TFGeometryType to / from the equivalent geoJSON type string.
- */
-+ (NSString *)geoJSONStringForType:(TFGeometryType)type;
-+ (TFGeometryType)geometryTypeForString:(NSString *)string;
-
 /** Returns a bounding box for the provided coordinate array for GeoJSON types:
  'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', and 'MultiPolygon'.
  */
