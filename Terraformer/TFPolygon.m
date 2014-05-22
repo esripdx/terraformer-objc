@@ -29,8 +29,9 @@
     // represents the polygon's coordinates, each subsequent array represents
     // a hole within the polygon.
     
-    if ( coordinates == nil )
+    if ( coordinates == nil ) {
         coordinates = @[];
+    }
     
     NSMutableArray *storage = [[NSMutableArray alloc] initWithObjects:coordinates, nil];
     
@@ -49,8 +50,9 @@
 
 - (BOOL)isClosed;
 {
-    if ( [self.coordinates count] < 1 || [self.coordinates[0] count] < 2 )
+    if ( [self.coordinates count] < 1 || [self.coordinates[0] count] < 2 ) {
         return NO;
+    }
     
     NSArray *vertices = [self.coordinates firstObject];
     
@@ -91,8 +93,9 @@
 {
     NSArray *vertices = [self.coordinates firstObject];
     
-    if ( self.isClosed || [vertices count] < 2 )
+    if ( self.isClosed || [vertices count] < 2 ) {
         return;
+    }
     
     TFCoordinate *origin = [vertices firstObject];
     [self insertVertex:origin atIndex:[vertices count]];

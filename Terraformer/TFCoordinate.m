@@ -54,11 +54,13 @@
 
 - (BOOL)isEqual:(id)object;
 {
-    if ( object == self )
+    if ( object == self ) {
         return YES;
+    }
     
-    if ( object == nil || ![object isKindOfClass:[self class]] )
+    if ( object == nil || ![object isKindOfClass:[self class]] ) {
         return NO;
+    }
     
     return ( self.x == [object x] && self.y == [object y] );
 }
@@ -83,7 +85,8 @@
 
 - (id)copyWithZone:(NSZone *)zone;
 {
-    // As long as TFCoordinate is immutable, we can return self.
+    // As long as TFCoordinate is immutable, we can return self instead of a
+    // new object.
     return self;
 }
 
