@@ -16,4 +16,9 @@
 @property (readonly) id <TFPrimitive> geometry;
 @property (readonly) NSDictionary *properties;
 
+- (instancetype)initWithGeometry:(id <TFPrimitive>)geometry;
+
+- (instancetype)initWithGeometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
+
+- (instancetype)initWithID:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
 @end

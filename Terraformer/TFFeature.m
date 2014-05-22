@@ -9,11 +9,11 @@
 @implementation TFFeature
 
 - (instancetype)initWithGeometry:(id <TFPrimitive>)geometry {
-    return [self initWithId:nil geometry:geometry properties:[NSDictionary new]];
+    return [self initWithID:nil geometry:geometry properties:[NSDictionary new]];
 }
 
 - (instancetype)initWithGeometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
-    return [self initWithId:nil geometry:geometry properties:properties];
+    return [self initWithID:nil geometry:geometry properties:properties];
 }
 
 - (instancetype)initWithID:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
