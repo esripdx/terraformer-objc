@@ -64,8 +64,8 @@
 
 - (NSDictionary *)encodeJSON {
     return @{
-            @"type": self.type,
-            @"geometries": self.geometries
+            TFTypeKey: self.type,
+            TFGeometriesKey: self.geometries
     };
 }
 

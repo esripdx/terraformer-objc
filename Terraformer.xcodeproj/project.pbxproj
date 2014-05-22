@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		48CFCC96192D632D00028043 /* TFPolygonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CFCC95192D632D00028043 /* TFPolygonTests.m */; };
 		202A6209192D613000A0E84F /* TFPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 202A6208192D613000A0E84F /* TFPoint.m */; };
+		48CFCC96192D632D00028043 /* TFPolygonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CFCC95192D632D00028043 /* TFPolygonTests.m */; };
 		67EF26771008039AF67B5DDB /* TFGeometryCollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF2721182CD736DD336732 /* TFGeometryCollectionTests.m */; };
 		67EF29AD81CC2928D4623CB5 /* TFCoordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF2B866248864DF38AF06A /* TFCoordinate.m */; };
 		67EF2A218ED5B59149A30024 /* TFGeometryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF2CFE90DD91CA99018A3F /* TFGeometryCollection.m */; };
@@ -56,9 +56,9 @@
 /* Begin PBXFileReference section */
 		200B46A2192C2308009C5B22 /* TFGeometry+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFGeometry+Protected.h"; sourceTree = "<group>"; };
 		200B46A3192C2308009C5B22 /* TFGeometry+Protected.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFGeometry+Protected.m"; sourceTree = "<group>"; };
-		48CFCC95192D632D00028043 /* TFPolygonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPolygonTests.m; sourceTree = "<group>"; };
 		202A6207192D613000A0E84F /* TFPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPoint.h; sourceTree = "<group>"; };
 		202A6208192D613000A0E84F /* TFPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPoint.m; sourceTree = "<group>"; };
+		48CFCC95192D632D00028043 /* TFPolygonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPolygonTests.m; sourceTree = "<group>"; };
 		67EF22635E82A1E8D9306C4B /* TFGeometryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometryTests.m; sourceTree = "<group>"; };
 		67EF2448696DC7CA30A76ED4 /* TFGeometryCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFGeometryCollection.h; sourceTree = "<group>"; };
 		67EF2721182CD736DD336732 /* TFGeometryCollectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometryCollectionTests.m; sourceTree = "<group>"; };
