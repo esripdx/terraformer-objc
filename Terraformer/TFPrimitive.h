@@ -13,6 +13,8 @@
 
 @protocol TFPrimitive <NSObject>
 
+- (TFGeometryType)type;
+
 - (NSDictionary *)encodeJSON;
 + (id <TFPrimitive>)decodeJSON:(NSDictionary *)json;
 

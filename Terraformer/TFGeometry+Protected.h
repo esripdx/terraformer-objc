@@ -27,6 +27,6 @@
 
 /** Designated initializer for TFGeometry subclasses.
  */
-- (instancetype)initSubclassOfType:(TFGeometryType)type coordinates:(NSArray *)coordinates;
+- (instancetype)initSubclassWithCoordinates:(NSArray *)coordinates;
 
 @end

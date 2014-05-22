@@ -13,6 +13,14 @@
 
 NSString const static *kGeoJsonType = @"LineString";
 
++ (instancetype)lineStringWithCoordinates:(NSArray *)coordinates {
+    return [[self alloc] initWithCoordinates:coordinates];
+}
+
++ (instancetype)lineStringWithXYs:(NSArray *)xys {
+    return [[self alloc] initWithXYs:xys];
+}
+
 // Populate coordinates with array of TFCoordinates
 - (instancetype)initWithCoordinates:(NSArray *)coordinates
 {
@@ -41,6 +49,10 @@ NSString const static *kGeoJsonType = @"LineString";
     }
 
     return self;
+}
+
+- (TFGeometryType)type {
+    return TFGeometryTypeLineString;
 }
 
 - (NSDictionary *)encodeJSON {

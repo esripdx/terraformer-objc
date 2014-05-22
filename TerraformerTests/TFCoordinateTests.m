@@ -48,4 +48,16 @@
     XCTAssertFalse([c1 isEqual:c2]);
 }
 
+- (void)testCoordinateCopy;
+{
+    TFCoordinate *original = [TFCoordinate coordinateWithX:5.0 y:10.1];
+    TFCoordinate *copy = [original copy];
+    TFCoordinate *other = [TFCoordinate coordinateWithX:1.0 y:11.1];
+    
+    XCTAssertTrue( [original isEqual:copy] );
+    XCTAssertEqual( original.x, copy.x );
+    XCTAssertEqual( original.y, copy.y );
+    XCTAssertFalse( [original isEqual:other] );
+}
+
 @end

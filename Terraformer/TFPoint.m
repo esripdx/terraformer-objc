@@ -11,6 +11,8 @@
 
 @implementation TFPoint
 
+#pragma mark TFPoint
+
 + (instancetype)pointWithX:(double)x y:(double)y
 {
     return [[self alloc] initWithX:x y:y];
@@ -29,7 +31,13 @@
 - (instancetype)initWithCoordinate:(TFCoordinate *)coord
 {
     NSArray *coords = [NSArray arrayWithObject:coord];
-    return [super initSubclassOfType:TFGeometryTypePoint coordinates:coords];
+    return [super initSubclassWithCoordinates:coords];
+}
+
+#pragma mark TFPrimitive
+
+- (TFGeometryType)type {
+    return TFGeometryTypePoint;
 }
 
 - (NSArray *)bbox {

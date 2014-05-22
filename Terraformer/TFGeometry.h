@@ -8,22 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "TFPrimitive.h"
-
-typedef NS_ENUM( NSInteger, TFGeometryType )
-{
-    TFGeometryTypePoint,
-    TFGeometryTypeMultiPoint,
-    TFGeometryTypeLineString,
-    TFGeometryTypeMultiLineString,
-    TFGeometryTypePolygon,
-    TFGeometryTypeMultiPolygon
-};
+#import "TFConstants.h"
 
 @interface TFGeometry : NSObject <TFPrimitive>
 
 + (instancetype)geometryWithType:(TFGeometryType)type coordinates:(NSArray *)coordinates;
 
-@property (nonatomic, assign) TFGeometryType type;
 @property (nonatomic, strong) NSArray *coordinates;
 
 @end

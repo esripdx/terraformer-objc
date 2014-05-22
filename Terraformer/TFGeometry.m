@@ -20,7 +20,7 @@
     
     switch ( type ) {
         case TFGeometryTypePoint:
-            geometry = [[TFPoint alloc] initSubclassOfType:type coordinates:coordinates];
+            geometry = [[TFPoint alloc] initSubclassWithCoordinates:coordinates];
             break;
         case TFGeometryTypeMultiPoint:
             break;
@@ -29,7 +29,7 @@
         case TFGeometryTypeMultiLineString:
             break;
         case TFGeometryTypePolygon:
-            geometry = [[TFPolygon alloc] initSubclassOfType:type coordinates:coordinates];
+            geometry = [[TFPolygon alloc] initSubclassWithCoordinates:coordinates];
             break;
         case TFGeometryTypeMultiPolygon:
             break;
@@ -42,6 +42,11 @@
 }
 
 #pragma mark - TFPrimitive
+
+- (TFGeometryType)type {
+    NSAssert( NO, @"abstract method" );
+    return 0;
+}
 
 - (NSDictionary *)encodeJSON {
     return @{TFTypeKey: [[self class] geoJSONStringForType:self.type],

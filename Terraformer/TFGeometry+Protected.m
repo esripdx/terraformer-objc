@@ -34,6 +34,9 @@
         case TFGeometryTypeMultiPolygon:
             name = @"MultiPolygon";
             break;
+        case TFGeometryTypeGeometryCollection:
+            name = @"GeometryCollection";
+            break;
         default:
             NSAssert( NO, @"unhandled type" );
             break;
@@ -58,6 +61,8 @@
         type = TFGeometryTypePolygon;
     } else if ( [string isEqualToString:@"MultiPolygon"] ) {
         type = TFGeometryTypeMultiPolygon;
+    } else if ( [string isEqualToString:@"GeometryCollection"] ) {
+        type = TFGeometryTypeGeometryCollection;
     } else {
         NSAssert( NO, @"unhandled type" );
     }
@@ -122,12 +127,11 @@
              @(ABS([bounds[1] doubleValue] - [bounds[3] doubleValue]))];
 }
 
-- (instancetype)initSubclassOfType:(TFGeometryType)type coordinates:(NSArray *)coordinates;
+- (instancetype)initSubclassWithCoordinates:(NSArray *)coordinates;
 {
     if ( self = [super init] ) {
         
         self.coordinates = coordinates;
-        self.type = type;
     }
     
     return self;

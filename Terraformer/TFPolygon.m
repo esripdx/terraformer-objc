@@ -40,7 +40,7 @@
         [storage addObject:array];
     }
     
-    return [super initSubclassOfType:TFGeometryTypePolygon coordinates:storage];
+    return [super initSubclassWithCoordinates:storage];
 }
 
 - (BOOL)hasHoles;
@@ -107,6 +107,11 @@
 }
 
 #pragma mark TFPrimitive
+
+- (TFGeometryType)type;
+{
+    return TFGeometryTypePolygon;
+}
 
 - (NSDictionary *)encodeJSON;
 {
