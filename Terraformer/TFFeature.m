@@ -8,6 +8,18 @@
 
 @implementation TFFeature
 
++ (TFFeature *)featureWithGeometry:(id <TFPrimitive>)geometry {
+    return [[TFFeature alloc] initWithGeometry:geometry];
+}
+
++ (TFFeature *)featureWithGeometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
+    return [[TFFeature alloc] initWithGeometry:geometry properties:properties];
+}
+
++ (TFFeature *)featureWithID:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
+    return [[TFFeature alloc] initWithID:identifier geometry:geometry properties:properties];
+}
+
 - (instancetype)initWithGeometry:(id <TFPrimitive>)geometry {
     return [self initWithIdentifier:nil geometry:geometry properties:[NSDictionary new]];
 }
