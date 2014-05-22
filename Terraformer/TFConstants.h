@@ -16,5 +16,4 @@ static NSString *const TFGeometriesKey = @"geometries";
 static NSString *const TFIdKey = @"id";
 static NSString *const TFPropertiesKey = @"properties";
 
-
 #endif
