@@ -28,6 +28,24 @@
     [super tearDown];
 }
 
+- (void)testCoordinate {
+    TFCoordinate *c = [TFCoordinate coordinateWithX:5 y:10];
+    XCTAssertEqual(5, c.x);
+    XCTAssertEqual(10, c.y);
+}
+
+- (void)testCoordinateCopy;
+{
+    TFCoordinate *original = [TFCoordinate coordinateWithX:5.0 y:10.1];
+    TFCoordinate *copy = [original copy];
+    TFCoordinate *other = [TFCoordinate coordinateWithX:1.0 y:11.1];
+    
+    XCTAssertTrue( [original isEqual:copy] );
+    XCTAssertEqual( original.x, copy.x );
+    XCTAssertEqual( original.y, copy.y );
+    XCTAssertFalse( [original isEqual:other] );
+}
+
 - (void)testGeometryBbox {
     // TODO: Add more types here, and use their specific subclasses.
 

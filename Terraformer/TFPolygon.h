@@ -8,6 +8,19 @@
 
 #import "TFGeometry.h"
 
+@class TFCoordinate;
+
 @interface TFPolygon : TFGeometry
+
+- (instancetype)initWithVertices:(NSArray *)coordinates;
+- (instancetype)initWithVertices:(NSArray *)coordinates holes:(NSArray *)polygons;
+
+- (BOOL)isClosed;
+- (void)close;
+
+- (NSUInteger)numberOfVertices;
+- (TFCoordinate *)vertexAtIndex:(NSUInteger)index;
+- (void)insertVertex:(TFCoordinate *)coordinate atIndex:(NSUInteger)index;
+- (void)removeVertexAtIndex:(NSUInteger)index;
 
 @end
