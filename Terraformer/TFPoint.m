@@ -30,7 +30,7 @@
 
 - (instancetype)initWithCoordinate:(TFCoordinate *)coordinate
 {
-    return [super initSubclassWithCoordinates:@[coordinate]];
+    return (TFPoint *)[super initSubclassWithCoordinates:@[coordinate]];
 }
 
 - (BOOL)isEqual:(id)object {
@@ -42,7 +42,8 @@
         return NO;
     }
 
-    return (self.x == [object x] && self.y == [object y]);
+    TFPoint *otherPoint = object;
+    return (self.x == otherPoint.x && self.y == otherPoint.y);
 }
 
 - (NSUInteger)hash {

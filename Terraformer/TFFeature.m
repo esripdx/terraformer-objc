@@ -5,6 +5,7 @@
 
 #import "TFFeature.h"
 #import "TFGeometry.h"
+#import "TFPolygon.h"
 
 @implementation TFFeature
 
@@ -35,6 +36,40 @@
         _properties = properties;
     }
     return self;
+}
+
+#pragma mark - TFPrimitive
+
+- (NSDictionary *)encodeJSON {
+    return nil;
+}
+
++ (id <TFPrimitive>)decodeJSON:(NSDictionary *)json {
+    return nil;
+}
+
+- (NSArray *)bbox {
+    return nil;
+}
+
+- (NSArray *)envelope {
+    return nil;
+}
+
+- (TFPolygon *)convexHull {
+    return nil;
+}
+
+- (BOOL)contains:(TFGeometry *)geometry {
+    return NO;
+}
+
+- (BOOL)within:(TFGeometry *)geometry {
+    return NO;
+}
+
+- (BOOL)intersects:(TFGeometry *)geometry {
+    return NO;
 }
 
 - (TFPrimitiveType)type;
