@@ -30,7 +30,7 @@
 
 - (instancetype)initWithCoordinate:(TFCoordinate *)coordinate
 {
-    return (TFPoint *) [super initSubclassWithCoordinates:@[coordinate]];
+    return [super initSubclassWithCoordinates:@[coordinate]];
 }
 
 - (BOOL)isEqual:(id)object {
