@@ -34,6 +34,12 @@
     XCTAssertEqual(10, c.y);
 }
 
+- (void)testHash {
+    TFCoordinate *c1 = [TFCoordinate coordinateWithX:5 y:10];
+    TFCoordinate *c2 = [TFCoordinate coordinateWithX:5.5 y:10.2];
+    XCTAssertNotEqual([c1 hash], [c2 hash]);
+}
+
 - (void)testEquality
 {
     TFCoordinate *c1 = [TFCoordinate coordinateWithX:5 y:10];
