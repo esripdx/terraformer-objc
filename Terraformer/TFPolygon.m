@@ -9,8 +9,12 @@
 #import "TFPolygon.h"
 #import "TFGeometry+Protected.h"
 #import "TFCoordinate.h"
+#import "TFMultiPolygon.h"
 
 @interface TFPolygon()
+
+- (BOOL)polygonWithin:(TFPolygon *)polygon;
+- (BOOL)multiPolygonWithin:(TFMultiPolygon *)multiPolygon;
 
 @end
 
@@ -108,14 +112,15 @@
 
 - (NSUInteger)numberOfHoles;
 {
-#warning stub method
-    return 0;
+    return [self.coordinates count] - 1;
 }
 
-- (TFPolygon *)holeAtIndex;
+- (TFPolygon *)holeAtIndex:(NSUInteger)index;
 {
-#warning stub method
-    return nil;
+    NSArray *coordinates = self.coordinates[index + 1];
+    TFPolygon *polygon = [[TFPolygon alloc] initWithVertices:coordinates];
+    
+    return polygon;
 }
 
 - (void)insertHole:(TFPolygon *)hole atIndex:(NSUInteger)index;
@@ -128,6 +133,20 @@
 #warning stub method
 }
 
+#pragma mark TFPolygon Private
+
+- (BOOL)polygonWithin:(TFPolygon *)polygon;
+{
+#warning stub
+    return NO;
+}
+
+- (BOOL)multiPolygonWithin:(TFMultiPolygon *)multiPolygon;
+{
+#warning stub
+    return NO;
+}
+
 #pragma mark TFPrimitive
 
 - (TFPrimitiveType)type;
@@ -137,8 +156,8 @@
 
 - (NSDictionary *)encodeJSON;
 {
-#warning stub method
-    return nil;
+    return @{ TFTypeKey : [[self class] geoJSONStringForType:self.type],
+              TFCoordinatesKey: self.coordinates };
 }
 
 + (id <TFPrimitive>)decodeJSON:(NSDictionary *)json;
@@ -155,8 +174,21 @@
 
 - (BOOL)within:(TFGeometry *)geometry;
 {
-#warning stub method
-    return NO;
+    BOOL within;
+    
+    switch ( geometry.type ) {
+        case TFPrimitiveTypePolygon:
+            within = [self polygonWithin:(TFPolygon *)geometry];
+            break;
+        case TFPrimitiveTypeMultiPolygon:
+            within = [self multiPolygonWithin:(TFMultiPolygon *)geometry];
+            break;
+        default:
+            NSAssert( NO, @"unhandled type" );
+            break;
+    }
+    
+    return within;
 }
 
 #pragma mark NSObject
