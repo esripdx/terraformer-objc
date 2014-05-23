@@ -69,9 +69,9 @@
 {
     NSUInteger prime = 31;
     NSUInteger result = 1;
-    
-    result = prime * result + self.x;
-    result = prime * result + self.y;
+
+    result += prime * result + [self.coordinates[0] hash];
+    result += prime * result + [self.coordinates[1] hash];
 
     return result;
 }
