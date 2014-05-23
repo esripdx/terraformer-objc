@@ -23,16 +23,40 @@
     return [self initWithCoordinate:[TFCoordinate coordinateWithX:x y:y]];
 }
 
-+ (instancetype)pointWithCoordinate:(TFCoordinate *)coord
++ (instancetype)pointWithCoordinate:(TFCoordinate *)coordinate
 {
-    return [[self alloc] initWithCoordinate:coord];
+    return [[self alloc] initWithCoordinate:coordinate];
 }
 
-- (instancetype)initWithCoordinate:(TFCoordinate *)coord
+- (instancetype)initWithCoordinate:(TFCoordinate *)coordinate
 {
-    NSArray *coords = [NSArray arrayWithObject:coord];
-    return [super initSubclassWithCoordinates:coords];
+    return [super initSubclassWithCoordinates:@[coordinate]];
 }
+
+- (BOOL)isEqual:(id)object {
+    if (object == self) {
+        return YES;
+    }
+
+    if (object == nil || ![object isKindOfClass:[self class]]) {
+        return NO;
+    }
+
+    return (self.x == [object x] && self.y == [object y]);
+}
+
+- (NSUInteger)hash {
+    return [self.coordinates[0] hash];
+}
+
+- (double)x {
+    return ((TFCoordinate *)self.coordinates[0]).x;
+}
+
+- (double)y {
+    return ((TFCoordinate *)self.coordinates[0]).y;
+}
+
 
 #pragma mark TFPrimitive
 

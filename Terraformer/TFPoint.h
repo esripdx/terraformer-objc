@@ -13,7 +13,10 @@
 
 + (instancetype)pointWithX:(double)x y:(double)y;
 - (instancetype)initWithX:(double)x y:(double)y;
-+ (instancetype)pointWithCoordinate:(TFCoordinate *)coord;
-- (instancetype)initWithCoordinate:(TFCoordinate *)coord;
++ (instancetype)pointWithCoordinate:(TFCoordinate *)coordinate;
+- (instancetype)initWithCoordinate:(TFCoordinate *)coordinate;
+
+- (double)x;
+- (double)y;
 
 @end
