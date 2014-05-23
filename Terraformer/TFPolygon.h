@@ -15,7 +15,9 @@
 - (instancetype)initWithVertices:(NSArray *)coordinates;
 - (instancetype)initWithVertices:(NSArray *)coordinates holes:(NSArray *)polygons;
 
+- (BOOL)isEqualToPolygon:(TFPolygon *)other;
 - (BOOL)isClosed;
+
 - (void)close;
 
 - (NSUInteger)numberOfVertices;

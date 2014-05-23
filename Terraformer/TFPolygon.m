@@ -47,6 +47,11 @@
     return [super initSubclassWithCoordinates:storage];
 }
 
+- (BOOL)isEqualToPolygon:(TFPolygon *)other;
+{
+    return [self.coordinates isEqualToArray:other.coordinates];
+}
+
 - (BOOL)hasHoles;
 {
     return ( [self.coordinates count] > 1 );
@@ -195,14 +200,20 @@
 
 - (BOOL)isEqual:(id)object;
 {
-#warning stub
-    return NO;
+    if ( object == self ) {
+        return YES;
+    }
+    
+    if ( object == nil || ![object isKindOfClass:[self class]] ) {
+        return NO;
+    }
+    
+    return [self isEqualToPolygon:object];
 }
 
 - (NSUInteger)hash;
 {
-#warning stub
-    return 1;
+    return [self.coordinates hash];
 }
 
 @end
