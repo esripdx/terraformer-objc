@@ -9,7 +9,7 @@
 
 @class TFGeometry;
 
-@interface TFFeature : NSObject
+@interface TFFeature : NSObject <TFPrimitive>
 
 @property (readonly) TFPrimitiveType type;
 @property (readonly) NSString *identifier;

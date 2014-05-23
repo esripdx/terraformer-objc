@@ -48,7 +48,6 @@
             break;
         default:
             NSAssert( NO, @"unhandled type" );
-            break;
     }
     
     return name;
@@ -105,7 +104,6 @@
         case TFPrimitiveTypeFeatureCollection:
         default:
             NSAssert( NO, @"not yet implemented" );
-            break;
     }
 
     return geometry;

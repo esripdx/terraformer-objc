@@ -26,6 +26,12 @@
     self.geometries = [self.geometries arrayByAddingObject:geometry];
 }
 
+- (void)removeGeometry:(TFGeometry *)geometry {
+    NSMutableArray *geoms = [self.geometries mutableCopy];
+    [geoms removeObject:geometry];
+    self.geometries = geoms;
+}
+
 - (NSArray *)geometriesWhichContain:(TFGeometry *)geometry {
     NSMutableArray *found = [NSMutableArray new];
     for (TFGeometry *geo in self.geometries) {
@@ -69,7 +75,7 @@
     };
 }
 
-+ (id <TFPrimitive>)decodeJSON:(NSDictionary *)json {
++ (instancetype)decodeJSON:(NSDictionary *)json {
     NSArray *geoms = json[TFGeometriesKey];
     if ([geoms isKindOfClass:[NSNull class]]) {
         return nil;
