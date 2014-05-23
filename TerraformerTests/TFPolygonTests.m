@@ -9,12 +9,14 @@
 #import <XCTest/XCTest.h>
 #import "TFPolygon.h"
 #import "TFCoordinate.h"
+#import "TFPoint.h"
 
 @interface TFPolygonTests : XCTestCase
 
 @property (strong, nonatomic) TFPolygon *emptyPolygon;
 @property (strong, nonatomic) TFPolygon *unclosedPolygon;
 @property (strong, nonatomic) TFPolygon *closedPolygon;
+@property (strong, nonatomic) TFPolygon *polygonWithHole;
 
 @end
 
@@ -24,9 +26,9 @@
 {
     [super setUp];
     
-    TFCoordinate *a = [TFCoordinate coordinateWithX:1.5 y:8.0];
-    TFCoordinate *b = [TFCoordinate coordinateWithX:2.5 y:4.0];
-    TFCoordinate *c = [TFCoordinate coordinateWithX:1.5 y:7.0];
+    TFCoordinate *a = [TFCoordinate coordinateWithX:1.5 y:2.0];
+    TFCoordinate *b = [TFCoordinate coordinateWithX:6.5 y:4.0];
+    TFCoordinate *c = [TFCoordinate coordinateWithX:4.0 y:0.5];
     
     self.emptyPolygon = [[TFPolygon alloc] initWithVertices:nil];
     self.unclosedPolygon = [[TFPolygon alloc] initWithVertices:@[a, b, c]];
@@ -86,6 +88,15 @@
     XCTAssertFalse( [self.emptyPolygon isClosed] );
     XCTAssertTrue( [self.unclosedPolygon isClosed] );
     XCTAssertTrue( [self.closedPolygon isClosed] );
+}
+
+- (void)testContainsPoint;
+{
+    TFPoint *inside = [TFPoint pointWithX:4.0 y:2.0];
+    TFPoint *outside = [TFPoint pointWithX:6.0 y:1.0];
+    
+    XCTAssertTrue( [self.closedPolygon contains:inside] );
+    XCTAssertFalse( [self.closedPolygon contains:outside] );
 }
 
 @end

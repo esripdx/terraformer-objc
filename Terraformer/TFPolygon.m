@@ -10,9 +10,11 @@
 #import "TFGeometry+Protected.h"
 #import "TFCoordinate.h"
 #import "TFMultiPolygon.h"
+#import "TFPoint.h"
 
 @interface TFPolygon()
 
+- (BOOL)containsPoint:(TFPoint *)point;
 - (BOOL)polygonWithin:(TFPolygon *)polygon;
 - (BOOL)multiPolygonWithin:(TFMultiPolygon *)multiPolygon;
 
@@ -49,6 +51,9 @@
 
 - (BOOL)isEqualToPolygon:(TFPolygon *)other;
 {
+    // This method isn't exactly correct... we need to compare after reducing
+    // both polygons to their simplest form, or use some other strategy.
+    
     return [self.coordinates isEqualToArray:other.coordinates];
 }
 
@@ -140,9 +145,55 @@
 
 #pragma mark TFPolygon Private
 
+- (BOOL)containsPoint:(TFPoint *)point;
+{
+    if ( [point.coordinates count] == 0 || [self.coordinates[0] count] == 0 )
+        return NO;
+    
+    // Check to see if the point is within the polygon's coordinates. A point
+    // on the boundry is considered outside.
+    
+    BOOL contains = NO;
+    NSArray *outerRing = self.coordinates[0];
+    NSInteger i, j, nvert = [outerRing count];
+    
+    for ( i = 0, j = nvert - 1; i < nvert; j = i++ ) {
+        
+        TFCoordinate *a = outerRing[i];
+        TFCoordinate *b = outerRing[j];
+        
+        if ( ( ( a.y >= point.y ) != ( b.y >= point.y ) ) && ( point.x <= ( b.x - a.x ) * ( point.y - a.y ) / ( b.y - a.y ) + a.x ) ) {
+            contains = !contains;
+        }
+    }
+    
+    if ( !contains ) {
+        return NO;
+    }
+    
+    // If the point is within the outer ring, check each hole in the polygon.
+    
+    for ( i = 0; i < [self numberOfHoles]; i++ ) {
+        
+        TFPolygon *polygon = [self holeAtIndex:i];
+        
+        if ( [polygon containsPoint:point] ) {
+            contains = NO;
+            break;
+        }
+    }
+    
+    return contains;
+}
+
 - (BOOL)polygonWithin:(TFPolygon *)polygon;
 {
+    if ( [self isEqualToPolygon:polygon] ) {
+        return YES;
+    }
+    
 #warning stub
+    
     return NO;
 }
 
@@ -173,8 +224,18 @@
 
 - (BOOL)contains:(TFGeometry *)geometry;
 {
-#warning stub method
-    return NO;
+    BOOL contains;
+    
+    switch ( geometry.type ) {
+        case TFPrimitiveTypePoint:
+            contains = [self containsPoint:(TFPoint *)geometry];
+            break;
+        default:
+            NSAssert( NO, @"unhandled type" );
+            break;
+    }
+    
+    return contains;
 }
 
 - (BOOL)within:(TFGeometry *)geometry;
