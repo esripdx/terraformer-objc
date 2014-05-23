@@ -9,8 +9,14 @@
 #import "TFPolygon.h"
 #import "TFGeometry+Protected.h"
 #import "TFCoordinate.h"
+#import "TFMultiPolygon.h"
+#import "TFPoint.h"
 
 @interface TFPolygon()
+
+- (BOOL)containsPoint:(TFPoint *)point;
+- (BOOL)polygonWithin:(TFPolygon *)polygon;
+- (BOOL)multiPolygonWithin:(TFMultiPolygon *)multiPolygon;
 
 @end
 
@@ -41,6 +47,14 @@
     }
     
     return [super initSubclassWithCoordinates:storage];
+}
+
+- (BOOL)isEqualToPolygon:(TFPolygon *)other;
+{
+    // This method isn't exactly correct... we need to compare after reducing
+    // both polygons to their simplest form, or use some other strategy.
+    
+    return [self.coordinates isEqualToArray:other.coordinates];
 }
 
 - (BOOL)hasHoles;
@@ -108,14 +122,15 @@
 
 - (NSUInteger)numberOfHoles;
 {
-#warning stub method
-    return 0;
+    return [self.coordinates count] - 1;
 }
 
-- (TFPolygon *)holeAtIndex;
+- (TFPolygon *)holeAtIndex:(NSUInteger)index;
 {
-#warning stub method
-    return nil;
+    NSArray *coordinates = self.coordinates[index + 1];
+    TFPolygon *polygon = [[TFPolygon alloc] initWithVertices:coordinates];
+    
+    return polygon;
 }
 
 - (void)insertHole:(TFPolygon *)hole atIndex:(NSUInteger)index;
@@ -128,6 +143,77 @@
 #warning stub method
 }
 
+#pragma mark TFPolygon Private
+
+- (BOOL)containsPoint:(TFPoint *)point;
+{
+    if ( [point.coordinates count] == 0 || [self.coordinates[0] count] == 0 )
+        return NO;
+    
+    BOOL contains = NO;
+    NSArray *outerRing = self.coordinates[0];
+    NSInteger i, j, nvert = [outerRing count];
+    
+    for ( i = 0, j = nvert - 1; i < nvert; j = i++ ) {
+        
+        TFCoordinate *a = outerRing[i];
+        TFCoordinate *b = outerRing[j];
+        
+        // Ray casting algorithm to determine if the point is inside the
+        // polygon. For each edge with the coordinates a and b, check to see if
+        // point.y is within a.y and b.y. If so, check to see if the point is
+        // to the left of the edge. If this is also true, a line drawn from the
+        // point to the right will intersect the edge-- if the line intersects
+        // the polygon an odd number of times, it is inside.
+        
+        // If an edge is horizontal it will not pass the checkY test. This is
+        // important, since otherwise you run the risk of dividing by zero in
+        // the horizontal check.
+        
+        BOOL checkY = ( ( a.y >= point.y ) != ( b.y >= point.y ) );
+        BOOL checkX = ( point.x <= ( b.x - a.x ) * ( point.y - a.y ) / ( b.y - a.y ) + a.x );
+        
+        if ( checkY && checkX ) {
+            contains = !contains;
+        }
+    }
+    
+    if ( !contains ) {
+        return NO;
+    }
+    
+    // If the point is within the outer ring, check each hole in the polygon.
+    
+    for ( i = 0; i < [self numberOfHoles]; i++ ) {
+        
+        TFPolygon *polygon = [self holeAtIndex:i];
+        
+        if ( [polygon containsPoint:point] ) {
+            contains = NO;
+            break;
+        }
+    }
+    
+    return contains;
+}
+
+- (BOOL)polygonWithin:(TFPolygon *)polygon;
+{
+    if ( [self isEqualToPolygon:polygon] ) {
+        return YES;
+    }
+    
+#warning stub
+    
+    return NO;
+}
+
+- (BOOL)multiPolygonWithin:(TFMultiPolygon *)multiPolygon;
+{
+#warning stub
+    return NO;
+}
+
 #pragma mark TFPrimitive
 
 - (TFPrimitiveType)type;
@@ -137,8 +223,8 @@
 
 - (NSDictionary *)encodeJSON;
 {
-#warning stub method
-    return nil;
+    return @{ TFTypeKey : [[self class] geoJSONStringForType:self.type],
+              TFCoordinatesKey: self.coordinates };
 }
 
 + (id <TFPrimitive>)decodeJSON:(NSDictionary *)json;
@@ -149,28 +235,57 @@
 
 - (BOOL)contains:(TFGeometry *)geometry;
 {
-#warning stub method
-    return NO;
+    BOOL contains;
+    
+    switch ( geometry.type ) {
+        case TFPrimitiveTypePoint:
+            contains = [self containsPoint:(TFPoint *)geometry];
+            break;
+        default:
+            NSAssert( NO, @"unhandled type" );
+            break;
+    }
+    
+    return contains;
 }
 
 - (BOOL)within:(TFGeometry *)geometry;
 {
-#warning stub method
-    return NO;
+    BOOL within;
+    
+    switch ( geometry.type ) {
+        case TFPrimitiveTypePolygon:
+            within = [self polygonWithin:(TFPolygon *)geometry];
+            break;
+        case TFPrimitiveTypeMultiPolygon:
+            within = [self multiPolygonWithin:(TFMultiPolygon *)geometry];
+            break;
+        default:
+            NSAssert( NO, @"unhandled type" );
+            break;
+    }
+    
+    return within;
 }
 
 #pragma mark NSObject
 
 - (BOOL)isEqual:(id)object;
 {
-#warning stub
-    return NO;
+    if ( object == self ) {
+        return YES;
+    }
+    
+    if ( object == nil || ![object isKindOfClass:[self class]] ) {
+        return NO;
+    }
+    
+    return [self isEqualToPolygon:object];
 }
 
 - (NSUInteger)hash;
 {
-#warning stub
-    return 1;
+    return [self.coordinates hash];
 }
 
 @end

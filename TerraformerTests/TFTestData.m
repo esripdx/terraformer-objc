@@ -21,7 +21,7 @@
 
 + (NSDictionary *)loadFile:(NSString *)name {
     NSData *data = [NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"geojson"]];
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NULL error:NULL];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
     return json;
 }
 

@@ -9,12 +9,14 @@
 #import <XCTest/XCTest.h>
 #import "TFPolygon.h"
 #import "TFCoordinate.h"
+#import "TFPoint.h"
 
 @interface TFPolygonTests : XCTestCase
 
 @property (strong, nonatomic) TFPolygon *emptyPolygon;
 @property (strong, nonatomic) TFPolygon *unclosedPolygon;
 @property (strong, nonatomic) TFPolygon *closedPolygon;
+@property (strong, nonatomic) TFPolygon *polygonWithHole;
 
 @end
 
@@ -24,13 +26,21 @@
 {
     [super setUp];
     
-    TFCoordinate *a = [TFCoordinate coordinateWithX:1.5 y:8.0];
-    TFCoordinate *b = [TFCoordinate coordinateWithX:2.5 y:4.0];
-    TFCoordinate *c = [TFCoordinate coordinateWithX:1.5 y:7.0];
+    TFCoordinate *a = [TFCoordinate coordinateWithX:1.5 y:2.0];
+    TFCoordinate *b = [TFCoordinate coordinateWithX:2.0 y:6.0];
+    TFCoordinate *c = [TFCoordinate coordinateWithX:6.5 y:6.5];
+    TFCoordinate *d = [TFCoordinate coordinateWithX:8.0 y:1.0];
+    
+    TFCoordinate *a2 = [TFCoordinate coordinateWithX:3.0 y:5.0];
+    TFCoordinate *b2 = [TFCoordinate coordinateWithX:5.0 y:5.5];
+    TFCoordinate *c2 = [TFCoordinate coordinateWithX:4.0 y:3.0];
+
+    NSArray *hole = @[a2, b2, c2];
     
     self.emptyPolygon = [[TFPolygon alloc] initWithVertices:nil];
-    self.unclosedPolygon = [[TFPolygon alloc] initWithVertices:@[a, b, c]];
-    self.closedPolygon = [[TFPolygon alloc] initWithVertices:@[a, b, c, a]];
+    self.unclosedPolygon = [[TFPolygon alloc] initWithVertices:@[a, b, c, d]];
+    self.closedPolygon = [[TFPolygon alloc] initWithVertices:@[a, b, c, d, a]];
+    self.polygonWithHole = [[TFPolygon alloc] initWithVertices:@[a, b, c, d, a] holes:@[hole]];
 }
 
 - (void)tearDown;
@@ -86,6 +96,17 @@
     XCTAssertFalse( [self.emptyPolygon isClosed] );
     XCTAssertTrue( [self.unclosedPolygon isClosed] );
     XCTAssertTrue( [self.closedPolygon isClosed] );
+}
+
+- (void)testContainsPoint;
+{
+    TFPoint *inside = [TFPoint pointWithX:6.0 y:3.0];
+    TFPoint *outside = [TFPoint pointWithX:1.0 y:1.0];
+    TFPoint *inHole = [TFPoint pointWithX:4.0 y:4.5];
+
+    XCTAssertTrue( [self.polygonWithHole contains:inside] );
+    XCTAssertFalse( [self.polygonWithHole contains:outside] );
+    XCTAssertFalse( [self.polygonWithHole contains:inHole] );
 }
 
 @end
