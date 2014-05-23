@@ -18,5 +18,6 @@
 
 - (double)x;
 - (double)y;
+- (TFCoordinate *)coordinate;
 
 @end
