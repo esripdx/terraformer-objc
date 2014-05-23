@@ -150,9 +150,6 @@
     if ( [point.coordinates count] == 0 || [self.coordinates[0] count] == 0 )
         return NO;
     
-    // Check to see if the point is within the polygon's coordinates. A point
-    // on the boundry is considered outside.
-    
     BOOL contains = NO;
     NSArray *outerRing = self.coordinates[0];
     NSInteger i, j, nvert = [outerRing count];
@@ -162,7 +159,21 @@
         TFCoordinate *a = outerRing[i];
         TFCoordinate *b = outerRing[j];
         
-        if ( ( ( a.y >= point.y ) != ( b.y >= point.y ) ) && ( point.x <= ( b.x - a.x ) * ( point.y - a.y ) / ( b.y - a.y ) + a.x ) ) {
+        // Ray casting algorithm to determine if the point is inside the
+        // polygon. For each edge with the coordinates a and b, check to see if
+        // point.y is within a.y and b.y. If so, check to see if the point is
+        // to the left of the edge. If this is also true, a line drawn from the
+        // point to the right will intersect the edge-- if the line intersects
+        // the polygon an odd number of times, it is inside.
+        
+        // If an edge is horizontal it will not pass the checkY test. This is
+        // important, since otherwise you run the risk of dividing by zero in
+        // the horizontal check.
+        
+        BOOL checkY = ( ( a.y >= point.y ) != ( b.y >= point.y ) );
+        BOOL checkX = ( point.x <= ( b.x - a.x ) * ( point.y - a.y ) / ( b.y - a.y ) + a.x );
+        
+        if ( checkY && checkX ) {
             contains = !contains;
         }
     }
