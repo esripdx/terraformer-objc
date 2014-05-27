@@ -55,7 +55,7 @@
 + (BOOL)isXYPair:(id)thing
 {
     if ([thing isKindOfClass:[NSArray class]]) {
-        if ([thing count] == 2) {
+        if ([thing count] == 2 && [thing[0] isKindOfClass:[NSNumber class]] && [thing[1] isKindOfClass:[NSNumber class]]) {
             return YES;
         }
     }
