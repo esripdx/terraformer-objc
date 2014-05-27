@@ -11,9 +11,6 @@
 #import "TFGeometry+Protected.h"
 
 @implementation TFLineString
-{
-    NSArray *_sortedCoordinates;
-}
 
 + (instancetype)lineStringWithCoordinates:(NSArray *)coordinates {
     return [[self alloc] initWithCoordinates:coordinates];
@@ -28,7 +25,6 @@
 {
     if (self = [super init]) {
         if ([coordinates count] > 0 && [coordinates[0] isKindOfClass:[TFCoordinate class]]) {
-            _sortedCoordinates = [self getSortedCoordinates:coordinates];
             return [super initSubclassWithCoordinates:coordinates];
         }
     }
@@ -46,7 +42,6 @@
                 TFCoordinate *coordinate = [TFCoordinate coordinateWithX:[xy[0] doubleValue] y:[xy[1] doubleValue]];
                 [mutableCoordinates addObject:coordinate];
             }
-            _sortedCoordinates = [self getSortedCoordinates:mutableCoordinates];
             return [super initSubclassWithCoordinates:[[NSArray alloc] initWithArray:mutableCoordinates]];
         }
     }
@@ -139,19 +134,6 @@
         }
     }
     return NO;
-}
-
-- (NSArray *)getSortedCoordinates:(NSArray *)coordinates
-{
-    NSArray *sortedArray = [coordinates sortedArrayUsingComparator:^(TFCoordinate *a, TFCoordinate *b) {
-        NSComparisonResult comparisonResult = [@([b x]) compare:@([a x])];
-        if (comparisonResult == NSOrderedSame) {
-            return [@([b y]) compare:@([a y])];
-        } else {
-            return comparisonResult;
-        }
-    }];
-    return sortedArray;
 }
 
 @end
