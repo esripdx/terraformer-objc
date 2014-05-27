@@ -17,6 +17,8 @@
 @property (readonly) double x;
 @property (readonly) double y;
 
+- (TFCoordinate *)toMercator;
+- (TFCoordinate *)toGeographic;
 - (NSArray *)encodeJSON;
 + (instancetype)decodeJSON:(NSArray *)json;
 @end

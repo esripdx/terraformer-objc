@@ -15,6 +15,8 @@
  */
 + (NSArray *)boundsForArray:(NSArray *)array;
 
++ (NSArray *)coordinatesToMercator:(NSArray *)coords;
+
 /** Returns an envelope for the provided coordinate array for GeoJSON types:
  'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', and 'MultiPolygon'.
  */

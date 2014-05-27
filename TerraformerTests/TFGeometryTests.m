@@ -9,6 +9,8 @@
 #import <XCTest/XCTest.h>
 #import "TFGeometry.h"
 #import "TFCoordinate.h"
+#import "TFPoint.h"
+#import "TFPolygon.h"
 
 @interface TFGeometryTests : XCTestCase
 
@@ -66,6 +68,33 @@
     bbox = [polygon envelope];
     expected = @[@(-5), @(-40), @(30), @(75)];
     XCTAssertEqualObjects(expected, bbox);
+}
+
+- (void)testToMercator {
+    TFGeometry *polygon = [TFGeometry geometryWithType:TFPrimitiveTypePolygon coordinates:@[
+                    [TFCoordinate coordinateWithX:0 y:0],
+                    [TFCoordinate coordinateWithX:1 y:0],
+                    [TFCoordinate coordinateWithX:1 y:1],
+                    [TFCoordinate coordinateWithX:0 y:1],
+                    [TFCoordinate coordinateWithX:0 y:0]
+            ]];
+
+    TFGeometry *merc = [polygon toMercator];
+
+    NSArray *expected = @[
+                    [TFCoordinate coordinateWithX:0 y:0],
+                    [TFCoordinate coordinateWithX:111319.490793 y:0],
+                    [TFCoordinate coordinateWithX:111319.490793 y:111325.142866],
+                    [TFCoordinate coordinateWithX:0 y:111325.142866],
+                    [TFCoordinate coordinateWithX:0 y:0]
+            ];
+
+    for (NSUInteger i = 0; i < expected.count; i++) {
+        TFCoordinate *obs = merc.coordinates[i];
+        TFCoordinate *exp = expected[i];
+        XCTAssertEqualWithAccuracy(obs.x, exp.x, 0.000001);
+        XCTAssertEqualWithAccuracy(obs.y, exp.y, 0.000001);
+    }
 }
 
 @end

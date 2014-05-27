@@ -44,7 +44,7 @@
 {
     TFCoordinate *c1 = [TFCoordinate coordinateWithX:5 y:10];
     TFCoordinate *c2 = [TFCoordinate coordinateWithX:5 y:10];
-    XCTAssertTrue([c1 isEqual:c2]);
+    XCTAssertEqualObjects(c1, c2);
 }
 
 - (void)testInequality
@@ -64,6 +64,22 @@
     XCTAssertEqual( original.x, copy.x );
     XCTAssertEqual( original.y, copy.y );
     XCTAssertFalse( [original isEqual:other] );
+}
+
+- (void)testConvertToGeographic {
+    TFCoordinate *mercator = [TFCoordinate coordinateWithX:11354588.06 y:222684.20];
+    TFCoordinate *geographic = [mercator toGeographic];
+
+    XCTAssertEqualWithAccuracy(geographic.x, 101.99999999179026, 0.000000001);
+    XCTAssertEqualWithAccuracy(geographic.y, 1.9999999236399357, 0.000000001);
+}
+
+- (void)testConvertToMercator {
+    TFCoordinate *geographic = [TFCoordinate coordinateWithX:101.99999999179026 y:1.9999999236399357];
+    TFCoordinate *mercator = [geographic toMercator];
+
+    XCTAssertEqualWithAccuracy(mercator.x, 11354588.06, 0.000000001);
+    XCTAssertEqualWithAccuracy(mercator.y, 222684.20, 0.000000001);
 }
 
 @end

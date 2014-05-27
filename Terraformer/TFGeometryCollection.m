@@ -149,4 +149,12 @@
     return NO;
 }
 
+- (id <TFPrimitive>)toMercator {
+    return nil;
+}
+
+- (id <TFPrimitive>)toGeographic {
+    return nil;
+}
+
 @end

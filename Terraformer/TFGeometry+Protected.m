@@ -55,6 +55,19 @@
     }
 }
 
++ (NSArray *)coordinatesToMercator:(NSArray *)coords {
+    NSMutableArray *ret = [NSMutableArray new];
+    for (id elem in coords) {
+        if ([elem isKindOfClass:[NSArray class]]) {
+            [ret addObject:[self coordinatesToMercator:elem]];
+        } else if ([elem isKindOfClass:[TFCoordinate class]]) {
+            TFCoordinate *c = elem;
+            [ret addObject:[c toMercator]];
+        }
+    }
+    return ret;
+}
+
 + (NSArray *)envelopeForArray:(NSArray *)array
 {
     NSArray *bounds = [self boundsForArray:array];
