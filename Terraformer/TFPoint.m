@@ -58,6 +58,10 @@
     return ((TFCoordinate *)self.coordinates[0]).y;
 }
 
+- (TFCoordinate *)coordinate {
+    return self.coordinates[0];
+}
+
 #pragma mark TFPrimitive
 
 - (TFPrimitiveType)type {
@@ -65,17 +69,15 @@
 }
 
 - (NSArray *)bbox {
-    TFCoordinate *tfc = (TFCoordinate *)self.coordinates[0];
-    return @[@(tfc.x),
-             @(tfc.y),
-             @(tfc.x),
-             @(tfc.y)];
+    return @[@(self.coordinate.x),
+             @(self.coordinate.y),
+             @(self.coordinate.x),
+             @(self.coordinate.y)];
 }
 
 - (NSArray *)envelope {
-    TFCoordinate *tfc = (TFCoordinate *)self.coordinates[0];
-    return @[@(tfc.x),
-             @(tfc.y),
+    return @[@(self.coordinate.x),
+             @(self.coordinate.y),
              @(0),
              @(0)];
 }
