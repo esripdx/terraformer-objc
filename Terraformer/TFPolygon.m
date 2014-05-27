@@ -46,7 +46,7 @@
         [storage addObject:array];
     }
     
-    return [super initSubclassWithCoordinates:storage];
+    return (TFPolygon *) [super initSubclassWithCoordinates:storage];
 }
 
 - (BOOL)isEqualToPolygon:(TFPolygon *)other;
