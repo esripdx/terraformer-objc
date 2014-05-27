@@ -164,13 +164,15 @@
 }
 
 - (id <TFPrimitive>)toMercator {
-   NSArray *coords = [[self class] coordinatesToMercator:self.coordinates];
-   TFGeometry *geo = [TFGeometry geometryWithType:[self type] coordinates:coords];
-   return geo;
+    NSArray *coords = [[self class] coordinatesToMercator:self.coordinates];
+    TFGeometry *geo = [TFGeometry geometryWithType:[self type] coordinates:coords];
+    return geo;
 }
 
 - (id <TFPrimitive>)toGeographic {
-    return nil;
+    NSArray *coords = [[self class] coordinatesToGeographic:self.coordinates];
+    TFGeometry *geo = [TFGeometry geometryWithType:[self type] coordinates:coords];
+    return geo;
 }
 
 

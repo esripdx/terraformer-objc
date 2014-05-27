@@ -15,6 +15,8 @@
  */
 + (NSArray *)boundsForArray:(NSArray *)array;
 
++ (NSArray *)coordinatesToGeographic:(NSArray *)coords;
+
 + (NSArray *)coordinatesToMercator:(NSArray *)coords;
 
 /** Returns an envelope for the provided coordinate array for GeoJSON types:
