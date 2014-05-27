@@ -45,6 +45,7 @@
 		BDED1CA7192D3730005F7477 /* TFLineString.m in Sources */ = {isa = PBXBuildFile; fileRef = BDED1CA6192D3730005F7477 /* TFLineString.m */; };
 		BDED1CA9192D5677005F7477 /* TFLineStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BDED1CA8192D5677005F7477 /* TFLineStringTests.m */; };
 		BDED1CAB192D5EAF005F7477 /* TFCoordinateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BDED1CAA192D5EAF005F7477 /* TFCoordinateTests.m */; };
+		BE6DD6FA1935365A002DAE4D /* TFGeometric.m in Sources */ = {isa = PBXBuildFile; fileRef = BE6DD6F91935365A002DAE4D /* TFGeometric.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,7 +76,6 @@
 		200B46A3192C2308009C5B22 /* TFGeometry+Protected.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFGeometry+Protected.m"; sourceTree = "<group>"; };
 		202A6207192D613000A0E84F /* TFPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPoint.h; sourceTree = "<group>"; };
 		202A6208192D613000A0E84F /* TFPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPoint.m; sourceTree = "<group>"; };
-		31DE526C47ED53FB1E752E2A /* TFFeatureCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFeatureCollection.h; sourceTree = "<group>"; };
 		31DE543BBE86E425E6A8187A /* TFPointTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPointTests.m; sourceTree = "<group>"; };
 		31DE5473CC8C338AB093CBD2 /* TFFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFeature.h; sourceTree = "<group>"; };
 		31DE57BB9C33BFABB67055A4 /* TFFeatureCollectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFFeatureCollectionTests.m; sourceTree = "<group>"; };
@@ -125,6 +125,8 @@
 		BDED1CA8192D5677005F7477 /* TFLineStringTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFLineStringTests.m; sourceTree = "<group>"; };
 		BDED1CAA192D5EAF005F7477 /* TFCoordinateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCoordinateTests.m; sourceTree = "<group>"; };
 		BE6DD6F2192D1B72002DAE4D /* TFConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFConstants.h; sourceTree = "<group>"; };
+		BE6DD6F81935365A002DAE4D /* TFGeometric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFGeometric.h; sourceTree = "<group>"; };
+		BE6DD6F91935365A002DAE4D /* TFGeometric.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometric.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,8 +188,6 @@
 				67EF2B866248864DF38AF06A /* TFCoordinate.m */,
 				48838E58192EB2A400EB093A /* TFGeometryCollection.h */,
 				48838E59192EB2A400EB093A /* TFGeometryCollection.m */,
-				67EF2D753B7FFE63FDFBBAE0,
-				67EF2ECF276F3949981EA8FE,
 			);
 			name = Geometries;
 			sourceTree = "<group>";
@@ -233,6 +233,8 @@
 				31DE5C0B269CCB85AD073BC8 /* TFFeature.m */,
 				67EF2F10853B96256D514395 /* TFFeatureCollection.h */,
 				67EF26A11957E87AD8EDC4C4 /* TFFeatureCollection.m */,
+				BE6DD6F81935365A002DAE4D /* TFGeometric.h */,
+				BE6DD6F91935365A002DAE4D /* TFGeometric.m */,
 			);
 			path = Terraformer;
 			sourceTree = "<group>";
@@ -376,6 +378,7 @@
 				BDED1CA7192D3730005F7477 /* TFLineString.m in Sources */,
 				202A6209192D613000A0E84F /* TFPoint.m in Sources */,
 				4890CBF5192EBFF200C467DF /* TFMultiPolygon.m in Sources */,
+				BE6DD6FA1935365A002DAE4D /* TFGeometric.m in Sources */,
 				67EF29AD81CC2928D4623CB5 /* TFCoordinate.m in Sources */,
 				67EF21B91B4EA6C012B4118A /* TFFeatureCollection.m in Sources */,
 			);
