@@ -7,28 +7,95 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "TFPolygon.h"
+#import "TFMultiPolygon.h"
+#import "TFCoordinate.h"
 
 @interface TFMultiPolygonTests : XCTestCase
+
+@property (strong, nonatomic) TFMultiPolygon *multiPolygonA;
+@property (strong, nonatomic) TFMultiPolygon *multiPolygonB;
+@property (strong, nonatomic) TFPolygon *polygonA;
+@property (strong, nonatomic) TFPolygon *polygonB;
+@property (strong, nonatomic) TFPolygon *polygonC;
 
 @end
 
 @implementation TFMultiPolygonTests
 
-- (void)setUp
+- (void)setUp;
 {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+
+    TFCoordinate *a = [TFCoordinate coordinateWithX:1.5 y:2.0];
+    TFCoordinate *b = [TFCoordinate coordinateWithX:2.0 y:6.0];
+    TFCoordinate *c = [TFCoordinate coordinateWithX:6.5 y:6.5];
+    TFCoordinate *d = [TFCoordinate coordinateWithX:8.0 y:1.0];
+    
+    TFCoordinate *a2 = [TFCoordinate coordinateWithX:3.0 y:5.0];
+    TFCoordinate *b2 = [TFCoordinate coordinateWithX:5.0 y:5.5];
+    TFCoordinate *c2 = [TFCoordinate coordinateWithX:4.0 y:3.0];
+    
+    NSArray *hole = @[a2, b2, c2];
+
+    self.polygonA = [[TFPolygon alloc] initWithVertices:@[a, b, c, d, a] holes:@[hole]];
+    
+    a = [TFCoordinate coordinateWithX:1.0 y:1.0];
+    b = [TFCoordinate coordinateWithX:2.0 y:3.0];
+    c = [TFCoordinate coordinateWithX:3.0 y:1.0];
+
+    self.polygonB = [[TFPolygon alloc] initWithVertices:@[a, b, c, a]];
+    
+    a = [TFCoordinate coordinateWithX:2.0 y:2.0];
+    b = [TFCoordinate coordinateWithX:2.0 y:4.0];
+    c = [TFCoordinate coordinateWithX:4.0 y:3.0];
+
+    self.polygonC = [[TFPolygon alloc] initWithVertices:@[a, b, c, a]];
+    
+    NSArray *coordinates = @[self.polygonA.coordinates, self.polygonB.coordinates, self.polygonC.coordinates];
+    
+    self.multiPolygonA = [[TFMultiPolygon alloc] initWithPolygons:@[self.polygonA, self.polygonB, self.polygonC]];
+    self.multiPolygonB = [[TFMultiPolygon alloc] initWithPolygonCoordinateArrays:coordinates];
 }
 
-- (void)tearDown
+- (void)tearDown;
 {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
+    
+    self.multiPolygonA = nil;
+    self.multiPolygonB = nil;
+    
+    self.polygonA = nil;
+    self.polygonB = nil;
+    self.polygonC = nil;
 }
 
-- (void)testExample
+- (void)testInitialization;
 {
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
+    // Test -initWithPolygons: and -initWithPolygonCoordinateArrays: produce
+    // the same data, both as polygons and coordinate arrays.
+    
+    XCTAssertTrue( [self.multiPolygonA.coordinates isEqualToArray:self.multiPolygonB.coordinates] );
+    
+    NSInteger index;
+    
+    for ( index = 0; index < [self.multiPolygonA numberOfPolygons]; index++ )
+    {
+        TFPolygon *a = [self.multiPolygonA polygonAtIndex:index];
+        TFPolygon *b = [self.multiPolygonB polygonAtIndex:index];
+        
+        XCTAssertTrue( [a isEqualToPolygon:b] );
+    }
+}
+
+- (void)testInsertPolygon;
+{
+    
+}
+
+- (void)testRemovePolygon;
+{
+    
 }
 
 @end

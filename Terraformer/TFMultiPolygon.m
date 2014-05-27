@@ -29,7 +29,7 @@
         [coordinates addObject:polygon.coordinates];
     }
     
-    return [self initWithPolygonCoordinateArrays:polygons];
+    return [self initWithPolygonCoordinateArrays:coordinates];
 }
 
 - (NSUInteger)numberOfPolygons;
