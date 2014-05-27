@@ -90,12 +90,16 @@
 
 - (void)testInsertPolygon;
 {
-    
+    XCTAssertFalse( [[self.multiPolygonA polygonAtIndex:0] isEqualToPolygon:self.polygonC] );
+    [self.multiPolygonA insertPolygon:self.polygonC atIndex:0];
+    XCTAssertTrue( [[self.multiPolygonA polygonAtIndex:0] isEqualToPolygon:self.polygonC] );
 }
 
 - (void)testRemovePolygon;
 {
-    
+    XCTAssertTrue( [[self.multiPolygonA polygonAtIndex:0] isEqualToPolygon:self.polygonA] );
+    [self.multiPolygonA removePolygonAtIndex:0];
+    XCTAssertFalse( [[self.multiPolygonA polygonAtIndex:0] isEqualToPolygon:self.polygonA] );
 }
 
 @end
