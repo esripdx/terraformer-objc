@@ -19,4 +19,7 @@
 
 - (NSArray *)encodeJSON;
 + (instancetype)decodeJSON:(NSArray *)json;
++ (BOOL)isXYPair:(id)thing;
++ (BOOL)isTFCoordinate:(id)thing;
+
 @end
