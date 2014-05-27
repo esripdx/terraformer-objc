@@ -8,10 +8,12 @@
 
 #import "TFLineString.h"
 #import "TFCoordinate.h"
+#import "TFGeometry+Protected.h"
 
 @implementation TFLineString
-
-NSString const static *kGeoJsonType = @"LineString";
+{
+    NSArray *_sortedCoordinates;
+}
 
 + (instancetype)lineStringWithCoordinates:(NSArray *)coordinates {
     return [[self alloc] initWithCoordinates:coordinates];
@@ -26,7 +28,8 @@ NSString const static *kGeoJsonType = @"LineString";
 {
     if (self = [super init]) {
         if ([coordinates count] > 0 && [coordinates[0] isKindOfClass:[TFCoordinate class]]) {
-            self.coordinates = coordinates;
+            _sortedCoordinates = [self getSortedCoordinates:coordinates];
+            return [super initSubclassWithCoordinates:coordinates];
         }
     }
 
@@ -43,8 +46,8 @@ NSString const static *kGeoJsonType = @"LineString";
                 TFCoordinate *coordinate = [TFCoordinate coordinateWithX:[xy[0] doubleValue] y:[xy[1] doubleValue]];
                 [mutableCoordinates addObject:coordinate];
             }
-
-            self.coordinates = [[NSArray alloc] initWithArray:mutableCoordinates];
+            _sortedCoordinates = [self getSortedCoordinates:mutableCoordinates];
+            return [super initSubclassWithCoordinates:[[NSArray alloc] initWithArray:mutableCoordinates]];
         }
     }
 
@@ -55,11 +58,34 @@ NSString const static *kGeoJsonType = @"LineString";
     return TFPrimitiveTypeLineString;
 }
 
-- (NSDictionary *)encodeJSON {
-    return @{
-             TFTypeKey: kGeoJsonType,
-             TFCoordinatesKey: self.coordinates
-             };
+// using "coordinate" rather than vertex, since geojson spec does too
+
+- (NSUInteger)numberOfCoordinates
+{
+    return [self.coordinates count];
+}
+
+- (TFCoordinate *)coordinateAtIndex:(NSUInteger)index
+{
+    return self.coordinates[index];
+}
+
+- (void)insertCoordinate:(TFCoordinate *)coordinate atIndex:(NSUInteger)index
+{
+    if (coordinate != nil && [coordinate isKindOfClass:[TFCoordinate class]]) {
+        NSMutableArray *storage = [self.coordinates mutableCopy];
+        [storage insertObject:coordinate atIndex:index];
+        self.coordinates = [storage copy];
+    }
+}
+
+- (void)removeCoordinateAtIndex:(NSUInteger)index
+{
+    if (self.coordinates[index] != nil) {
+        NSMutableArray *storage = [self.coordinates mutableCopy];
+        [storage removeObjectAtIndex:index];
+        self.coordinates = [storage copy];
+    }
 }
 
 /*
@@ -70,7 +96,7 @@ NSString const static *kGeoJsonType = @"LineString";
 + (instancetype)decodeJSON:(NSDictionary *)json {
 
     // gotta be a LineString y'all
-    if (json[TFTypeKey] && [json[TFTypeKey] isEqual:kGeoJsonType]) {
+    if (json[TFTypeKey] && [json[TFTypeKey] isEqual:[self geoJSONStringForType:TFPrimitiveTypeLineString]]) {
 
         // must contain coordinates array
         if (json[TFCoordinatesKey] && [json[TFCoordinatesKey] isKindOfClass:[NSArray class]]) {
@@ -91,13 +117,7 @@ NSString const static *kGeoJsonType = @"LineString";
 
 - (BOOL)isEqual:(id)other
 {
-    if ([other isKindOfClass:[TFLineString class]]) {
-        TFLineString *otherLineString = (TFLineString *)other;
-        if ([self.coordinates isEqual:otherLineString.coordinates]) {
-            return YES;
-        }
-    }
-
+#warning stub
     return NO;
 }
 
@@ -119,6 +139,19 @@ NSString const static *kGeoJsonType = @"LineString";
         }
     }
     return NO;
+}
+
+- (NSArray *)getSortedCoordinates:(NSArray *)coordinates
+{
+    NSArray *sortedArray = [coordinates sortedArrayUsingComparator:^(TFCoordinate *a, TFCoordinate *b) {
+        NSComparisonResult comparisonResult = [@([b x]) compare:@([a x])];
+        if (comparisonResult == NSOrderedSame) {
+            return [@([b y]) compare:@([a y])];
+        } else {
+            return comparisonResult;
+        }
+    }];
+    return sortedArray;
 }
 
 @end

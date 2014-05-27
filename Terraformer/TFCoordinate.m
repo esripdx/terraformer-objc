@@ -52,6 +52,24 @@
 
 #pragma mark NSObject
 
++ (BOOL)isXYPair:(id)thing
+{
+    if ([thing isKindOfClass:[NSArray class]]) {
+        if ([thing count] == 2) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
++ (BOOL)isTFCoordinate:(id)thing
+{
+    if ([thing isKindOfClass:[self class]]) {
+        return YES;
+    }
+    return NO;
+}
+
 - (BOOL)isEqual:(id)object;
 {
     if ( object == self ) {

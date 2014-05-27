@@ -12,6 +12,11 @@
 
 @interface TFLineStringTests : XCTestCase
 
+@property (strong, nonatomic) TFLineString *linestring;
+@property (strong, nonatomic) TFCoordinate *coord1;
+@property (strong, nonatomic) TFCoordinate *coord2;
+@property (strong, nonatomic) NSArray *coords;
+
 @end
 
 @implementation TFLineStringTests
@@ -19,7 +24,12 @@
 - (void)setUp
 {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
+
+    self.coord1 = [TFCoordinate coordinateWithX:5 y:10];
+    self.coord2 = [TFCoordinate coordinateWithX:6 y:11];
+    self.coords = @[self.coord1, self.coord2];
+    self.linestring = [[TFLineString alloc] initWithCoordinates:self.coords];
+
 }
 
 - (void)tearDown
@@ -31,17 +41,11 @@
 - (void)testInitsWithCoordinates
 {
 
-    TFCoordinate *coord1 = [TFCoordinate coordinateWithX:5 y:10];
-    TFCoordinate *coord2 = [TFCoordinate coordinateWithX:6 y:11];
-    NSArray *coords = @[coord1, coord2];
-
-    TFLineString *ls = [[TFLineString alloc] initWithCoordinates:coords];
-
-    XCTAssertEqual(ls.coordinates, coords);
-    XCTAssertEqual(ls.coordinates[0], coord1);
-    XCTAssertEqual(ls.coordinates[1], coord2);
-    XCTAssertEqual([ls.coordinates[0] x], [coord1 x]);
-    XCTAssertEqual([ls.coordinates[1] x], [coord2 x]);
+    XCTAssertEqual(self.linestring.coordinates, self.coords);
+    XCTAssertEqual(self.linestring.coordinates[0], self.coord1);
+    XCTAssertEqual(self.linestring.coordinates[1], self.coord2);
+    XCTAssertEqual([self.linestring.coordinates[0] x], [self.coord1 x]);
+    XCTAssertEqual([self.linestring.coordinates[1] x], [self.coord2 x]);
 
 }
 
@@ -51,21 +55,50 @@
     NSArray *coord1 = @[@5, @10];
     NSArray *coord2 = @[@6, @11];
     NSArray *coords = @[coord1, coord2];
-
-    TFCoordinate *tfcoord1 = [TFCoordinate coordinateWithX:5 y:10];
-    TFCoordinate *tfcoord2 = [TFCoordinate coordinateWithX:6 y:11];
-    NSArray *tfcoords = @[tfcoord1, tfcoord2];
-
     TFLineString *ls = [[TFLineString alloc] initWithXYs:coords];
 
-    XCTAssertTrue([ls.coordinates isEqual:tfcoords]);
-    XCTAssertTrue([ls.coordinates[0] isEqual:tfcoord1]);
-    XCTAssertTrue([ls.coordinates[1] isEqual:tfcoord2]);
-    XCTAssertEqual([ls.coordinates[0] x], [tfcoord1 x]);
-    XCTAssertEqual([ls.coordinates[1] x], [tfcoord2 x]);
+    XCTAssertTrue([ls.coordinates isEqual:self.coords]);
+    XCTAssertTrue([ls.coordinates[0] isEqual:self.coord1]);
+    XCTAssertTrue([ls.coordinates[1] isEqual:self.coord2]);
+    XCTAssertEqual([ls.coordinates[0] x], [self.coord1 x]);
+    XCTAssertEqual([ls.coordinates[1] x], [self.coord2 x]);
     
 }
 
+- (void)testCoordinateAtIndex;
+{
+    TFCoordinate *coordinateAtIndex = [self.linestring coordinateAtIndex:1];
+    XCTAssertTrue([coordinateAtIndex isEqual:self.linestring.coordinates[1]]);
+}
+
+
+- (void)testRemoveCoordinate;
+{
+    TFCoordinate *removed = [self.linestring coordinateAtIndex:1];
+
+    [self.linestring removeCoordinateAtIndex:1];
+
+    for ( TFCoordinate *coord in self.linestring.coordinates ) {
+        XCTAssertNotEqualObjects( removed, coord );
+    }
+}
+
+- (void)testAddCoordinate;
+{
+    TFCoordinate *newVertex = [TFCoordinate coordinateWithX:2.0 y:0.2];
+
+    [self.linestring insertCoordinate:newVertex atIndex:2];
+
+    BOOL found = NO;
+
+    for ( TFCoordinate *coord in self.linestring.coordinates ) {
+        found = (coord == newVertex) ? YES : NO;
+    }
+
+    XCTAssertTrue( found );
+}
+
+/* TODO!
 - (void)testEquality
 {
     TFCoordinate *c1 = [TFCoordinate coordinateWithX:5 y:10];
@@ -77,6 +110,7 @@
 
     XCTAssertTrue([ls1 isEqual:ls2]);
 }
+*/
 
 - (void)testInequality
 {

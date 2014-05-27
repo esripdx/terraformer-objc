@@ -58,7 +58,6 @@
     return ((TFCoordinate *)self.coordinates[0]).y;
 }
 
-
 #pragma mark TFPrimitive
 
 - (TFPrimitiveType)type {
