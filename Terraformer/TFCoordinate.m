@@ -8,10 +8,19 @@
 
 #import "TFCoordinate.h"
 
-
 @interface TFCoordinate()
 @property (strong, nonatomic) NSArray *coordinates;
 @end
+
+// Helpers for coordinate conversion
+
+double degToRad(double d) {
+    return (d * M_PI) / 180.0;
+}
+
+double radToDeg(double r) {
+    return (r * 180.0) / M_PI;
+}
 
 @implementation TFCoordinate
 
@@ -50,6 +59,19 @@
     return [[self.coordinates objectAtIndex:1] doubleValue];
 }
 
+- (TFCoordinate *)toGeographic {
+    double r = radToDeg(self.x / TFEarthRadius);
+    double x = r - (floor((r + 180.0) / 360.0) * 360.0);
+    double y = radToDeg((M_PI / 2.0) - (2.0 * atan(exp(-1.0 * self.y / TFEarthRadius))));
+    return [TFCoordinate coordinateWithX:x y:y];
+}
+
+- (TFCoordinate *)toMercator {
+    double x = degToRad(self.x) * TFEarthRadius;
+    double y = (TFEarthRadius / 2.0) * log( (1.0 + sin(degToRad(self.y))) / (1.0 - sin(degToRad(self.y))) );
+    return [TFCoordinate coordinateWithX:x y:y];
+}
+
 #pragma mark NSObject
 
 + (BOOL)isXYPair:(id)thing
@@ -75,11 +97,11 @@
     if ( object == self ) {
         return YES;
     }
-    
+
     if ( object == nil || ![object isKindOfClass:[self class]] ) {
         return NO;
     }
-    
+
     return ( self.x == [object x] && self.y == [object y] );
 }
 
@@ -109,3 +131,4 @@
 }
 
 @end
+

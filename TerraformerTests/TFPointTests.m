@@ -54,4 +54,16 @@
     XCTAssertNotEqualObjects(self.point1, self.anotherPoint);
 }
 
+- (void)testToMercator {
+    TFPoint *merc = (TFPoint *)[self.point1 toMercator];
+    XCTAssertEqualWithAccuracy(merc.coordinate.x, 111319.490793, 0.000001);
+    XCTAssertEqualWithAccuracy(merc.coordinate.y, 111325.142866, 0.000001);
+}
+
+- (void)testToGeographic {
+    TFPoint *geog = (TFPoint *) [[TFPoint pointWithX:111319.490793 y:111325.142866] toGeographic];
+    XCTAssertEqualWithAccuracy(geog.coordinate.x, 1, 0.000001);
+    XCTAssertEqualWithAccuracy(geog.coordinate.y, 1, 0.000001);
+}
+
 @end

@@ -163,4 +163,17 @@
     return NO;
 }
 
+- (id <TFPrimitive>)toMercator {
+    NSArray *coords = [[self class] coordinatesToMercator:self.coordinates];
+    TFGeometry *geo = [TFGeometry geometryWithType:[self type] coordinates:coords];
+    return geo;
+}
+
+- (id <TFPrimitive>)toGeographic {
+    NSArray *coords = [[self class] coordinatesToGeographic:self.coordinates];
+    TFGeometry *geo = [TFGeometry geometryWithType:[self type] coordinates:coords];
+    return geo;
+}
+
+
 @end

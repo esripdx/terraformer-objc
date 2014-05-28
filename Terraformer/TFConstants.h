@@ -30,4 +30,6 @@ static NSString *const TFFeaturesKey = @"features";
 static NSString *const TFIdKey = @"id";
 static NSString *const TFPropertiesKey = @"properties";
 
+static double const TFEarthRadius = 6378137.0;
+
 #endif
