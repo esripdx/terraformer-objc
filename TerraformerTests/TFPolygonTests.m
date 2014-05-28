@@ -50,6 +50,7 @@
     self.emptyPolygon = nil;
     self.unclosedPolygon = nil;
     self.closedPolygon = nil;
+    self.polygonWithHole = nil;
 }
 
 - (void)testRemoveVertex;

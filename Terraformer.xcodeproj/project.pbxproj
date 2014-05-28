@@ -15,6 +15,7 @@
 		31DE58BB58955B8CCFB3DEDD /* TFFeatureCollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DE57BB9C33BFABB67055A4 /* TFFeatureCollectionTests.m */; };
 		48838E5A192EB2A400EB093A /* TFGeometryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 48838E59192EB2A400EB093A /* TFGeometryCollection.m */; };
 		4890CBF5192EBFF200C467DF /* TFMultiPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 4890CBF4192EBFF200C467DF /* TFMultiPolygon.m */; };
+		48A3A25D1934F67B0019B082 /* TFMultiPolygonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A3A25C1934F67B0019B082 /* TFMultiPolygonTests.m */; };
 		48CFCC96192D632D00028043 /* TFPolygonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CFCC95192D632D00028043 /* TFPolygonTests.m */; };
 		67EF200D6ADE1BDBA36761B1 /* multi_line_string.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 67EF22D834EFF66C1AF21827 /* multi_line_string.geojson */; };
 		67EF219FDD0D2A56029B6348 /* multi_polygon.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 67EF2ED4200B7451704252E0 /* multi_polygon.geojson */; };
@@ -86,7 +87,8 @@
 		48838E59192EB2A400EB093A /* TFGeometryCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometryCollection.m; sourceTree = "<group>"; };
 		4890CBF3192EBFF200C467DF /* TFMultiPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFMultiPolygon.h; sourceTree = "<group>"; };
 		4890CBF4192EBFF200C467DF /* TFMultiPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFMultiPolygon.m; sourceTree = "<group>"; };
-		48CFCC95192D632D00028043 /* TFPolygonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TFPolygonTests.m; path = TerraformerTests/TFPolygonTests.m; sourceTree = SOURCE_ROOT; };
+		48A3A25C1934F67B0019B082 /* TFMultiPolygonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFMultiPolygonTests.m; sourceTree = "<group>"; };
+		48CFCC95192D632D00028043 /* TFPolygonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPolygonTests.m; sourceTree = "<group>"; };
 		67EF20CA053EDF8FC9907611 /* circle.geojson */ = {isa = PBXFileReference; lastKnownFileType = file.geojson; path = circle.geojson; sourceTree = "<group>"; };
 		67EF2101559A2387C063F19D /* multi_point.geojson */ = {isa = PBXFileReference; lastKnownFileType = file.geojson; path = multi_point.geojson; sourceTree = "<group>"; };
 		67EF22635E82A1E8D9306C4B /* TFGeometryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometryTests.m; sourceTree = "<group>"; };
@@ -232,11 +234,11 @@
 				94D59ADC192C06A400A8E6F8 /* Terraformer.m */,
 				BE6DD6F2192D1B72002DAE4D /* TFConstants.h */,
 				9442E123192C0FF500CAC58B /* TFPrimitive.h */,
-				94D59AD8192C06A400A8E6F8 /* Supporting Files */,
 				31DE5473CC8C338AB093CBD2 /* TFFeature.h */,
 				31DE5C0B269CCB85AD073BC8 /* TFFeature.m */,
 				67EF2F10853B96256D514395 /* TFFeatureCollection.h */,
 				67EF26A11957E87AD8EDC4C4 /* TFFeatureCollection.m */,
+				94D59AD8192C06A400A8E6F8 /* Supporting Files */,
 			);
 			path = Terraformer;
 			sourceTree = "<group>";
@@ -253,8 +255,9 @@
 			isa = PBXGroup;
 			children = (
 				94D59AF1192C06A400A8E6F8 /* TerraformerTests.m */,
-				BDED1CAA192D5EAF005F7477 /* TFCoordinateTests.m */,
 				48CFCC95192D632D00028043 /* TFPolygonTests.m */,
+				48A3A25C1934F67B0019B082 /* TFMultiPolygonTests.m */,
+				BDED1CAA192D5EAF005F7477 /* TFCoordinateTests.m */,
 				BDED1CA8192D5677005F7477 /* TFLineStringTests.m */,
 				BD9F7F53193536940037C015 /* TFMultiLineStringTests.m */,
 				94D59AEC192C06A400A8E6F8 /* Supporting Files */,
@@ -265,6 +268,7 @@
 				31DE543BBE86E425E6A8187A /* TFPointTests.m */,
 				67EF2FC8C882856E440EDC05 /* TFTestData.m */,
 				67EF2D13DD6F6E01BA26204E /* TFTestData.h */,
+				94D59AEC192C06A400A8E6F8 /* Supporting Files */,
 				67EF2E3DEA7C8124AE78A7F5 /* examples */,
 			);
 			path = TerraformerTests;
@@ -400,6 +404,7 @@
 				67EF2BB2F667FDF33F4020F4 /* TFGeometryTests.m in Sources */,
 				67EF26771008039AF67B5DDB /* TFGeometryCollectionTests.m in Sources */,
 				31DE58BB58955B8CCFB3DEDD /* TFFeatureCollectionTests.m in Sources */,
+				48A3A25D1934F67B0019B082 /* TFMultiPolygonTests.m in Sources */,
 				31DE52725BC7EBA01CB8148D /* TFPointTests.m in Sources */,
 				67EF2906986B35C50D830C30 /* TFTestData.m in Sources */,
 			);

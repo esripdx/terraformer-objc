@@ -8,8 +8,19 @@
 
 #import "TFGeometry.h"
 
+@class TFPolygon;
+
 @interface TFMultiPolygon : TFGeometry
 
 - (instancetype)initWithPolygonCoordinateArrays:(NSArray *)polygons;
+- (instancetype)initWithPolygons:(NSArray *)polygons;
+
+// Convenience methods to polygons as TFPolygon objects. Use
+// multiPolygon.coordinates to access the coordinates array directly.
+
+- (NSUInteger)numberOfPolygons;
+- (TFPolygon *)polygonAtIndex:(NSUInteger)index;
+- (void)insertPolygon:(TFPolygon *)polygon atIndex:(NSUInteger)index;
+- (void)removePolygonAtIndex:(NSUInteger)index;
 
 @end

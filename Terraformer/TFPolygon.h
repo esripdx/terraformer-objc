@@ -25,6 +25,10 @@
 - (void)insertVertex:(TFCoordinate *)coordinate atIndex:(NSUInteger)index;
 - (void)removeVertexAtIndex:(NSUInteger)index;
 
+// Convenience methods for accessing the polygon's holes as polygon objects. To
+// get holes as coordinate arrays, use polygon.coordinates starting at the
+// second position in the array.
+
 - (NSUInteger)numberOfHoles;
 - (TFPolygon *)holeAtIndex:(NSUInteger)index;
 - (void)insertHole:(TFPolygon *)hole atIndex:(NSUInteger)index;
