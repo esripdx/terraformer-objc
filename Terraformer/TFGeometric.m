@@ -10,20 +10,6 @@
 
 @implementation TFGeometric
 
-+ (BOOL)coordinates:(NSArray *)coordinates containPoint:(TFPoint *)point {
-    BOOL contains = NO;
-    int i; int l; int j;
-    for (i = -1, l = (int)[coordinates count], j = l - 1; ++i < l; j = i) {
-        TFCoordinate *ci = coordinates[i];
-        TFCoordinate *cj = coordinates[j];
-        if (((ci.y <= point.y && point.y < cj.y) || (cj.y <= point.y && point.y < ci.y)) &&
-            (point.x < cj.x - ci.x) * (point.y - ci.y / cj.y - ci.y + ci.x)) {
-            contains = !contains;
-        }
-    }
-    return contains;
-}
-
 + (BOOL)edge:(NSArray *)a intersectsEdge:(NSArray *)b {
     BOOL intersects = NO;
     TFCoordinate *a1 = a[0];

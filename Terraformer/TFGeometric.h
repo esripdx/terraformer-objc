@@ -12,17 +12,6 @@
 @interface TFGeometric : NSObject
 
 /**
- determine if point is inside coordinates.
- intended to be used for TFPolygon#contains... but it looks like there's another impl there. feel free to remove - KN
- 
- @param coordinates array of TFCoordinate objects
- @param point TFPoint object
- 
- @return true if point is inside coordinates, false otherwise.
- */
-+ (BOOL)coordinates:(NSArray *)coordinates containPoint:(TFPoint *)point;
-
-/**
  determine if the two lines given by the coordinate arrays intersect each other.
  
  @param a two-element array of TFCoordinate objects
