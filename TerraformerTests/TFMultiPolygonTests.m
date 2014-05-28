@@ -79,8 +79,7 @@
     
     NSInteger index;
     
-    for ( index = 0; index < [self.multiPolygonA numberOfPolygons]; index++ )
-    {
+    for ( index = 0; index < [self.multiPolygonA numberOfPolygons]; index++ ) {
         TFPolygon *a = [self.multiPolygonA polygonAtIndex:index];
         TFPolygon *b = [self.multiPolygonB polygonAtIndex:index];
         

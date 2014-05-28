@@ -43,6 +43,8 @@
 		94D59AEA192C06A400A8E6F8 /* libTerraformer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AD2192C06A400A8E6F8 /* libTerraformer.a */; };
 		94D59AF0192C06A400A8E6F8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 94D59AEE192C06A400A8E6F8 /* InfoPlist.strings */; };
 		94D59AF2192C06A400A8E6F8 /* TerraformerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D59AF1192C06A400A8E6F8 /* TerraformerTests.m */; };
+		BD9F7F521934F87E0037C015 /* TFMultiLineString.m in Sources */ = {isa = PBXBuildFile; fileRef = BD9F7F511934F87E0037C015 /* TFMultiLineString.m */; };
+		BD9F7F54193536940037C015 /* TFMultiLineStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BD9F7F53193536940037C015 /* TFMultiLineStringTests.m */; };
 		BDED1CA7192D3730005F7477 /* TFLineString.m in Sources */ = {isa = PBXBuildFile; fileRef = BDED1CA6192D3730005F7477 /* TFLineString.m */; };
 		BDED1CA9192D5677005F7477 /* TFLineStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BDED1CA8192D5677005F7477 /* TFLineStringTests.m */; };
 		BDED1CAB192D5EAF005F7477 /* TFCoordinateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BDED1CAA192D5EAF005F7477 /* TFCoordinateTests.m */; };
@@ -121,6 +123,9 @@
 		94D59AED192C06A400A8E6F8 /* TerraformerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TerraformerTests-Info.plist"; sourceTree = "<group>"; };
 		94D59AEF192C06A400A8E6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		94D59AF1192C06A400A8E6F8 /* TerraformerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TerraformerTests.m; sourceTree = "<group>"; };
+		BD9F7F501934F87E0037C015 /* TFMultiLineString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFMultiLineString.h; sourceTree = "<group>"; };
+		BD9F7F511934F87E0037C015 /* TFMultiLineString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFMultiLineString.m; sourceTree = "<group>"; };
+		BD9F7F53193536940037C015 /* TFMultiLineStringTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFMultiLineStringTests.m; sourceTree = "<group>"; };
 		BDED1CA5192D3730005F7477 /* TFLineString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFLineString.h; sourceTree = "<group>"; };
 		BDED1CA6192D3730005F7477 /* TFLineString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFLineString.m; sourceTree = "<group>"; };
 		BDED1CA8192D5677005F7477 /* TFLineStringTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFLineStringTests.m; sourceTree = "<group>"; };
@@ -177,6 +182,8 @@
 				200B46A3192C2308009C5B22 /* TFGeometry+Protected.m */,
 				BDED1CA5192D3730005F7477 /* TFLineString.h */,
 				BDED1CA6192D3730005F7477 /* TFLineString.m */,
+				BD9F7F501934F87E0037C015 /* TFMultiLineString.h */,
+				BD9F7F511934F87E0037C015 /* TFMultiLineString.m */,
 				9442E129192C183E00CAC58B /* TFPolygon.h */,
 				9442E12A192C183E00CAC58B /* TFPolygon.m */,
 				4890CBF3192EBFF200C467DF /* TFMultiPolygon.h */,
@@ -252,6 +259,8 @@
 				48A3A25C1934F67B0019B082 /* TFMultiPolygonTests.m */,
 				BDED1CAA192D5EAF005F7477 /* TFCoordinateTests.m */,
 				BDED1CA8192D5677005F7477 /* TFLineStringTests.m */,
+				BD9F7F53193536940037C015 /* TFMultiLineStringTests.m */,
+				94D59AEC192C06A400A8E6F8 /* Supporting Files */,
 				67EF22635E82A1E8D9306C4B /* TFGeometryTests.m */,
 				67EF2721182CD736DD336732 /* TFGeometryCollectionTests.m */,
 				31DE5F5402791C18DB3F2116 /* TFFeatureTests.m */,
@@ -369,6 +378,7 @@
 			files = (
 				0361DF76192E8D9C00386F4A /* TFFeature.m in Sources */,
 				949E5406192D3A110095526D /* TFGeometry+Protected.m in Sources */,
+				BD9F7F521934F87E0037C015 /* TFMultiLineString.m in Sources */,
 				94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */,
 				9442E128192C180100CAC58B /* TFGeometry.m in Sources */,
 				9442E12B192C183E00CAC58B /* TFPolygon.m in Sources */,
@@ -389,6 +399,7 @@
 				48CFCC96192D632D00028043 /* TFPolygonTests.m in Sources */,
 				BDED1CA9192D5677005F7477 /* TFLineStringTests.m in Sources */,
 				BDED1CAB192D5EAF005F7477 /* TFCoordinateTests.m in Sources */,
+				BD9F7F54193536940037C015 /* TFMultiLineStringTests.m in Sources */,
 				94D59AF2192C06A400A8E6F8 /* TerraformerTests.m in Sources */,
 				67EF2BB2F667FDF33F4020F4 /* TFGeometryTests.m in Sources */,
 				67EF26771008039AF67B5DDB /* TFGeometryCollectionTests.m in Sources */,
