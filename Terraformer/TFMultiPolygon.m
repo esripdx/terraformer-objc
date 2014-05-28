@@ -18,7 +18,7 @@
 {
     // See TFPolygon.m for a description of the polygon data structure.
     
-    return [super initSubclassWithCoordinates:polygons];
+    return (TFMultiPolygon *) [super initSubclassWithCoordinates:polygons];
 }
 
 - (instancetype)initWithPolygons:(NSArray *)polygons;

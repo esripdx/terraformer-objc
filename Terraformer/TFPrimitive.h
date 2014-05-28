@@ -24,5 +24,7 @@
 - (BOOL)contains:(TFGeometry *)geometry;
 - (BOOL)within:(TFGeometry *)geometry;
 - (BOOL)intersects:(TFGeometry *)geometry;
+- (id <TFPrimitive>)toMercator;
+- (id <TFPrimitive>)toGeographic;
 
 @end
