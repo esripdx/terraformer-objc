@@ -67,6 +67,10 @@
 }
 
 - (void)testConvertToGeographic {
+    // Null island should still be (0, 0) after conversion
+    TFCoordinate *nullIsland = [[TFCoordinate coordinateWithX:0 y:0] toGeographic];
+    XCTAssertEqualObjects(nullIsland, [TFCoordinate coordinateWithX:0 y:0]);
+
     TFCoordinate *mercator = [TFCoordinate coordinateWithX:11354588.06 y:222684.20];
     TFCoordinate *geographic = [mercator toGeographic];
 
@@ -75,6 +79,10 @@
 }
 
 - (void)testConvertToMercator {
+    // Null island should still be (0, 0) after conversion
+    TFCoordinate *nullIsland = [[TFCoordinate coordinateWithX:0 y:0] toMercator];
+    XCTAssertEqualObjects(nullIsland, [TFCoordinate coordinateWithX:0 y:0]);
+
     TFCoordinate *geographic = [TFCoordinate coordinateWithX:101.99999999179026 y:1.9999999236399357];
     TFCoordinate *mercator = [geographic toMercator];
 
