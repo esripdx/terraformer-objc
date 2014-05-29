@@ -10,6 +10,7 @@
 #import "TFPolygon.h"
 #import "TFMultiPolygon.h"
 #import "TFCoordinate.h"
+#import "TFPoint.h"
 
 @interface TFMultiPolygonTests : XCTestCase
 
@@ -99,6 +100,18 @@
     XCTAssertTrue( [[self.multiPolygonA polygonAtIndex:0] isEqualToPolygon:self.polygonA] );
     [self.multiPolygonA removePolygonAtIndex:0];
     XCTAssertFalse( [[self.multiPolygonA polygonAtIndex:0] isEqualToPolygon:self.polygonA] );
+}
+
+- (void)testContains;
+{
+    TFPoint *within = [[TFPoint alloc] initWithX:6.0 y:3.0];
+    TFPoint *outside = [[TFPoint alloc] initWithX:100.0 y:200.0];
+    
+    XCTAssertTrue( [self.multiPolygonA contains:within] );
+    XCTAssertTrue( [self.multiPolygonB contains:within] );
+    
+    XCTAssertFalse( [self.multiPolygonA contains:outside] );
+    XCTAssertFalse( [self.multiPolygonB contains:outside] );
 }
 
 @end
