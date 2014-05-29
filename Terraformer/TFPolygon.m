@@ -135,12 +135,18 @@
 
 - (void)insertHole:(TFPolygon *)hole atIndex:(NSUInteger)index;
 {
-#warning stub method
+    NSMutableArray *holes = [[self.coordinates subarrayWithRange:NSMakeRange( 1, [self.coordinates count] - 1 )] mutableCopy];
+    [holes insertObject:hole.coordinates[0] atIndex:index];
+    [holes insertObject:self.coordinates[0] atIndex:0];
+    self.coordinates = [holes copy];
 }
 
 - (void)removeHoleAtIndex:(NSUInteger)index;
 {
-#warning stub method
+    NSMutableArray *holes = [[self.coordinates subarrayWithRange:NSMakeRange( 1, [self.coordinates count] - 1 )] mutableCopy];
+    [holes removeObjectAtIndex:index];
+    [holes insertObject:self.coordinates[0] atIndex:0];
+    self.coordinates = [holes copy];
 }
 
 #pragma mark TFPolygon Private

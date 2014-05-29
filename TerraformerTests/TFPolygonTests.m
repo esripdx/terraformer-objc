@@ -17,6 +17,7 @@
 @property (strong, nonatomic) TFPolygon *unclosedPolygon;
 @property (strong, nonatomic) TFPolygon *closedPolygon;
 @property (strong, nonatomic) TFPolygon *polygonWithHole;
+@property (strong, nonatomic) TFPolygon *hole;
 
 @end
 
@@ -35,12 +36,11 @@
     TFCoordinate *b2 = [TFCoordinate coordinateWithX:5.0 y:5.5];
     TFCoordinate *c2 = [TFCoordinate coordinateWithX:4.0 y:3.0];
 
-    NSArray *hole = @[a2, b2, c2];
-    
+    self.hole = [[TFPolygon alloc] initWithVertices:@[a2, b2, c2]];
     self.emptyPolygon = [[TFPolygon alloc] initWithVertices:nil];
     self.unclosedPolygon = [[TFPolygon alloc] initWithVertices:@[a, b, c, d]];
     self.closedPolygon = [[TFPolygon alloc] initWithVertices:@[a, b, c, d, a]];
-    self.polygonWithHole = [[TFPolygon alloc] initWithVertices:@[a, b, c, d, a] holes:@[hole]];
+    self.polygonWithHole = [[TFPolygon alloc] initWithVertices:@[a, b, c, d, a] holes:self.hole.coordinates];
 }
 
 - (void)tearDown;
@@ -108,6 +108,23 @@
     XCTAssertTrue( [self.polygonWithHole contains:inside] );
     XCTAssertFalse( [self.polygonWithHole contains:outside] );
     XCTAssertFalse( [self.polygonWithHole contains:inHole] );
+}
+
+- (void)testAddHole;
+{
+    TFPoint *inHole = [TFPoint pointWithX:4.0 y:4.5];
+
+    XCTAssertTrue( [self.closedPolygon contains:inHole] );
+    [self.closedPolygon insertHole:self.hole atIndex:0];
+    XCTAssertFalse( [self.closedPolygon contains:inHole] );
+}
+
+- (void)testRemoveHole;
+{
+    TFPoint *inHole = [TFPoint pointWithX:4.0 y:4.5];
+    XCTAssertFalse( [self.polygonWithHole contains:inHole] );
+    [self.polygonWithHole removeHoleAtIndex:0];
+    XCTAssertTrue( [self.polygonWithHole contains:inHole] );
 }
 
 @end
