@@ -13,7 +13,6 @@
 		202A6209192D613000A0E84F /* TFPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 202A6208192D613000A0E84F /* TFPoint.m */; };
 		31DE52725BC7EBA01CB8148D /* TFPointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DE543BBE86E425E6A8187A /* TFPointTests.m */; };
 		31DE58BB58955B8CCFB3DEDD /* TFFeatureCollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DE57BB9C33BFABB67055A4 /* TFFeatureCollectionTests.m */; };
-		485DC4141937AE4C00FA0B26 /* TerraformerTests-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 485DC4131937AE4C00FA0B26 /* TerraformerTests-Info.plist */; };
 		485DC4171937AE5600FA0B26 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 485DC4151937AE5600FA0B26 /* InfoPlist.strings */; };
 		48838E5A192EB2A400EB093A /* TFGeometryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 48838E59192EB2A400EB093A /* TFGeometryCollection.m */; };
 		4890CBF5192EBFF200C467DF /* TFMultiPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 4890CBF4192EBFF200C467DF /* TFMultiPolygon.m */; };
@@ -365,7 +364,6 @@
 				67EF219FDD0D2A56029B6348 /* multi_polygon.geojson in Resources */,
 				67EF200D6ADE1BDBA36761B1 /* multi_line_string.geojson in Resources */,
 				67EF296C8D721692F43BAA49 /* polygon_with_holes.geojson in Resources */,
-				485DC4141937AE4C00FA0B26 /* TerraformerTests-Info.plist in Resources */,
 				67EF297F0C5C03245D795EBF /* geometry_collection.geojson in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
