@@ -12,6 +12,9 @@
 
 @interface TFPolygon : TFGeometry
 
+// Assume the given coordinates are already ordered either clockwise or
+// counter-clockwise.
+
 - (instancetype)initWithVertices:(NSArray *)coordinates;
 - (instancetype)initWithVertices:(NSArray *)coordinates holes:(NSArray *)polygons;
 

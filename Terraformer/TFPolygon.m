@@ -11,10 +11,12 @@
 #import "TFCoordinate.h"
 #import "TFMultiPolygon.h"
 #import "TFPoint.h"
+#import "TFLineString.h"
 
 @interface TFPolygon()
 
 - (BOOL)containsPoint:(TFPoint *)point;
+- (BOOL)containsLine:(TFLineString *)line;
 - (BOOL)polygonWithin:(TFPolygon *)polygon;
 - (BOOL)multiPolygonWithin:(TFMultiPolygon *)multiPolygon;
 
@@ -135,12 +137,18 @@
 
 - (void)insertHole:(TFPolygon *)hole atIndex:(NSUInteger)index;
 {
-#warning stub method
+    NSMutableArray *holes = [[self.coordinates subarrayWithRange:NSMakeRange( 1, [self.coordinates count] - 1 )] mutableCopy];
+    [holes insertObject:hole.coordinates[0] atIndex:index];
+    [holes insertObject:self.coordinates[0] atIndex:0];
+    self.coordinates = [holes copy];
 }
 
 - (void)removeHoleAtIndex:(NSUInteger)index;
 {
-#warning stub method
+    NSMutableArray *holes = [[self.coordinates subarrayWithRange:NSMakeRange( 1, [self.coordinates count] - 1 )] mutableCopy];
+    [holes removeObjectAtIndex:index];
+    [holes insertObject:self.coordinates[0] atIndex:0];
+    self.coordinates = [holes copy];
 }
 
 #pragma mark TFPolygon Private
@@ -197,6 +205,44 @@
     return contains;
 }
 
+- (BOOL)containsLine:(TFLineString *)line;
+{
+    NSInteger count = [line.coordinates count];
+    BOOL contains = ( count == 0 ) ? NO : [self containsPoint:[TFPoint pointWithCoordinate:line.coordinates[0]]];
+
+    if ( !contains ) {
+        return NO;
+    }
+    
+    if ( count == 1 ) {
+        return contains;
+    }
+    
+    // For each coordinate pair that makes up a line in the line string, test
+    // it to see if it intersects a line within the polygon. If so, the line is
+    // outside of the polygon.
+    
+    NSArray *outerRing = self.coordinates[0];
+    NSInteger i, j, nvert = [outerRing count];
+    
+    for ( i = 0, j = nvert - 1; i < nvert; j = i++ ) {
+        
+        TFCoordinate *a = outerRing[i];
+        TFCoordinate *b = outerRing[j];
+        
+        // Check holes as well.
+        
+        for ( i = 0; i < [self numberOfHoles]; i++ ) {
+            TFPolygon *polygon = [self holeAtIndex:i];
+            
+            if ( [polygon containsL])
+        }
+
+    }
+    
+    return YES;
+}
+
 - (BOOL)polygonWithin:(TFPolygon *)polygon;
 {
     if ( [self isEqualToPolygon:polygon] ) {
@@ -240,6 +286,9 @@
     switch ( geometry.type ) {
         case TFPrimitiveTypePoint:
             contains = [self containsPoint:(TFPoint *)geometry];
+            break;
+        case TFPrimitiveTypeLineString:
+            contains = [self containsLine:(TFLineString *)geometry];
             break;
         default:
             NSAssert( NO, @"unhandled type" );

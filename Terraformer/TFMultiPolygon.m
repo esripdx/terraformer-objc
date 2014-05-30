@@ -10,6 +10,9 @@
 #import "TFGeometry+Protected.h"
 #import "TFPolygon.h"
 
+@interface TFMultiPolygon()
+@end
+
 @implementation TFMultiPolygon
 
 #pragma mark TFMultiPolygon
@@ -65,6 +68,36 @@
 - (TFPrimitiveType)type;
 {
     return TFPrimitiveTypeMultiPolygon;
+}
+
+- (BOOL)contains:(TFGeometry *)geometry;
+{
+    NSInteger index;
+    
+    for ( index = 0; index < [self numberOfPolygons]; index++ ) {
+        TFPolygon *polygon = [self polygonAtIndex:index];
+        
+        if ( [polygon contains:geometry] ) {
+            return YES;
+        }
+    }
+        
+    return NO;
+}
+
+- (BOOL)within:(TFGeometry *)geometry;
+{
+    NSInteger index;
+    
+    for ( index = 0; index < [self numberOfPolygons]; index++ ) {
+        TFPolygon *polygon = [self polygonAtIndex:index];
+        
+        if ( [polygon within:geometry] ) {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 @end

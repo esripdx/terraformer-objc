@@ -13,6 +13,7 @@
 		202A6209192D613000A0E84F /* TFPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 202A6208192D613000A0E84F /* TFPoint.m */; };
 		31DE52725BC7EBA01CB8148D /* TFPointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DE543BBE86E425E6A8187A /* TFPointTests.m */; };
 		31DE58BB58955B8CCFB3DEDD /* TFFeatureCollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DE57BB9C33BFABB67055A4 /* TFFeatureCollectionTests.m */; };
+		485DC4171937AE5600FA0B26 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 485DC4151937AE5600FA0B26 /* InfoPlist.strings */; };
 		48838E5A192EB2A400EB093A /* TFGeometryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 48838E59192EB2A400EB093A /* TFGeometryCollection.m */; };
 		4890CBF5192EBFF200C467DF /* TFMultiPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 4890CBF4192EBFF200C467DF /* TFMultiPolygon.m */; };
 		48A3A25D1934F67B0019B082 /* TFMultiPolygonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A3A25C1934F67B0019B082 /* TFMultiPolygonTests.m */; };
@@ -41,7 +42,6 @@
 		94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D59ADC192C06A400A8E6F8 /* Terraformer.m */; };
 		94D59AE5192C06A400A8E6F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AD5192C06A400A8E6F8 /* Foundation.framework */; };
 		94D59AEA192C06A400A8E6F8 /* libTerraformer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AD2192C06A400A8E6F8 /* libTerraformer.a */; };
-		94D59AF0192C06A400A8E6F8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 94D59AEE192C06A400A8E6F8 /* InfoPlist.strings */; };
 		94D59AF2192C06A400A8E6F8 /* TerraformerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D59AF1192C06A400A8E6F8 /* TerraformerTests.m */; };
 		BD9F7F521934F87E0037C015 /* TFMultiLineString.m in Sources */ = {isa = PBXBuildFile; fileRef = BD9F7F511934F87E0037C015 /* TFMultiLineString.m */; };
 		BD9F7F54193536940037C015 /* TFMultiLineStringTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BD9F7F53193536940037C015 /* TFMultiLineStringTests.m */; };
@@ -83,6 +83,8 @@
 		31DE57BB9C33BFABB67055A4 /* TFFeatureCollectionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFFeatureCollectionTests.m; sourceTree = "<group>"; };
 		31DE5C0B269CCB85AD073BC8 /* TFFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFFeature.m; sourceTree = "<group>"; };
 		31DE5F5402791C18DB3F2116 /* TFFeatureTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFFeatureTests.m; sourceTree = "<group>"; };
+		485DC4131937AE4C00FA0B26 /* TerraformerTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TerraformerTests-Info.plist"; sourceTree = "<group>"; };
+		485DC4161937AE5600FA0B26 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		48838E58192EB2A400EB093A /* TFGeometryCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFGeometryCollection.h; sourceTree = "<group>"; };
 		48838E59192EB2A400EB093A /* TFGeometryCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometryCollection.m; sourceTree = "<group>"; };
 		4890CBF3192EBFF200C467DF /* TFMultiPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFMultiPolygon.h; sourceTree = "<group>"; };
@@ -120,8 +122,6 @@
 		94D59ADC192C06A400A8E6F8 /* Terraformer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Terraformer.m; sourceTree = "<group>"; };
 		94D59AE2192C06A400A8E6F8 /* TerraformerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TerraformerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		94D59AE3192C06A400A8E6F8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		94D59AED192C06A400A8E6F8 /* TerraformerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TerraformerTests-Info.plist"; sourceTree = "<group>"; };
-		94D59AEF192C06A400A8E6F8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		94D59AF1192C06A400A8E6F8 /* TerraformerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TerraformerTests.m; sourceTree = "<group>"; };
 		BD9F7F501934F87E0037C015 /* TFMultiLineString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFMultiLineString.h; sourceTree = "<group>"; };
 		BD9F7F511934F87E0037C015 /* TFMultiLineString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFMultiLineString.m; sourceTree = "<group>"; };
@@ -155,6 +155,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		485DC4121937AE0C00FA0B26 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				485DC4151937AE5600FA0B26 /* InfoPlist.strings */,
+				485DC4131937AE4C00FA0B26 /* TerraformerTests-Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		67EF2E3DEA7C8124AE78A7F5 /* examples */ = {
 			isa = PBXGroup;
 			children = (
@@ -260,7 +269,6 @@
 				BDED1CAA192D5EAF005F7477 /* TFCoordinateTests.m */,
 				BDED1CA8192D5677005F7477 /* TFLineStringTests.m */,
 				BD9F7F53193536940037C015 /* TFMultiLineStringTests.m */,
-				94D59AEC192C06A400A8E6F8 /* Supporting Files */,
 				67EF22635E82A1E8D9306C4B /* TFGeometryTests.m */,
 				67EF2721182CD736DD336732 /* TFGeometryCollectionTests.m */,
 				31DE5F5402791C18DB3F2116 /* TFFeatureTests.m */,
@@ -268,19 +276,10 @@
 				31DE543BBE86E425E6A8187A /* TFPointTests.m */,
 				67EF2FC8C882856E440EDC05 /* TFTestData.m */,
 				67EF2D13DD6F6E01BA26204E /* TFTestData.h */,
-				94D59AEC192C06A400A8E6F8 /* Supporting Files */,
+				485DC4121937AE0C00FA0B26 /* Supporting Files */,
 				67EF2E3DEA7C8124AE78A7F5 /* examples */,
 			);
 			path = TerraformerTests;
-			sourceTree = "<group>";
-		};
-		94D59AEC192C06A400A8E6F8 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				94D59AED192C06A400A8E6F8 /* TerraformerTests-Info.plist */,
-				94D59AEE192C06A400A8E6F8 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -354,10 +353,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94D59AF0192C06A400A8E6F8 /* InfoPlist.strings in Resources */,
 				67EF29971599F34BC9D69241 /* point.geojson in Resources */,
 				67EF29AA640A6861CE06D534 /* circle.geojson in Resources */,
 				67EF2B1FC0A399C1BD3B01ED /* polygon.geojson in Resources */,
+				485DC4171937AE5600FA0B26 /* InfoPlist.strings in Resources */,
 				67EF2700606A41D6FCA3903F /* sf_county.geojson in Resources */,
 				67EF2F69CA9AD6B532E24B8D /* line_string.geojson in Resources */,
 				67EF25A576B14158165C3837 /* multi_point.geojson in Resources */,
@@ -421,10 +420,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		94D59AEE192C06A400A8E6F8 /* InfoPlist.strings */ = {
+		485DC4151937AE5600FA0B26 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				94D59AEF192C06A400A8E6F8 /* en */,
+				485DC4161937AE5600FA0B26 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
