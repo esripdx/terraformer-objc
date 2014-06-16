@@ -1,28 +1,20 @@
 //
-//  TFPrimitive.h
+//  TFPrimitive
 //  Terraformer
 //
-//  Created by Ryan Arana on 5/20/14.
-//  Copyright (c) 2014 pdx.esri.com. All rights reserved.
+//  Created by ryana on 6/16/14
+//  Copyright (c) 2014 ESRI. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import "TFTerraformer.h"
 
-@class TFGeometry;
-@class TFPolygon;
+/***
+* Base class for all primitive types (geometries, features, and collections).
+*/
+@interface TFPrimitive : NSObject <NSObject>
 
-@protocol TFPrimitive <NSObject>
+@property (assign, nonatomic, readonly) TFPrimitiveType type;
 
-- (TFPrimitiveType)type;
-
-- (NSDictionary *)encodeJSON;
-+ (id <TFPrimitive>)decodeJSON:(NSDictionary *)json;
-
-- (NSArray *)bbox;
-- (NSArray *)envelope;
-- (TFPolygon *)convexHull;
-- (BOOL)contains:(TFGeometry *)geometry;
-- (BOOL)within:(TFGeometry *)geometry;
-- (BOOL)intersects:(TFGeometry *)geometry;
-
+- (instancetype)initWithType:(TFPrimitiveType)type;
 @end

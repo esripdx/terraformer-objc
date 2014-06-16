@@ -6,10 +6,8 @@
 //  Copyright (c) 2014 ESRI. All rights reserved.
 //
 
-#import "TFGeometryCollection.h"
 #import "TFGeometry.h"
-#import "TFGeometry+Protected.h"
-#import "TFPolygon.h"
+#import "TFGeometryCollection.h"
 
 @implementation TFGeometryCollection {
 
@@ -32,35 +30,6 @@
     self.geometries = geoms;
 }
 
-- (NSArray *)geometriesWhichContain:(TFGeometry *)geometry {
-    NSMutableArray *found = [NSMutableArray new];
-    for (TFGeometry *geo in self.geometries) {
-        if ([geo contains:geometry]) {
-            [found addObject:geo];
-        }
-    }
-    return [NSArray arrayWithArray:found];
-}
-
-- (NSArray *)geometriesWhichIntersect:(TFGeometry *)geometry {
-    NSMutableArray *found = [NSMutableArray new];
-    for (TFGeometry *geo in self.geometries) {
-        if ([geo intersects:geometry]) {
-            [found addObject:geo];
-        }
-    }
-    return [NSArray arrayWithArray:found];
-}
-
-- (NSArray *)geometriesWithin:(TFGeometry *)geometry {
-    NSMutableArray *found = [NSMutableArray new];
-    for (TFGeometry *geo in self.geometries) {
-        if ([geo within:geometry]) {
-            [found addObject:geo];
-        }
-    }
-    return [NSArray arrayWithArray:found];
-}
 
 #pragma mark TFPrimitive
 

@@ -6,17 +6,11 @@
 //  Copyright (c) 2014 pdx.esri.com. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "TFPrimitive.h"
-#import "TFConstants.h"
 
-@interface TFGeometry : NSObject <TFPrimitive>
+@interface TFGeometry : TFPrimitive
 
-+ (NSString *)geoJSONStringForType:(TFPrimitiveType)type;
-+ (TFPrimitiveType)geometryTypeForString:(NSString *)string;
-+ (instancetype)geometryWithType:(TFPrimitiveType)type coordinates:(NSArray *)coordinates;
+@property (copy, nonatomic) NSArray *coordinates;
 
-@property (nonatomic, strong) NSArray *coordinates;
-
-
+- (instancetype)initWithType:(TFPrimitiveType)type coordinates:(NSArray *)coordinates;
 @end

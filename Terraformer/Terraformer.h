@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 pdx.esri.com. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "TFConstants.h"
+#import "TFTerraformer.h"
 
 @interface Terraformer : NSObject
 

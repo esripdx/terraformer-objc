@@ -7,11 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TFPrimitive.h"
 
 @class TFGeometry;
 
-@interface TFGeometryCollection : NSObject <TFPrimitive>
+@interface TFGeometryCollection : TFGeometry
 
 @property (nonatomic, copy) NSArray *geometries;
 
@@ -20,9 +19,5 @@
 - (void)addGeometry:(TFGeometry *)geometry;
 
 - (void)removeGeometry:(TFGeometry *)geometry;
-
-- (NSArray *)geometriesWhichContain:(TFGeometry *)geometry;
-- (NSArray *)geometriesWhichIntersect:(TFGeometry *)geometry;
-- (NSArray *)geometriesWithin:(TFGeometry *)geometry;
 
 @end

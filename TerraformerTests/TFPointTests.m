@@ -19,9 +19,9 @@
 - (void)setUp {
     self.point1 = [[TFPoint alloc] initWithX:1 y:1];
 
-    TFCoordinate *c = [TFCoordinate coordinateWithX:1 y:1];
-    self.point2 = [[TFPoint alloc] initWithCoordinate:c];
-    self.point3 = [TFPoint pointWithCoordinate:c];
+    NSArray *c = @[@(1), @(1)];
+    self.point2 = [[TFPoint alloc] initWithCoordinates:c];
+    self.point3 = [TFPoint pointWithCoordinates:c];
     self.point4 = [TFPoint pointWithX:1 y:1];
 
     self.anotherPoint = [TFPoint pointWithX:1.5 y:1.5];
