@@ -22,6 +22,7 @@
 + (TFPrimitive *)polygon;
 + (TFPrimitive *)polygon_with_holes;
 + (TFPrimitive *)waldocanyon;
++ (TFPrimitive *)feature_collection;
 
 + (TFPrimitive *)multi_line_string;
 + (TFPrimitive *)multi_point;

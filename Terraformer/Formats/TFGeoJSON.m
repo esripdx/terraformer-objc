@@ -15,6 +15,7 @@
 #import "TFPolygon.h"
 #import "TFMultiPolygon.h"
 #import "TFFeature.h"
+#import "TFFeatureCollection.h"
 
 static NSString *const TFTypeKey = @"type";
 static NSString *const TFCoordinatesKey = @"coordinates";
@@ -81,6 +82,23 @@ static NSString *const TFPropertiesKey = @"properties";
             if (feature.properties != nil) {
                 dict[TFPropertiesKey] = feature.properties;
             }
+        }
+        case TFPrimitiveTypeFeatureCollection: {
+            TFFeatureCollection *featureCollection = (TFFeatureCollection *)primitive;
+
+            NSMutableArray *featuresArray = [NSMutableArray new];
+            for (TFFeature *f in featureCollection.features) {
+                NSData *featureData = [self encodePrimitive:f error:error];
+                if (!featureData) {
+                    return nil;
+                }
+                NSDictionary *featureDict = [NSJSONSerialization JSONObjectWithData:featureData options:0 error:error];
+                if (!featureDict) {
+                    return nil;
+                }
+                [featuresArray addObject:featureDict];
+            }
+            dict[TFFeaturesKey] = featuresArray;
         }
         default:
             NSAssert(NO, @"not yet implemented");
@@ -241,6 +259,29 @@ static NSString *const TFPropertiesKey = @"properties";
             TFGeometry *geometry = (TFGeometry *)[self decode:geometryData error:error];
 
             return [TFFeature featureWithGeometry:geometry properties:dict[TFPropertiesKey] identifier:dict[TFIdKey]];
+        }
+        case TFPrimitiveTypeFeatureCollection: {
+            NSArray *featureDictsArray = dict[TFFeaturesKey];
+            if (!featureDictsArray) {
+                *error = [self errorWithMessage:@"No features key found in FeatureCollection"];
+                return nil;
+            }
+            NSMutableArray *features = [NSMutableArray new];
+            for (NSDictionary *featureDict in featureDictsArray) {
+                NSData *featureData = [NSJSONSerialization dataWithJSONObject:featureDict options:0 error:error];
+                if (!featureData) {
+                    return nil;
+                }
+
+                TFFeature *feature = (TFFeature *)[self decode:featureData error:error];
+                if (!feature) {
+                    return nil;
+                }
+
+                [features addObject:feature];
+            }
+
+            return [TFFeatureCollection featureCollectionWithFeatures:features];
         }
         default:
             NSAssert(NO, @"not yet implemented");

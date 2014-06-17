@@ -6,8 +6,9 @@
 #import <XCTest/XCTest.h>
 #import "TFFeatureCollection.h"
 #import "TFFeature.h"
-#import "TFGeometry.h"
 #import "TFPoint.h"
+#import "TFTestData.h"
+#import "TFPolygon.h"
 
 @interface TFFeatureCollectionTests : XCTestCase
 
@@ -45,4 +46,19 @@
     XCTAssertTrue(self.collection.features.count == 0);
 }
 
+- (void)testDataFiles {
+    TFFeatureCollection *fc = (TFFeatureCollection *)[TFTestData feature_collection];
+    XCTAssert(fc.type == TFPrimitiveTypeFeatureCollection);
+    XCTAssert([fc count] == 2);
+
+    TFFeature *f = fc[0];
+    XCTAssertNotNil(f);
+    XCTAssert(f.geometry.type == TFPrimitiveTypePolygon);
+    TFPolygon *p = (TFPolygon *)f.geometry;
+    XCTAssertEqualObjects(p[0][0][0], @(-180));
+
+    f = fc[1];
+    p = (TFPolygon *)f.geometry;
+    XCTAssertEqualObjects(p[0][0][0], @(-130));
+}
 @end

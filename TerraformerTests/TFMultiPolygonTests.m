@@ -80,9 +80,12 @@
     XCTAssertNotEqual([self.multiPolygonA hash], [mp hash]);
 }
 
-- (void)testData {
+- (void)testDataFiles {
     TFMultiPolygon *multiPolygon = (TFMultiPolygon *)[TFTestData multi_polygon];
     XCTAssertEqualObjects(multiPolygon[0][0][0][0], @(102));
+
+    TFMultiPolygon *sfCounty = (TFMultiPolygon *)[TFTestData sf_county];
+    XCTAssertEqualObjects(sfCounty[0][0][0][0], @(-123.00111));
 }
 
 @end

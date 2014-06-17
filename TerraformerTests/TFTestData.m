@@ -62,6 +62,12 @@
     return [tf parse:[self loadFile:@"waldocanyon"] error:NULL];
 }
 
++ (TFPrimitive *)feature_collection {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"feature_collection"] error:NULL];
+}
+
 + (TFPrimitive *)multi_line_string {
     TFTerraformer *tf = [TFTerraformer new];
     tf.decoder = [TFGeoJSON class];
