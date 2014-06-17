@@ -12,6 +12,7 @@
 #import "TFLineString.h"
 #import "TFMultiPoint.h"
 #import "TFMultiLineString.h"
+#import "TFPolygon.h"
 
 static NSString *const TFTypeKey = @"type";
 static NSString *const TFCoordinatesKey = @"coordinates";
@@ -49,6 +50,10 @@ static NSString *const TFPropertiesKey = @"properties";
             TFMultiLineString *mls = (TFMultiLineString *)primitive;
             dict[TFCoordinatesKey] = [self arrayOfLineStringCoordinates:mls.lineStrings];
             break;
+        }
+        case TFPrimitiveTypePolygon: {
+            TFPolygon *polygon = (TFPolygon *)primitive;
+            dict[TFCoordinatesKey] = [self arrayOfLineStringCoordinates:polygon.lineStrings];
         }
         default:
             NSAssert(NO, @"not yet implemented");
@@ -141,6 +146,42 @@ static NSString *const TFPropertiesKey = @"properties";
             }
 
             return [TFMultiLineString multiLineStringWithLineStrings:lineStrings];
+        }
+        case TFPrimitiveTypePolygon: {
+            /*
+            Without holes:
+            {
+                "type": "Polygon",
+                "coordinates": [
+                  [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]
+                ]
+            }
+
+            With holes:
+            {
+                "type": "Polygon",
+                "coordinates": [
+                  [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ],
+                  [ [100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2] ]
+                ]
+            }
+            */
+
+            NSArray *coords = [self coordsFromDict:dict error:error];
+            if (!coords) {
+                return nil;
+            }
+
+            NSMutableArray *lineStrings = [NSMutableArray new];
+            for (NSArray *lsCoords in coords) {
+                TFLineString *lineString = [self parseLineStringCoordinates:lsCoords error:error];
+                if (!lineString) {
+                    return nil;
+                }
+                [lineStrings addObject:lineString];
+            }
+
+            return [TFPolygon polygonWithLineStrings:lineStrings];
         }
         default:
             NSAssert(NO, @"not yet implemented");

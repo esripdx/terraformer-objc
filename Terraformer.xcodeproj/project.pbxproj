@@ -27,6 +27,8 @@
 		67EF2B1FC0A399C1BD3B01ED /* polygon.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 67EF2D5294B9D6CAA2352949 /* polygon.geojson */; };
 		67EF2E09B8439EE0F5D79155 /* TFMultiPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF2FB0FB062863EE961514 /* TFMultiPoint.m */; };
 		67EF2F69CA9AD6B532E24B8D /* line_string.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 67EF2CC1028B09B2FC1D13D5 /* line_string.geojson */; };
+		94CDD52519500A3200F58B73 /* TFPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 9442E12A192C183E00CAC58B /* TFPolygon.m */; };
+		94CDD52619500FA600F58B73 /* TFPolygonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CFCC95192D632D00028043 /* TFPolygonTests.m */; };
 		94D59AD6192C06A400A8E6F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AD5192C06A400A8E6F8 /* Foundation.framework */; };
 		94D59ADB192C06A400A8E6F8 /* Terraformer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94D59ADA192C06A400A8E6F8 /* Terraformer.h */; };
 		94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D59ADC192C06A400A8E6F8 /* Terraformer.m */; };
@@ -235,11 +237,6 @@
 				94D59ADA192C06A400A8E6F8 /* Terraformer.h */,
 				94D59ADC192C06A400A8E6F8 /* Terraformer.m */,
 				BE6DD6F2192D1B72002DAE4D /* TFConstants.h */,
-				9442E123192C0FF500CAC58B,
-				31DE5473CC8C338AB093CBD2,
-				31DE5C0B269CCB85AD073BC8,
-				67EF2F10853B96256D514395,
-				67EF26A11957E87AD8EDC4C4,
 				94D59AD8192C06A400A8E6F8 /* Supporting Files */,
 				67EF271474F5F5536C98E13A /* TFTerraformer.m */,
 				67EF2496E7AC9821B148138C /* TFTerraformer.h */,
@@ -381,7 +378,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0361DF76192E8D9C00386F4A,
+				94CDD52519500A3200F58B73 /* TFPolygon.m in Sources */,
 				BD9F7F521934F87E0037C015 /* TFMultiLineString.m in Sources */,
 				94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */,
 				BDED1CA7192D3730005F7477 /* TFLineString.m in Sources */,
@@ -397,6 +394,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94CDD52619500FA600F58B73 /* TFPolygonTests.m in Sources */,
 				BDED1CA9192D5677005F7477 /* TFLineStringTests.m in Sources */,
 				BD9F7F54193536940037C015 /* TFMultiLineStringTests.m in Sources */,
 				94D59AF2192C06A400A8E6F8 /* TerraformerTests.m in Sources */,

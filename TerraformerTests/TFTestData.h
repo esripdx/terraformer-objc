@@ -15,15 +15,14 @@
 
 + (NSData *)loadFile:(NSString *)name;
 
-//+ (TFPolygon *)circle;
-//+ (TFGeometryCollection *)geometry_collection;
++ (TFPrimitive *)circle;
++ (TFPrimitive *)geometry_collection;
 + (TFPrimitive *)line_string;
 + (TFPrimitive *)point;
-//+ (TFPolygon *)polygon;
-//+ (TFPolygon *)polygon_with_holes;
-//+ (TFFeature *)waldocanyon;
++ (TFPrimitive *)polygon;
++ (TFPrimitive *)polygon_with_holes;
++ (TFPrimitive *)waldocanyon;
 
-// TODO: Return TFMulti*** classes when they're a thing
 + (TFPrimitive *)multi_line_string;
 + (TFPrimitive *)multi_point;
 + (TFPrimitive *)multi_polygon;

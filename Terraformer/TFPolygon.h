@@ -6,32 +6,19 @@
 //  Copyright (c) 2014 pdx.esri.com. All rights reserved.
 //
 
-#import "TFGeometry.h"
+#import "TFPrimitive.h"
 
-@class TFCoordinate;
+@interface TFPolygon : TFPrimitive
 
-@interface TFPolygon : TFGeometry
+@property (copy, nonatomic) NSArray *lineStrings;
 
-- (instancetype)initWithVertices:(NSArray *)coordinates;
-- (instancetype)initWithVertices:(NSArray *)coordinates holes:(NSArray *)polygons;
++ (instancetype)polygonWithLineStrings:(NSArray *)lineStrings;
+- (instancetype)initWithLineStrings:(NSArray *)lineStrings;
 
 - (BOOL)isEqualToPolygon:(TFPolygon *)other;
-- (BOOL)isClosed;
-
-- (void)close;
-
-- (NSUInteger)numberOfVertices;
-- (TFCoordinate *)vertexAtIndex:(NSUInteger)index;
-- (void)insertVertex:(TFCoordinate *)coordinate atIndex:(NSUInteger)index;
-- (void)removeVertexAtIndex:(NSUInteger)index;
-
-// Convenience methods for accessing the polygon's holes as polygon objects. To
-// get holes as coordinate arrays, use polygon.coordinates starting at the
-// second position in the array.
-
+- (BOOL)hasHoles;
 - (NSUInteger)numberOfHoles;
-- (TFPolygon *)holeAtIndex:(NSUInteger)index;
-- (void)insertHole:(TFPolygon *)hole atIndex:(NSUInteger)index;
-- (void)removeHoleAtIndex:(NSUInteger)index;
 
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (NSUInteger)count;
 @end
