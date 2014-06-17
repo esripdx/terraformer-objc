@@ -14,46 +14,20 @@
 }
 
 - (instancetype)initWithPoints:(NSArray *)points {
-    if (self = [super init]) {
-        if (points == nil) {
-            points = @[];
-        }
-
-        NSMutableArray *coordinates = [NSMutableArray new];
-        for (TFPoint *p in points) {
-            [coordinates addObject:p.coordinate];
-        }
-        self.coordinates = coordinates;
+    self = [super initWithType:TFPrimitiveTypeMultiPoint];
+    if (self) {
+        _points = [points copy];
     }
     return self;
 }
 
-- (void)addPointWithX:(double)x y:(double)y {
-    NSMutableArray *c = [self.coordinates mutableCopy];
-    [c addObject:[TFCoordinate coordinateWithX:x y:y]];
-    self.coordinates = [c copy];
-}
-
-- (void)removePointAtIndex:(NSUInteger)idx {
-    NSMutableArray *c = [self.coordinates mutableCopy];
-    [c removeObjectAtIndex:idx];
-    self.coordinates = [c copy];
-}
-
 - (id)objectAtIndexedSubscript:(NSUInteger)idx {
-    return self.coordinates[idx];
-}
-
-- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx {
-    NSMutableArray *c = [self.coordinates mutableCopy];
-    c[idx] = obj;
-    self.coordinates = [c copy];
+    return self.points[idx];
 }
 
 - (NSUInteger)count {
-    return self.coordinates.count;
+    return self.points.count;
 }
-
 
 - (BOOL)isEqual:(id)other {
     if (other == self) {
@@ -64,12 +38,11 @@
     }
 
     TFMultiPoint *o = other;
-    return [self.coordinates isEqualToArray:o.coordinates];
+    return [self.points isEqualToArray:o.points];
 }
 
 - (NSUInteger)hash {
-    return [self.coordinates hash];
+    return [self.points hash];
 }
-
 
 @end

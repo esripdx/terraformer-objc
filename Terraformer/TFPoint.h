@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 pdx.esri.com. All rights reserved.
 //
 
-#import "TFGeometry.h"
+#import "TFPrimitive.h"
 
-@interface TFPoint : TFGeometry
+@interface TFPoint : TFPrimitive
 
 @property (copy, nonatomic) NSArray *coordinates;
 @property (readonly) double x;
@@ -22,5 +22,8 @@
 - (instancetype)initWithCoordinates:(NSArray *)coordinates;
 + (instancetype)pointWithLatitude:(double)lat longitude:(double)lng;
 - (instancetype)initWithLatitude:(double)lat longitude:(double)lng;
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (NSUInteger)count;
 
 @end

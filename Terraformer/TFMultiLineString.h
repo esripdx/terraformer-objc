@@ -6,13 +6,16 @@
 //  Copyright (c) 2014 pdx.esri.com. All rights reserved.
 //
 
-#import "TFGeometry.h"
+#import "TFPrimitive.h"
 
-@class TFCoordinate;
+@interface TFMultiLineString : TFPrimitive
 
-@interface TFMultiLineString : TFGeometry
+@property (copy, nonatomic) NSArray *lineStrings;
 
-+ (instancetype)lineStringsWithCoordinateArrays:(NSArray *)lines;
-- (instancetype)initWithCoordinateArrays:(NSArray *)lines;
++ (instancetype)multiLineStringWithLineStrings:(NSArray *)lineStrings;
+- (instancetype)initWithLineStrings:(NSArray *)lineStrings;
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (NSUInteger)count;
 
 @end

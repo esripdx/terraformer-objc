@@ -35,7 +35,7 @@
 }
 
 - (instancetype)initWithCoordinates:(NSArray *)coordinates {
-    self = [super init];
+    self = [super initWithType:TFPrimitiveTypePoint];
     if (self) {
         _coordinates = [coordinates copy];
     }
@@ -59,10 +59,12 @@
     return [self.coordinates[0] doubleValue];
 }
 
-#pragma mark TFPrimitive
+- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+    return self.coordinates[idx];
+}
 
-- (TFPrimitiveType)type {
-    return TFPrimitiveTypePoint;
+- (NSUInteger)count {
+    return [self.coordinates count];
 }
 
 #pragma mark NSObject

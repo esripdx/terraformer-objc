@@ -6,20 +6,17 @@
 //  Copyright (c) 2014 pdx.esri.com. All rights reserved.
 //
 
-#import "TFGeometry.h"
+#import "TFPrimitive.h"
 
-@class TFCoordinate;
+@interface TFLineString : TFPrimitive
 
-@interface TFLineString : TFGeometry
+@property (copy, nonatomic) NSArray *points;
 
-+ (instancetype)lineStringWithCoordinates:(NSArray*)coordinates;
-+ (instancetype)lineStringWithXYs:(NSArray *)xys;
-- (instancetype)initWithCoordinates:(NSArray *)coordinates;
-- (instancetype)initWithXYs:(NSArray *)xys;
++ (instancetype)lineStringWithPoints:(NSArray *)points;
+- (instancetype)initWithPoints:(NSArray *)points;
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (NSUInteger)count;
+
 - (BOOL)isLinearRing;
-- (NSUInteger)numberOfCoordinates;
-- (TFCoordinate *)coordinateAtIndex:(NSUInteger)index;
-- (void)insertCoordinate:(TFCoordinate *)coordinate atIndex:(NSUInteger)index;
-- (void)removeCoordinateAtIndex:(NSUInteger)index;
-
 @end

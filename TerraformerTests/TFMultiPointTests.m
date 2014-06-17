@@ -35,32 +35,14 @@
     [super tearDown];
 }
 
-- (void) testCreateMultiPoint {
-    XCTAssertEqualObjects(self.point.coordinate, self.mp1[0]);
+- (void)testCreateMultiPoint {
+    XCTAssertEqualObjects(self.point, self.mp1[0]);
     XCTAssertEqualObjects(self.mp1, self.mp2);
 }
 
-- (void) testHash {
+- (void)testHash {
     XCTAssertEqual(self.mp1.hash, self.mp2.hash);
     XCTAssertNotEqual(self.mp1, self.anotherMultipoint);
-}
-
-- (void) testAddPoint {
-    TFMultiPoint *mp = [TFMultiPoint multiPointWithPoints:@[self.point]];
-    XCTAssertEqual(mp.count, 1);
-
-    [mp addPointWithX:3 y:2];
-    XCTAssertEqual(mp.count, 2);
-}
-
-- (void) testRemovePoint {
-    TFMultiPoint *mp = [TFMultiPoint multiPointWithPoints:@[self.point, self.anotherPoint, [TFPoint pointWithX:10 y:10]]];
-    XCTAssertEqual(mp.count, 3);
-
-    [mp removePointAtIndex:1];
-    XCTAssertEqual(mp.count, 2);
-
-    XCTAssertEqualObjects(mp, self.mp1);
 }
 
 @end

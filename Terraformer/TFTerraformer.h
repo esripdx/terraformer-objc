@@ -24,18 +24,21 @@
 + (TFPrimitive *)decode:(NSData *)data error:(NSError **)error;
 @end
 
+static NSString *const TFTerraformerErrorDomain = @"com.esri.pdx.Terraformer";
+static NSInteger const kTFTerraformerParseError = 1;
+
 @interface TFTerraformer : NSObject
 
-@property (strong, nonatomic) id <TFEncoder> encoder;
-@property (strong, nonatomic) id <TFDecoder> decoder;
+@property (strong, nonatomic) Class<TFEncoder> encoder;
+@property (strong, nonatomic) Class<TFDecoder> decoder;
 
 /**
 * The main initializer for a TFTerraformer object.
 *
-* @param encoder The encoder to use to format the output of the convert method.
-* @param decoder The decoder to use to parse the input of the convert method.
+* @param encoder The encoder class to use to format the output of the convert method.
+* @param decoder The decoder class to use to parse the input of the convert method.
 */
-- (instancetype)initWithEncoder:(id <TFEncoder>)encoder decoder:(id <TFDecoder>)decoder;
+- (instancetype)initWithEncoder:(Class<TFEncoder>)encoder decoder:(Class<TFDecoder>)decoder;
 
 /**
 * Parses the given input using this instance's `TFDecoder` and converts it using
