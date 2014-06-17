@@ -272,7 +272,7 @@ static NSString *const TFPropertiesKey = @"properties";
         case TFPrimitiveTypeFeature: {
             NSDictionary *geometryDict = dict[TFGeometryKey];
             if (!geometryDict) {
-                *error = [self errorWithMessage:@"No geometry key found in Feature"];
+                [self populateError:error withMessage:@"No geometry key found in Feature"];
                 return nil;
             }
             NSData *geometryData = [NSJSONSerialization dataWithJSONObject:geometryDict options:0 error:error];
@@ -286,7 +286,7 @@ static NSString *const TFPropertiesKey = @"properties";
         case TFPrimitiveTypeFeatureCollection: {
             NSArray *featureDictsArray = dict[TFFeaturesKey];
             if (!featureDictsArray) {
-                *error = [self errorWithMessage:@"No features key found in FeatureCollection"];
+                [self populateError:error withMessage:@"No features key found in FeatureCollection"];
                 return nil;
             }
             NSMutableArray *features = [NSMutableArray new];
@@ -309,7 +309,7 @@ static NSString *const TFPropertiesKey = @"properties";
         case TFPrimitiveTypeGeometryCollection: {
             NSArray *geometryDictsArray = dict[TFGeometriesKey];
             if (!geometryDictsArray) {
-                *error = [self errorWithMessage:@"No geometries key found in GeometryCollection"];
+                [self populateError:error withMessage:@"No geometries key found in GeometryCollection"];
                 return nil;
             }
 
@@ -340,30 +340,32 @@ static NSString *const TFPropertiesKey = @"properties";
 + (NSArray *)coordsFromDict:(NSDictionary *)dict error:(NSError **)error {
     NSArray *coords = dict[TFCoordinatesKey];
     if (!coords) {
-        *error = [self errorWithMessage:@"No coordinates property found."];
+        [self populateError:error withMessage:@"No coordinates property found."];
         return nil;
     }
     if ([coords count] < 1) {
-        *error = [self errorWithMessage:@"No coordinates found in coordinates property."];
+        [self populateError:error withMessage:@"No coordinates found in coordinates property."];
         return nil;
     }
     return coords;
 }
 
-+ (NSError *)errorWithMessage:(NSString *)message {
-    return [NSError errorWithDomain:TFTerraformerErrorDomain code:kTFTerraformerParseError userInfo:@{
-            NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Could not parse GeoJSON: %@", message]
-    }];
++ (void)populateError:(NSError **)error withMessage:(NSString *)message {
+    if (*error != nil) {
+        *error = [NSError errorWithDomain:TFTerraformerErrorDomain code:kTFTerraformerParseError userInfo:@{
+                NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Could not parse GeoJSON: %@", message]
+        }];
+    }
 }
 
 + (TFPoint *)parsePointCoordinates:(NSArray *)coords error:(NSError **)error {
     if ([coords count] < 2) {
-        *error = [self errorWithMessage:@"Not enough coordinates"];
+        [self populateError:error withMessage:@"Not enough coordinates"];
         return nil;
     }
 
     if (![coords[0] isKindOfClass:[NSNumber class]] || ![coords[1] isKindOfClass:[NSNumber class]]) {
-        *error = [self errorWithMessage:@"Invalid value found in coordinates array."];
+        [self populateError:error withMessage:@"Invalid value found in coordinates array."];
         return nil;
     }
 
@@ -381,7 +383,7 @@ static NSString *const TFPropertiesKey = @"properties";
 + (TFLineString *)parseLineStringCoordinates:(NSArray *)coords error:(NSError **)error {
     // we need at least 2 points to make a lineString
     if ([coords count] < 2) {
-        *error = [self errorWithMessage:@"Not enough points in coordinates array."];
+        [self populateError:error withMessage:@"Not enough points in coordinates array."];
         return nil;
     }
 

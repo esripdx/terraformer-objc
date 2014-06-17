@@ -25,7 +25,7 @@
 
 - (NSData *)convert:(NSData *)input error:(NSError **)error {
     TFPrimitive *primitive = [self.decoder decode:input error:error];
-    if (error) {
+    if (primitive == nil) {
         return nil;
     }
     return [self.encoder encodePrimitive:primitive error:error];
