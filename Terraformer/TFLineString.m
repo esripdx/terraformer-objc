@@ -61,9 +61,7 @@
     if ([self.points count] > 3) {
         TFPoint *first = (TFPoint *)self.points[0];
         TFPoint *last = (TFPoint *)self.points[[self.points count]-1];
-        if ([first isEqual:last]) {
-            return YES;
-        }
+        return [first isEqual:last];
     }
     return NO;
 }
