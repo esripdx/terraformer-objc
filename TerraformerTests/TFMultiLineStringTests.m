@@ -10,6 +10,7 @@
 #import "TFLineString.h"
 #import "TFMultiLineString.h"
 #import "TFPoint.h"
+#import "TFTestData.h"
 
 @interface TFMultiLineStringTests : XCTestCase
 
@@ -58,6 +59,14 @@
     XCTAssertEqual([self.multilinestring[1][0] x], [self.point3 x]);
     XCTAssertEqual([self.multilinestring[1][1] x], [self.point4 x]);
 
+}
+
+- (void)testDataFiles {
+    TFMultiLineString *mls = (TFMultiLineString *)[TFTestData multi_line_string];
+
+    XCTAssert(mls.type == TFPrimitiveTypeMultiLineString);
+    XCTAssert([mls count] == 2);
+    XCTAssertEqualObjects(mls[0][0][0], @(100));
 }
 
 @end

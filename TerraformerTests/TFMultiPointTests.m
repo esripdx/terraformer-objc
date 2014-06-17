@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "TFPoint.h"
 #import "TFMultiPoint.h"
+#import "TFTestData.h"
 
 @interface TFMultiPointTests : XCTestCase
 @property TFPoint *point;
@@ -45,4 +46,10 @@
     XCTAssertNotEqual(self.mp1, self.anotherMultipoint);
 }
 
+- (void)testDataFiles {
+    TFMultiPoint *mp = (TFMultiPoint *)[TFTestData multi_point];
+    XCTAssert(mp.type == TFPrimitiveTypeMultiPoint);
+    XCTAssert([mp count] == 4);
+    XCTAssertEqualObjects(mp[0][0], @(100));
+}
 @end

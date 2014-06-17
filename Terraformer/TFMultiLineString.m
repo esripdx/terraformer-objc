@@ -33,4 +33,21 @@
 - (NSUInteger)count {
     return [self.lineStrings count];
 }
+
+- (BOOL)isEqual:(id)object {
+    if ( object == self ) {
+        return YES;
+    }
+
+    if ( object == nil || ![object isKindOfClass:[self class]] ) {
+        return NO;
+    }
+
+    TFMultiLineString *other = object;
+    return [self.lineStrings isEqualToArray:other.lineStrings];
+}
+
+- (NSUInteger)hash {
+    return [self.lineStrings hash];
+}
 @end

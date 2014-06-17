@@ -32,11 +32,20 @@
     return [[self alloc] initWithPoints:points];
 }
 
+- (BOOL)isEqual:(id)other {
+    if (other == self) {
+        return YES;
+    }
+    if (!other || ![[other class] isEqual:[self class]]) {
+        return NO;
+    }
 
-- (BOOL)isEqual:(id)other
-{
-#warning stub
-    return NO;
+    TFLineString *o = other;
+    return [self.points isEqualToArray:o.points];
+}
+
+- (NSUInteger)hash {
+    return [self.points hash];
 }
 
 /*

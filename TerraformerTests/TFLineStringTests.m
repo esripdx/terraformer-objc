@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "TFLineString.h"
 #import "TFPoint.h"
+#import "TFTestData.h"
 
 @interface TFLineStringTests : XCTestCase
 
@@ -40,7 +41,6 @@
 
 - (void)testInitsWithCoordinates
 {
-
     XCTAssertEqual(self.linestring.points, self.points);
     XCTAssertEqual(self.linestring.points[0], self.point1);
     XCTAssertEqual(self.linestring.points[1], self.point2);
@@ -55,19 +55,17 @@
     XCTAssertTrue([self.linestring[1] isEqual:self.linestring.points[1]]);
 }
 
-/* TODO!
 - (void)testEquality
 {
-    TFCoordinate *c1 = [TFCoordinate coordinateWithX:5 y:10];
-    TFCoordinate *c2 = [TFCoordinate coordinateWithX:5 y:10];
-    NSArray *coords = @[c1, c2];
+    TFPoint *p1 = [TFPoint pointWithX:5 y:10];
+    TFPoint *p2 = [TFPoint pointWithX:5 y:10];
+    NSArray *points = @[p1, p2];
 
-    TFLineString *ls1 = [[TFLineString alloc] initWithCoordinates:coords];
-    TFLineString *ls2 = [[TFLineString alloc] initWithCoordinates:coords];
+    TFLineString *ls1 = [TFLineString lineStringWithPoints:points];
+    TFLineString *ls2 = [TFLineString lineStringWithPoints:points];
 
-    XCTAssertTrue([ls1 isEqual:ls2]);
+    XCTAssertEqualObjects(ls1, ls2);
 }
-*/
 
 - (void)testInequality
 {
@@ -82,6 +80,13 @@
     TFLineString *ls2 = [TFLineString lineStringWithPoints:points2];
 
     XCTAssertFalse([ls1 isEqual:ls2]);
+}
+
+- (void)testDataFiles {
+    TFLineString *lineString = (TFLineString *)[TFTestData line_string];
+    XCTAssert(lineString.type == TFPrimitiveTypeLineString);
+    XCTAssert(lineString.count == 4);
+    XCTAssertEqualObjects(lineString[0][0], @(100));
 }
 
 @end
