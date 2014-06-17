@@ -6,18 +6,21 @@
 //  Copyright (c) 2014 ESRI. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-@class TFGeometry;
+#import "TFGeometry.h"
 
 @interface TFGeometryCollection : TFGeometry
 
 @property (nonatomic, copy) NSArray *geometries;
 
++ (instancetype)geometryCollectionWithGeometries:(NSArray *)geometries;
 - (instancetype)initWithGeometries:(NSArray *)geometries;
 
-- (void)addGeometry:(TFGeometry *)geometry;
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
+- (NSUInteger)count;
 
+- (void)addGeometry:(TFGeometry *)geometry;
 - (void)removeGeometry:(TFGeometry *)geometry;
+- (void)insertGeometry:(TFGeometry *)geometry atIndex:(NSUInteger)idx;
 
 @end

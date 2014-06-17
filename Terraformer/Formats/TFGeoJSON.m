@@ -16,6 +16,7 @@
 #import "TFMultiPolygon.h"
 #import "TFFeature.h"
 #import "TFFeatureCollection.h"
+#import "TFGeometryCollection.h"
 
 static NSString *const TFTypeKey = @"type";
 static NSString *const TFCoordinatesKey = @"coordinates";
@@ -99,6 +100,23 @@ static NSString *const TFPropertiesKey = @"properties";
                 [featuresArray addObject:featureDict];
             }
             dict[TFFeaturesKey] = featuresArray;
+        }
+        case TFPrimitiveTypeGeometryCollection: {
+            TFGeometryCollection *geometryCollection = (TFGeometryCollection *)primitive;
+
+            NSMutableArray *geometriesArray = [NSMutableArray new];
+            for (TFGeometry *geometry in geometryCollection.geometries) {
+                NSData *geometryData = [self encodePrimitive:geometry error:error];
+                if (!geometryData) {
+                    return nil;
+                }
+                NSDictionary *geometryDict = [NSJSONSerialization JSONObjectWithData:geometryData options:0 error:error];
+                if (!geometryDict) {
+                    return nil;
+                }
+                [geometriesArray addObject:geometryDict];
+            }
+            dict[TFGeometriesKey] = geometriesArray;
         }
         default:
             NSAssert(NO, @"not yet implemented");
@@ -282,6 +300,30 @@ static NSString *const TFPropertiesKey = @"properties";
             }
 
             return [TFFeatureCollection featureCollectionWithFeatures:features];
+        }
+        case TFPrimitiveTypeGeometryCollection: {
+            NSArray *geometryDictsArray = dict[TFGeometriesKey];
+            if (!geometryDictsArray) {
+                *error = [self errorWithMessage:@"No geometries key found in GeometryCollection"];
+                return nil;
+            }
+
+            NSMutableArray *geometries = [NSMutableArray new];
+            for (NSDictionary *geometryDict in geometryDictsArray) {
+                NSData *geometryData = [NSJSONSerialization dataWithJSONObject:geometryDict options:0 error:error];
+                if (!geometryData) {
+                    return nil;
+                }
+
+                TFGeometry *geometry = (TFGeometry *)[self decode:geometryData error:error];
+                if (!geometry) {
+                    return nil;
+                }
+
+                [geometries addObject:geometry];
+            }
+
+            return [TFGeometryCollection geometryCollectionWithGeometries:geometries];
         }
         default:
             NSAssert(NO, @"not yet implemented");
