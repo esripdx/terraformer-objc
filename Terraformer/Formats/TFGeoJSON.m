@@ -351,7 +351,7 @@ static NSString *const TFPropertiesKey = @"properties";
 }
 
 + (void)populateError:(NSError **)error withMessage:(NSString *)message {
-    if (*error != nil) {
+    if (error != NULL) {
         *error = [NSError errorWithDomain:TFTerraformerErrorDomain code:kTFTerraformerParseError userInfo:@{
                 NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Could not parse GeoJSON: %@", message]
         }];
