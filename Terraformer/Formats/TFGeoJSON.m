@@ -58,10 +58,12 @@ static NSString *const TFPropertiesKey = @"properties";
         case TFPrimitiveTypePolygon: {
             TFPolygon *polygon = (TFPolygon *)primitive;
             dict[TFCoordinatesKey] = [self arrayOfLineStringCoordinates:polygon.lineStrings];
+            break;
         }
         case TFPrimitiveTypeMultiPolygon: {
             TFMultiPolygon *mp = (TFMultiPolygon *)primitive;
             dict[TFCoordinatesKey] = [self arrayOfPolygonCoordinates:mp.polygons];
+            break;
         }
         case TFPrimitiveTypeFeature: {
             TFFeature *feature = (TFFeature *)primitive;
@@ -83,6 +85,7 @@ static NSString *const TFPropertiesKey = @"properties";
             if (feature.properties != nil) {
                 dict[TFPropertiesKey] = feature.properties;
             }
+            break;
         }
         case TFPrimitiveTypeFeatureCollection: {
             TFFeatureCollection *featureCollection = (TFFeatureCollection *)primitive;
@@ -100,6 +103,7 @@ static NSString *const TFPropertiesKey = @"properties";
                 [featuresArray addObject:featureDict];
             }
             dict[TFFeaturesKey] = featuresArray;
+            break;
         }
         case TFPrimitiveTypeGeometryCollection: {
             TFGeometryCollection *geometryCollection = (TFGeometryCollection *)primitive;
@@ -117,6 +121,7 @@ static NSString *const TFPropertiesKey = @"properties";
                 [geometriesArray addObject:geometryDict];
             }
             dict[TFGeometriesKey] = geometriesArray;
+            break;
         }
         default:
             NSAssert(NO, @"not yet implemented");
