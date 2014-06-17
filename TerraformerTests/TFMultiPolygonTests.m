@@ -9,12 +9,13 @@
 #import <XCTest/XCTest.h>
 #import "TFPolygon.h"
 #import "TFMultiPolygon.h"
-#import "TFCoordinate.h"
+#import "TFPoint.h"
+#import "TFLineString.h"
+#import "TFTestData.h"
 
 @interface TFMultiPolygonTests : XCTestCase
 
 @property (strong, nonatomic) TFMultiPolygon *multiPolygonA;
-@property (strong, nonatomic) TFMultiPolygon *multiPolygonB;
 @property (strong, nonatomic) TFPolygon *polygonA;
 @property (strong, nonatomic) TFPolygon *polygonB;
 @property (strong, nonatomic) TFPolygon *polygonC;
@@ -27,35 +28,33 @@
 {
     [super setUp];
 
-    TFCoordinate *a = [TFCoordinate coordinateWithX:1.5 y:2.0];
-    TFCoordinate *b = [TFCoordinate coordinateWithX:2.0 y:6.0];
-    TFCoordinate *c = [TFCoordinate coordinateWithX:6.5 y:6.5];
-    TFCoordinate *d = [TFCoordinate coordinateWithX:8.0 y:1.0];
+    TFPoint *a = [TFPoint pointWithX:1.5 y:2.0];
+    TFPoint *b = [TFPoint pointWithX:2.0 y:6.0];
+    TFPoint *c = [TFPoint pointWithX:6.5 y:6.5];
+    TFPoint *d = [TFPoint pointWithX:8.0 y:1.0];
     
-    TFCoordinate *a2 = [TFCoordinate coordinateWithX:3.0 y:5.0];
-    TFCoordinate *b2 = [TFCoordinate coordinateWithX:5.0 y:5.5];
-    TFCoordinate *c2 = [TFCoordinate coordinateWithX:4.0 y:3.0];
-    
-    NSArray *hole = @[a2, b2, c2];
+    TFPoint *a2 = [TFPoint pointWithX:3.0 y:5.0];
+    TFPoint *b2 = [TFPoint pointWithX:5.0 y:5.5];
+    TFPoint *c2 = [TFPoint pointWithX:4.0 y:3.0];
 
-    self.polygonA = [[TFPolygon alloc] initWithVertices:@[a, b, c, d, a] holes:@[hole]];
-    
-    a = [TFCoordinate coordinateWithX:1.0 y:1.0];
-    b = [TFCoordinate coordinateWithX:2.0 y:3.0];
-    c = [TFCoordinate coordinateWithX:3.0 y:1.0];
+    TFLineString *exterior = [TFLineString lineStringWithPoints:@[a2, b2, c2]];
+    TFLineString *interior = [TFLineString lineStringWithPoints:@[a, b, c, d, a]];
 
-    self.polygonB = [[TFPolygon alloc] initWithVertices:@[a, b, c, a]];
+    self.polygonA = [TFPolygon polygonWithLineStrings:@[interior, exterior]];
     
-    a = [TFCoordinate coordinateWithX:2.0 y:2.0];
-    b = [TFCoordinate coordinateWithX:2.0 y:4.0];
-    c = [TFCoordinate coordinateWithX:4.0 y:3.0];
+    a = [TFPoint pointWithX:1.0 y:1.0];
+    b = [TFPoint pointWithX:2.0 y:3.0];
+    c = [TFPoint pointWithX:3.0 y:1.0];
 
-    self.polygonC = [[TFPolygon alloc] initWithVertices:@[a, b, c, a]];
+    self.polygonB = [TFPolygon polygonWithLineStrings:@[[TFLineString lineStringWithPoints:@[a, b, c, a]]]];
     
-    NSArray *coordinates = @[self.polygonA.coordinates, self.polygonB.coordinates, self.polygonC.coordinates];
-    
+    a = [TFPoint pointWithX:2.0 y:2.0];
+    b = [TFPoint pointWithX:2.0 y:4.0];
+    c = [TFPoint pointWithX:4.0 y:3.0];
+
+    self.polygonC = [TFPolygon polygonWithLineStrings:@[[TFLineString lineStringWithPoints:@[a, b, c, a]]]];
+
     self.multiPolygonA = [[TFMultiPolygon alloc] initWithPolygons:@[self.polygonA, self.polygonB, self.polygonC]];
-    self.multiPolygonB = [[TFMultiPolygon alloc] initWithPolygonCoordinateArrays:coordinates];
 }
 
 - (void)tearDown;
@@ -63,42 +62,27 @@
     [super tearDown];
     
     self.multiPolygonA = nil;
-    self.multiPolygonB = nil;
-    
+
     self.polygonA = nil;
     self.polygonB = nil;
     self.polygonC = nil;
 }
 
-- (void)testInitialization;
-{
-    // Test -initWithPolygons: and -initWithPolygonCoordinateArrays: produce
-    // the same data, both as polygons and coordinate arrays.
-    
-    XCTAssertTrue( [self.multiPolygonA.coordinates isEqualToArray:self.multiPolygonB.coordinates] );
-    
-    NSInteger index;
-    
-    for ( index = 0; index < [self.multiPolygonA numberOfPolygons]; index++ ) {
-        TFPolygon *a = [self.multiPolygonA polygonAtIndex:index];
-        TFPolygon *b = [self.multiPolygonB polygonAtIndex:index];
-        
-        XCTAssertTrue( [a isEqualToPolygon:b] );
-    }
+- (void)testCreate {
+    XCTAssertEqualObjects(self.multiPolygonA[0], self.polygonA);
 }
 
-- (void)testInsertPolygon;
-{
-    XCTAssertFalse( [[self.multiPolygonA polygonAtIndex:0] isEqualToPolygon:self.polygonC] );
-    [self.multiPolygonA insertPolygon:self.polygonC atIndex:0];
-    XCTAssertTrue( [[self.multiPolygonA polygonAtIndex:0] isEqualToPolygon:self.polygonC] );
+- (void)testHash {
+    TFMultiPolygon *mp = [TFMultiPolygon multiPolygonWithPolygons:@[self.polygonA, self.polygonB, self.polygonC]];
+    XCTAssertEqual([self.multiPolygonA hash], [mp hash]);
+
+    mp.polygons = @[self.polygonA];
+    XCTAssertNotEqual([self.multiPolygonA hash], [mp hash]);
 }
 
-- (void)testRemovePolygon;
-{
-    XCTAssertTrue( [[self.multiPolygonA polygonAtIndex:0] isEqualToPolygon:self.polygonA] );
-    [self.multiPolygonA removePolygonAtIndex:0];
-    XCTAssertFalse( [[self.multiPolygonA polygonAtIndex:0] isEqualToPolygon:self.polygonA] );
+- (void)testData {
+    TFMultiPolygon *multiPolygon = (TFMultiPolygon *)[TFTestData multi_polygon];
+    XCTAssertEqualObjects(multiPolygon[0][0][0][0], @(102));
 }
 
 @end

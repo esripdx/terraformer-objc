@@ -13,6 +13,7 @@
 #import "TFMultiPoint.h"
 #import "TFMultiLineString.h"
 #import "TFPolygon.h"
+#import "TFMultiPolygon.h"
 
 static NSString *const TFTypeKey = @"type";
 static NSString *const TFCoordinatesKey = @"coordinates";
@@ -54,6 +55,10 @@ static NSString *const TFPropertiesKey = @"properties";
         case TFPrimitiveTypePolygon: {
             TFPolygon *polygon = (TFPolygon *)primitive;
             dict[TFCoordinatesKey] = [self arrayOfLineStringCoordinates:polygon.lineStrings];
+        }
+        case TFPrimitiveTypeMultiPolygon: {
+            TFMultiPolygon *mp = (TFMultiPolygon *)primitive;
+            dict[TFCoordinatesKey] = [self arrayOfPolygonCoordinates:mp.polygons];
         }
         default:
             NSAssert(NO, @"not yet implemented");
@@ -172,16 +177,34 @@ static NSString *const TFPropertiesKey = @"properties";
                 return nil;
             }
 
-            NSMutableArray *lineStrings = [NSMutableArray new];
-            for (NSArray *lsCoords in coords) {
-                TFLineString *lineString = [self parseLineStringCoordinates:lsCoords error:error];
-                if (!lineString) {
-                    return nil;
-                }
-                [lineStrings addObject:lineString];
+            return [self parsePolygonCoordinates:coords error:error];
+        }
+        case TFPrimitiveTypeMultiPolygon: {
+            /*
+            {
+                "type": "MultiPolygon",
+                "coordinates": [
+                    [[[102.0, 2.0], [103.0, 2.0], [103.0, 3.0], [102.0, 3.0], [102.0, 2.0]]],
+                    [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]],
+                    [[100.2, 0.2], [100.8, 0.2], [100.8, 0.8], [100.2, 0.8], [100.2, 0.2]]]
+                ]
+            }
+            */
+            NSArray *coords = [self coordsFromDict:dict error:error];
+            if (!coords) {
+                return nil;
             }
 
-            return [TFPolygon polygonWithLineStrings:lineStrings];
+            NSMutableArray *polys = [NSMutableArray new];
+            for (NSArray *polyCoords in coords) {
+                TFPolygon *polygon = [self parsePolygonCoordinates:polyCoords error:error];
+                if (!polygon) {
+                    return nil;
+                }
+                [polys addObject:polygon];
+            }
+
+            return [TFMultiPolygon multiPolygonWithPolygons:polys];
         }
         default:
             NSAssert(NO, @"not yet implemented");
@@ -256,6 +279,26 @@ static NSString *const TFPropertiesKey = @"properties";
     NSMutableArray *coords = [NSMutableArray new];
     for (TFLineString *ls in lineStrings) {
         [coords addObjectsFromArray:[self arrayOfPointCoordinates:ls.points]];
+    }
+    return [coords copy];
+}
+
++ (TFPolygon *)parsePolygonCoordinates:(NSArray *)coords error:(NSError **)error {
+    NSMutableArray *lineStrings = [NSMutableArray new];
+    for (NSArray *lsCoords in coords) {
+        TFLineString *lineString = [self parseLineStringCoordinates:lsCoords error:error];
+        if (!lineString) {
+            return nil;
+        }
+        [lineStrings addObject:lineString];
+    }
+    return [TFPolygon polygonWithLineStrings:lineStrings];
+}
+
++ (NSArray *)arrayOfPolygonCoordinates:(NSArray *)polygons {
+    NSMutableArray *coords = [NSMutableArray new];
+    for (TFPolygon *poly in polygons) {
+        [coords addObjectsFromArray:[self arrayOfLineStringCoordinates:poly.lineStrings]];
     }
     return [coords copy];
 }

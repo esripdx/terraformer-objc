@@ -7,64 +7,43 @@
 //
 
 #import "TFMultiPolygon.h"
-#import "TFGeometry+Protected.h"
-#import "TFPolygon.h"
 
 @implementation TFMultiPolygon
 
-#pragma mark TFMultiPolygon
-
-- (instancetype)initWithPolygonCoordinateArrays:(NSArray *)polygons;
-{
-    // See TFPolygon.m for a description of the polygon data structure.
-    
-    return [super initSubclassWithCoordinates:polygons];
++ (instancetype)multiPolygonWithPolygons:(NSArray *)polygons {
+    return [[self alloc] initWithPolygons:polygons];
 }
 
 - (instancetype)initWithPolygons:(NSArray *)polygons;
 {
-    NSMutableArray *coordinates = [[NSMutableArray alloc] initWithCapacity:[polygons count]];
-    
-    for ( TFPolygon *polygon in polygons ) {
-        [coordinates addObject:polygon.coordinates];
+    self = [super initWithType:TFPrimitiveTypeMultiPolygon];
+    if (self) {
+        _polygons = [polygons copy];
     }
-    
-    return [self initWithPolygonCoordinateArrays:coordinates];
+    return self;
 }
 
-- (NSUInteger)numberOfPolygons;
-{
-    return [self.coordinates count];
+- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+    return self.polygons[idx];
 }
 
-- (TFPolygon *)polygonAtIndex:(NSUInteger)index;
-{
-    NSArray *coordinates = self.coordinates[index];
-    NSArray *vertices = coordinates[0];
-    NSArray *holes = [coordinates count] == 1 ? @[] : [coordinates subarrayWithRange:NSMakeRange( 1, [coordinates count] - 1 )];
-    
-    return [[TFPolygon alloc] initWithVertices:vertices holes:holes];
+- (NSUInteger)count {
+    return [self.polygons count];
 }
 
-- (void)insertPolygon:(TFPolygon *)polygon atIndex:(NSUInteger)index;
-{
-    NSMutableArray *mutablePolygons = [self.coordinates mutableCopy];
-    [mutablePolygons insertObject:polygon.coordinates atIndex:index];
-    self.coordinates = [mutablePolygons copy];
+- (BOOL)isEqual:(id)other {
+    if (other == self) {
+        return YES;
+    }
+    if (!other || ![[other class] isEqual:[self class]]) {
+        return NO;
+    }
+
+    TFMultiPolygon *o = other;
+    return [self.polygons isEqualToArray:o.polygons];
 }
 
-- (void)removePolygonAtIndex:(NSUInteger)index;
-{
-    NSMutableArray *mutablePolygons = [self.coordinates mutableCopy];
-    [mutablePolygons removeObjectAtIndex:index];
-    self.coordinates = [mutablePolygons copy];
+- (NSUInteger)hash {
+    return [self.polygons hash];
 }
-
-#pragma mark TFPrimitive
-
-- (TFPrimitiveType)type;
-{
-    return TFPrimitiveTypeMultiPolygon;
-}
-
 @end
