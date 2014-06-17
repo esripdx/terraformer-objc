@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 pdx.esri.com. All rights reserved.
 //
 
-#import "TFPrimitive.h"
+#import "TFGeometry.h"
 
-@interface TFMultiLineString : TFPrimitive
+@interface TFMultiLineString : TFGeometry
 
 @property (copy, nonatomic) NSArray *lineStrings;
 

@@ -14,6 +14,7 @@
 		67EF2055D80D3943251F484D /* TFMultiPointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF291D94BE7DFBD96B43E0 /* TFMultiPointTests.m */; };
 		67EF219FDD0D2A56029B6348 /* multi_polygon.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 67EF2ED4200B7451704252E0 /* multi_polygon.geojson */; };
 		67EF225B3663274BF4D262C5 /* TFGeoJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF2341C8A839EB3D306EA5 /* TFGeoJSON.m */; };
+		67EF24C15319C1AD56754167 /* TFGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF20F933CC489B5138720A /* TFGeometry.m */; };
 		67EF256E18DA5B0316D5012C /* TFTerraformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF271474F5F5536C98E13A /* TFTerraformer.m */; };
 		67EF25A576B14158165C3837 /* multi_point.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 67EF2101559A2387C063F19D /* multi_point.geojson */; };
 		67EF2700606A41D6FCA3903F /* sf_county.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 67EF285E136E3BF5420C54FD /* sf_county.geojson */; };
@@ -31,6 +32,8 @@
 		94CDD52619500FA600F58B73 /* TFPolygonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CFCC95192D632D00028043 /* TFPolygonTests.m */; };
 		94CDD52719501E0400F58B73 /* TFMultiPolygonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A3A25C1934F67B0019B082 /* TFMultiPolygonTests.m */; };
 		94CDD52819501E1100F58B73 /* TFMultiPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 4890CBF4192EBFF200C467DF /* TFMultiPolygon.m */; };
+		94CDD5291950A6EC00F58B73 /* TFFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF2546060CC116F239D168 /* TFFeature.m */; };
+		94CDD52A1950A6FF00F58B73 /* TFFeatureTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DE5F5402791C18DB3F2116 /* TFFeatureTests.m */; };
 		94D59AD6192C06A400A8E6F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AD5192C06A400A8E6F8 /* Foundation.framework */; };
 		94D59ADB192C06A400A8E6F8 /* Terraformer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94D59ADA192C06A400A8E6F8 /* Terraformer.h */; };
 		94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D59ADC192C06A400A8E6F8 /* Terraformer.m */; };
@@ -81,6 +84,7 @@
 		48CFCC95192D632D00028043 /* TFPolygonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPolygonTests.m; sourceTree = "<group>"; };
 		67EF205D4A4CFC0C8025E5B5 /* TFPrimitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPrimitive.h; sourceTree = "<group>"; };
 		67EF20CA053EDF8FC9907611 /* circle.geojson */ = {isa = PBXFileReference; lastKnownFileType = file.geojson; path = circle.geojson; sourceTree = "<group>"; };
+		67EF20F933CC489B5138720A /* TFGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometry.m; sourceTree = "<group>"; };
 		67EF2101559A2387C063F19D /* multi_point.geojson */ = {isa = PBXFileReference; lastKnownFileType = file.geojson; path = multi_point.geojson; sourceTree = "<group>"; };
 		67EF22635E82A1E8D9306C4B /* TFGeometryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFGeometryTests.m; sourceTree = "<group>"; };
 		67EF22D834EFF66C1AF21827 /* multi_line_string.geojson */ = {isa = PBXFileReference; lastKnownFileType = file.geojson; path = multi_line_string.geojson; sourceTree = "<group>"; };
@@ -94,6 +98,7 @@
 		67EF285E136E3BF5420C54FD /* sf_county.geojson */ = {isa = PBXFileReference; lastKnownFileType = file.geojson; path = sf_county.geojson; sourceTree = "<group>"; };
 		67EF291D94BE7DFBD96B43E0 /* TFMultiPointTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFMultiPointTests.m; sourceTree = "<group>"; };
 		67EF2A362C5BE92FDB639999 /* TFPrimitive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPrimitive.m; sourceTree = "<group>"; };
+		67EF2AC53E5BF9457E6B7146 /* TFGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFGeometry.h; sourceTree = "<group>"; };
 		67EF2B2CA923602939919F11 /* waldocanyon.geojson */ = {isa = PBXFileReference; lastKnownFileType = file.geojson; path = waldocanyon.geojson; sourceTree = "<group>"; };
 		67EF2C10441390000B24FECB /* polygon_with_holes.geojson */ = {isa = PBXFileReference; lastKnownFileType = file.geojson; path = polygon_with_holes.geojson; sourceTree = "<group>"; };
 		67EF2C50903138CDA266348C /* TFFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFFeature.h; sourceTree = "<group>"; };
@@ -200,6 +205,8 @@
 				67EF205D4A4CFC0C8025E5B5 /* TFPrimitive.h */,
 				67EF2FBD353791F50AB5DD30 /* TFMultiPoint.h */,
 				67EF2FB0FB062863EE961514 /* TFMultiPoint.m */,
+				67EF20F933CC489B5138720A /* TFGeometry.m */,
+				67EF2AC53E5BF9457E6B7146 /* TFGeometry.h */,
 			);
 			name = Primitives;
 			sourceTree = "<group>";
@@ -380,6 +387,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94CDD5291950A6EC00F58B73 /* TFFeature.m in Sources */,
 				94CDD52819501E1100F58B73 /* TFMultiPolygon.m in Sources */,
 				94CDD52519500A3200F58B73 /* TFPolygon.m in Sources */,
 				BD9F7F521934F87E0037C015 /* TFMultiLineString.m in Sources */,
@@ -390,6 +398,7 @@
 				67EF225B3663274BF4D262C5 /* TFGeoJSON.m in Sources */,
 				67EF298C34CE08F1FCA15F34 /* TFPrimitive.m in Sources */,
 				67EF2E09B8439EE0F5D79155 /* TFMultiPoint.m in Sources */,
+				67EF24C15319C1AD56754167 /* TFGeometry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -397,6 +406,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94CDD52A1950A6FF00F58B73 /* TFFeatureTests.m in Sources */,
 				94CDD52719501E0400F58B73 /* TFMultiPolygonTests.m in Sources */,
 				94CDD52619500FA600F58B73 /* TFPolygonTests.m in Sources */,
 				BDED1CA9192D5677005F7477 /* TFLineStringTests.m in Sources */,

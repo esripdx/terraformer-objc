@@ -14,6 +14,7 @@
 #import "TFMultiLineString.h"
 #import "TFPolygon.h"
 #import "TFMultiPolygon.h"
+#import "TFFeature.h"
 
 static NSString *const TFTypeKey = @"type";
 static NSString *const TFCoordinatesKey = @"coordinates";
@@ -59,6 +60,27 @@ static NSString *const TFPropertiesKey = @"properties";
         case TFPrimitiveTypeMultiPolygon: {
             TFMultiPolygon *mp = (TFMultiPolygon *)primitive;
             dict[TFCoordinatesKey] = [self arrayOfPolygonCoordinates:mp.polygons];
+        }
+        case TFPrimitiveTypeFeature: {
+            TFFeature *feature = (TFFeature *)primitive;
+
+            NSData *geometryData = [self encodePrimitive:feature.geometry error:error];
+            if (!geometryData) {
+                return nil;
+            }
+            NSDictionary *geometryDict = [NSJSONSerialization JSONObjectWithData:geometryData options:0 error:error];
+            if (!geometryDict) {
+                return nil;
+            }
+            dict[TFGeometryKey] = geometryDict;
+
+            if (feature.identifier != nil) {
+                dict[TFIdKey] = feature.identifier;
+            }
+
+            if (feature.properties != nil) {
+                dict[TFPropertiesKey] = feature.properties;
+            }
         }
         default:
             NSAssert(NO, @"not yet implemented");
@@ -205,6 +227,20 @@ static NSString *const TFPropertiesKey = @"properties";
             }
 
             return [TFMultiPolygon multiPolygonWithPolygons:polys];
+        }
+        case TFPrimitiveTypeFeature: {
+            NSDictionary *geometryDict = dict[TFGeometryKey];
+            if (!geometryDict) {
+                *error = [self errorWithMessage:@"No geometry key found in Feature"];
+                return nil;
+            }
+            NSData *geometryData = [NSJSONSerialization dataWithJSONObject:geometryDict options:0 error:error];
+            if (!geometryData) {
+                return nil;
+            }
+            TFGeometry *geometry = (TFGeometry *)[self decode:geometryData error:error];
+
+            return [TFFeature featureWithGeometry:geometry properties:dict[TFPropertiesKey] identifier:dict[TFIdKey]];
         }
         default:
             NSAssert(NO, @"not yet implemented");

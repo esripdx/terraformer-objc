@@ -3,12 +3,11 @@
 // Copyright (c) 2014 pdx.esri.com. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "TFPrimitive.h"
+#import "TFGeometry.h"
 
 @class TFPoint;
 
-@interface TFMultiPoint : TFPrimitive
+@interface TFMultiPoint : TFGeometry
 
 @property (copy, nonatomic) NSArray *points;
 

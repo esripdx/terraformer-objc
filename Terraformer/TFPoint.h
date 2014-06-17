@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 pdx.esri.com. All rights reserved.
 //
 
-#import "TFPrimitive.h"
+#import "TFGeometry.h"
 
-@interface TFPoint : TFPrimitive
+@interface TFPoint : TFGeometry
 
 @property (copy, nonatomic) NSArray *coordinates;
 @property (readonly) double x;

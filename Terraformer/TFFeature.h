@@ -3,28 +3,21 @@
 // Copyright (c) 2014 pdx.esri.com. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "TFPrimitive.h"
+#import "TFGeometry.h"
 #import "TFConstants.h"
 
-@class TFGeometry;
+@interface TFFeature : TFPrimitive
 
-@interface TFFeature : NSObject <TFPrimitive>
+@property (copy, nonatomic) NSString *identifier;
+@property (strong, nonatomic) TFGeometry *geometry;
+@property (copy, nonatomic) NSDictionary *properties;
 
-@property (readonly) TFPrimitiveType type;
-@property (readonly) NSString *identifier;
-@property (readonly) id <TFPrimitive> geometry;
-@property (nonatomic, copy) NSDictionary *properties;
+- (instancetype)initWithGeometry:(TFGeometry *)geometry;
+- (instancetype)initWithGeometry:(TFGeometry *)geometry properties:(NSDictionary *)properties;
+- (instancetype)initWithGeometry:(TFGeometry *)rygeometry properties:(NSDictionary *)properties identifier:(NSString *)identifier;
 
-- (instancetype)initWithGeometry:(id <TFPrimitive>)geometry;
++ (TFFeature *)featureWithGeometry:(TFGeometry *)geometry;
++ (TFFeature *)featureWithGeometry:(TFGeometry *)geometry properties:(NSDictionary *)properties;
++ (TFFeature *)featureWithGeometry:(TFGeometry *)geometry properties:(NSDictionary *)properties identifier:(NSString *)identifier;
 
-- (instancetype)initWithGeometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
-
-- (instancetype)initWithIdentifier:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
-
-+ (TFFeature *)featureWithGeometry:(id <TFPrimitive>)geometry;
-
-+ (TFFeature *)featureWithGeometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
-
-+ (TFFeature *)featureWithIdentifier:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties;
 @end
