@@ -56,7 +56,7 @@
 }
 
 - (NSUInteger)hash {
-    return [self.geometry hash] + [self.identifier hash] + [self.properties hash];
+    return [self.geometry hash] ^ [self.identifier hash] ^ [self.properties hash];
 }
 
 @end
