@@ -11,18 +11,20 @@
 @property TFPoint *point2;
 @property TFPoint *point3;
 @property TFPoint *point4;
+@property TFPoint *point5;
 @property TFPoint *anotherPoint;
 @end
 
 @implementation TFPointTests
 
 - (void)setUp {
-    self.point1 = [[TFPoint alloc] initWithX:1 y:1];
+    self.point1 = [[TFPoint alloc] initWithX:1 y:10];
 
-    TFCoordinate *c = [TFCoordinate coordinateWithX:1 y:1];
-    self.point2 = [[TFPoint alloc] initWithCoordinate:c];
-    self.point3 = [TFPoint pointWithCoordinate:c];
-    self.point4 = [TFPoint pointWithX:1 y:1];
+    NSArray *c = @[@(1), @(10)];
+    self.point2 = [[TFPoint alloc] initWithCoordinates:c];
+    self.point3 = [TFPoint pointWithCoordinates:c];
+    self.point4 = [TFPoint pointWithX:1 y:10];
+    self.point5 = [TFPoint pointWithLatitude:10 longitude:1];
 
     self.anotherPoint = [TFPoint pointWithX:1.5 y:1.5];
 }
@@ -30,12 +32,13 @@
 - (void)testCreatePoint {
     // check the coordinates of p1
     XCTAssertEqual(self.point1.x, 1);
-    XCTAssertEqual(self.point1.y, 1);
+    XCTAssertEqual(self.point1.y, 10);
 
     // make sure all the other points are equal
     XCTAssertEqualObjects(self.point1, self.point2);
     XCTAssertEqualObjects(self.point2, self.point3);
     XCTAssertEqualObjects(self.point3, self.point4);
+    XCTAssertEqualObjects(self.point4, self.point5);
 }
 
 - (void)testHash {

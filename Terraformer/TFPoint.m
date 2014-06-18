@@ -7,7 +7,6 @@
 //
 
 #import "TFPoint.h"
-#import "TFGeometry+Protected.h"
 
 @implementation TFPoint
 
@@ -20,18 +19,55 @@
 
 - (instancetype)initWithX:(double)x y:(double)y
 {
-    return [self initWithCoordinate:[TFCoordinate coordinateWithX:x y:y]];
+    return [self initWithCoordinates:@[@(x), @(y)]];
 }
 
-+ (instancetype)pointWithCoordinate:(TFCoordinate *)coordinate
-{
-    return [[self alloc] initWithCoordinate:coordinate];
++ (instancetype)pointWithLatitude:(double)lat longitude:(double)lng {
+    return [[self alloc] initWithLatitude:lat longitude:lng];
 }
 
-- (instancetype)initWithCoordinate:(TFCoordinate *)coordinate
-{
-    return (TFPoint *)[super initSubclassWithCoordinates:@[coordinate]];
+- (instancetype)initWithLatitude:(double)lat longitude:(double)lng {
+    return [self initWithX:lng y:lat];
 }
+
++ (instancetype)pointWithCoordinates:(NSArray *)coordinates {
+    return [[self alloc] initWithCoordinates:coordinates];
+}
+
+- (instancetype)initWithCoordinates:(NSArray *)coordinates {
+    self = [super initWithType:TFPrimitiveTypePoint];
+    if (self) {
+        _coordinates = [coordinates copy];
+    }
+
+    return self;
+}
+
+- (double)x {
+    return [self.coordinates[0] doubleValue];
+}
+
+- (double)y {
+    return [self.coordinates[1] doubleValue];
+}
+
+- (double)latitude {
+    return [self.coordinates[1] doubleValue];
+}
+
+- (double)longitude {
+    return [self.coordinates[0] doubleValue];
+}
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+    return self.coordinates[idx];
+}
+
+- (NSUInteger)count {
+    return [self.coordinates count];
+}
+
+#pragma mark NSObject
 
 - (BOOL)isEqual:(id)object {
     if (object == self) {
@@ -46,40 +82,20 @@
     return (self.x == otherPoint.x && self.y == otherPoint.y);
 }
 
-- (NSUInteger)hash {
-    return [self.coordinates[0] hash];
+- (NSUInteger)hash;
+{
+    NSUInteger prime = 31;
+    NSUInteger result = 1;
+
+    result += prime * result + [self.coordinates[0] hash];
+    result += prime * result + [self.coordinates[1] hash];
+
+    return result;
 }
 
-- (double)x {
-    return ((TFCoordinate *)self.coordinates[0]).x;
-}
-
-- (double)y {
-    return ((TFCoordinate *)self.coordinates[0]).y;
-}
-
-- (TFCoordinate *)coordinate {
-    return self.coordinates[0];
-}
-
-#pragma mark TFPrimitive
-
-- (TFPrimitiveType)type {
-    return TFPrimitiveTypePoint;
-}
-
-- (NSArray *)bbox {
-    return @[@(self.coordinate.x),
-             @(self.coordinate.y),
-             @(self.coordinate.x),
-             @(self.coordinate.y)];
-}
-
-- (NSArray *)envelope {
-    return @[@(self.coordinate.x),
-             @(self.coordinate.y),
-             @(0),
-             @(0)];
+- (NSString *)debugDescription;
+{
+    return [NSString stringWithFormat:@"<%@: %p, x=%f y=%f>", NSStringFromClass( [self class] ), self, self.x, self.y];
 }
 
 @end

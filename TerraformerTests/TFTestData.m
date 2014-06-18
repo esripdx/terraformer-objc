@@ -6,67 +6,90 @@
 //  Copyright (c) 2014 ESRI. All rights reserved.
 //
 
+#import <XCTest/XCTest.h>
 #import "TFTestData.h"
-#import "TFPolygon.h"
-#import "TFGeometryCollection.h"
 #import "TFLineString.h"
-#import "TFGeometry.h"
-#import "TFPoint.h"
-#import "TFFeature.h"
-
+#import "TFGeoJSON.h"
+#import "TFPolygon.h"
 
 @implementation TFTestData {
 
 }
 
-+ (NSDictionary *)loadFile:(NSString *)name {
-    NSData *data = [NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"geojson"]];
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:NULL];
-    return json;
++ (NSData *)loadFile:(NSString *)name {
+    return [NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"geojson"]];
 }
 
-+ (TFPolygon *)circle {
-    return (TFPolygon *)[TFPolygon decodeJSON:[self loadFile:@"circle"]];
++ (TFPrimitive *)circle {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"circle"] error:NULL];
 }
 
-+ (TFGeometryCollection *)geometry_collection {
-    return (TFGeometryCollection *)[TFGeometryCollection decodeJSON:[self loadFile:@"geometry_collection"]];
++ (TFPrimitive *)geometry_collection {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"geometry_collection"] error:NULL];
 }
 
-+ (TFLineString *)line_string {
-    return (TFLineString *)[TFLineString decodeJSON:[self loadFile:@"line_string"]];
++ (TFPrimitive *)line_string {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"line_string"] error:NULL];
 }
 
-+ (TFPoint *)point {
-    return (TFPoint *)[TFPoint decodeJSON:[self loadFile:@"point"]];
++ (TFPrimitive *)point {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"point"] error:NULL];
 }
 
-+ (TFPolygon *)polygon {
-    return (TFPolygon *)[TFPolygon decodeJSON:[self loadFile:@"polygon"]];
++ (TFPrimitive *)polygon {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"polygon"] error:NULL];
 }
 
-+ (TFPolygon *)polygon_with_holes {
-    return (TFPolygon *)[TFPolygon decodeJSON:[self loadFile:@"polygon_with_holes"]];
++ (TFPrimitive *)polygon_with_holes {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"polygon_with_holes"] error:NULL];
 }
 
-+ (TFFeature *)waldocanyon {
-    return (TFFeature *)[TFFeature decodeJSON:[self loadFile:@"waldocanyon"]];
++ (TFPrimitive *)waldocanyon {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"waldocanyon"] error:NULL];
 }
 
-+ (TFGeometry *)multi_line_string {
-    return (TFGeometry *)[TFGeometry decodeJSON:[self loadFile:@"multi_line_string"]];
++ (TFPrimitive *)feature_collection {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"feature_collection"] error:NULL];
 }
 
-+ (TFGeometry *)multi_point {
-    return (TFGeometry *)[TFGeometry decodeJSON:[self loadFile:@"multi_point"]];
++ (TFPrimitive *)multi_line_string {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"multi_line_string"] error:NULL];
 }
 
-+ (TFGeometry *)multi_polygon {
-    return (TFGeometry *)[TFGeometry decodeJSON:[self loadFile:@"multi_polygon"]];
++ (TFPrimitive *)multi_point {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"multi_point"] error:NULL];
 }
 
-+ (TFGeometry *)sf_county {
-    return (TFGeometry *)[TFGeometry decodeJSON:[self loadFile:@"sf_county"]];
++ (TFPrimitive *)multi_polygon {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"multi_polygon"] error:NULL];
+}
+
++ (TFPrimitive *)sf_county {
+    TFTerraformer *tf = [TFTerraformer new];
+    tf.decoder = [TFGeoJSON class];
+    return [tf parse:[self loadFile:@"sf_county"] error:NULL];
 }
 
 @end

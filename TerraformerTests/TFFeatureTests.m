@@ -4,34 +4,59 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "TFGeometry.h"
-#import "TFCoordinate.h"
 #import "TFFeature.h"
 #import "TFPoint.h"
+#import "TFTestData.h"
 
 @interface TFFeatureTests : XCTestCase
+@property TFFeature *feature1;
+@property TFFeature *feature2;
+@property TFFeature *feature3;
+@property TFPoint *point;
+@property NSDictionary *properties;
+@property NSString *identifier;
 @end
 
 @implementation TFFeatureTests
 
-- (void)testFeature {
-    TFGeometry *point = [TFPoint pointWithX:5 y:10];
-    NSDictionary *properties = @{@"key": @"val"};
-    NSString *identifier = @"identifier";
+- (void)setUp {
+    self.point = [TFPoint pointWithX:5 y:10];
+    self.properties = @{@"key": @"val"};
+    self.identifier = @"identifier";
 
-    TFFeature *feature1 = [TFFeature featureWithGeometry:point];
-    XCTAssertEqual(TFPrimitiveTypeFeature, feature1.type);
-    XCTAssertEqualObjects(point, feature1.geometry);
+    self.feature1 = [TFFeature featureWithGeometry:self.point];
+    self.feature2 = [TFFeature featureWithGeometry:self.point properties:self.properties];
+    self.feature3 = [TFFeature featureWithGeometry:self.point properties:self.properties identifier:self.identifier];
+}
 
-    TFFeature *feature2 = [TFFeature featureWithGeometry:point properties:properties];
-    XCTAssertEqual(TFPrimitiveTypeFeature, feature2.type);
-    XCTAssertEqualObjects(point, feature2.geometry);
-    XCTAssertEqualObjects(properties, feature2.properties);
+- (void)testEquality {
+    XCTAssertEqual(TFPrimitiveTypeFeature, self.feature1.type);
+    XCTAssertEqualObjects(self.point, self.feature1.geometry);
 
-    TFFeature *feature3 = [TFFeature featureWithIdentifier:identifier geometry:point properties:properties];
-    XCTAssertEqual(TFPrimitiveTypeFeature, feature3.type);
-    XCTAssertEqualObjects(point, feature3.geometry);
-    XCTAssertEqualObjects(properties, feature3.properties);
-    XCTAssertEqualObjects(identifier, feature3.identifier);
+    XCTAssertEqual(TFPrimitiveTypeFeature, self.feature2.type);
+    XCTAssertEqualObjects(self.point, self.feature2.geometry);
+    XCTAssertEqualObjects(self.properties, self.feature2.properties);
+
+    XCTAssertEqual(TFPrimitiveTypeFeature, self.feature3.type);
+    XCTAssertEqualObjects(self.point, self.feature3.geometry);
+    XCTAssertEqualObjects(self.properties, self.feature3.properties);
+    XCTAssertEqualObjects(self.identifier, self.feature3.identifier);
+
+    TFFeature *f = [TFFeature featureWithGeometry:self.point properties:self.properties identifier:self.identifier];
+    XCTAssertEqualObjects(self.feature3, f);
+}
+
+- (void)testInequality {
+    XCTAssertNotEqualObjects(self.feature1, self.feature2);
+
+    TFFeature *f = [TFFeature featureWithGeometry:self.point properties:self.properties identifier:@"not the same identifier"];
+    XCTAssertNotEqualObjects(self.feature3, f);
+}
+
+- (void)testDataFiles {
+    TFFeature *feature = (TFFeature *)[TFTestData waldocanyon];
+    XCTAssertEqual(feature.type, TFPrimitiveTypeFeature);
+    XCTAssertEqualObjects(feature.properties[@"Name"], @"CO-PSF-GY3N Waldo Canyon 6-30-2012 2000");
+    XCTAssertEqual(feature.geometry.type, TFPrimitiveTypeMultiPolygon);
 }
 @end

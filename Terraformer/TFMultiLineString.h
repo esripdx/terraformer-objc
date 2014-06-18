@@ -8,11 +8,14 @@
 
 #import "TFGeometry.h"
 
-@class TFCoordinate;
-
 @interface TFMultiLineString : TFGeometry
 
-+ (instancetype)lineStringsWithCoordinateArrays:(NSArray *)lines;
-- (instancetype)initWithCoordinateArrays:(NSArray *)lines;
+@property (copy, nonatomic) NSArray *lineStrings;
+
++ (instancetype)multiLineStringWithLineStrings:(NSArray *)lineStrings;
+- (instancetype)initWithLineStrings:(NSArray *)lineStrings;
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (NSUInteger)count;
 
 @end

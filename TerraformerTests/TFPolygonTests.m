@@ -8,15 +8,17 @@
 
 #import <XCTest/XCTest.h>
 #import "TFPolygon.h"
-#import "TFCoordinate.h"
 #import "TFPoint.h"
+#import "TFLineString.h"
+#import "TFTestData.h"
 
 @interface TFPolygonTests : XCTestCase
 
-@property (strong, nonatomic) TFPolygon *emptyPolygon;
-@property (strong, nonatomic) TFPolygon *unclosedPolygon;
-@property (strong, nonatomic) TFPolygon *closedPolygon;
+@property (strong, nonatomic) TFPolygon *polygon;
+@property (strong, nonatomic) TFPolygon *otherPolygon;
 @property (strong, nonatomic) TFPolygon *polygonWithHole;
+@property (strong, nonatomic) TFLineString *exteriorLineString;
+@property (strong, nonatomic) TFLineString *interiorLineString;
 
 @end
 
@@ -26,88 +28,66 @@
 {
     [super setUp];
     
-    TFCoordinate *a = [TFCoordinate coordinateWithX:1.5 y:2.0];
-    TFCoordinate *b = [TFCoordinate coordinateWithX:2.0 y:6.0];
-    TFCoordinate *c = [TFCoordinate coordinateWithX:6.5 y:6.5];
-    TFCoordinate *d = [TFCoordinate coordinateWithX:8.0 y:1.0];
+    TFPoint *a = [TFPoint pointWithX:1.5 y:2.0];
+    TFPoint *b = [TFPoint pointWithX:2.0 y:6.0];
+    TFPoint *c = [TFPoint pointWithX:6.5 y:6.5];
+    TFPoint *d = [TFPoint pointWithX:8.0 y:1.0];
     
-    TFCoordinate *a2 = [TFCoordinate coordinateWithX:3.0 y:5.0];
-    TFCoordinate *b2 = [TFCoordinate coordinateWithX:5.0 y:5.5];
-    TFCoordinate *c2 = [TFCoordinate coordinateWithX:4.0 y:3.0];
+    TFPoint *a2 = [TFPoint pointWithX:3.0 y:5.0];
+    TFPoint *b2 = [TFPoint pointWithX:5.0 y:5.5];
+    TFPoint *c2 = [TFPoint pointWithX:4.0 y:3.0];
 
-    NSArray *hole = @[a2, b2, c2];
+    self.exteriorLineString = [TFLineString lineStringWithPoints:@[a, b, c, d, a]];
+    self.interiorLineString = [TFLineString lineStringWithPoints:@[a2, b2, c2, a2]];
     
-    self.emptyPolygon = [[TFPolygon alloc] initWithVertices:nil];
-    self.unclosedPolygon = [[TFPolygon alloc] initWithVertices:@[a, b, c, d]];
-    self.closedPolygon = [[TFPolygon alloc] initWithVertices:@[a, b, c, d, a]];
-    self.polygonWithHole = [[TFPolygon alloc] initWithVertices:@[a, b, c, d, a] holes:@[hole]];
+    self.polygon = [TFPolygon polygonWithLineStrings:@[self.exteriorLineString]];
+    self.otherPolygon = [TFPolygon polygonWithLineStrings:@[self.exteriorLineString]];
+    self.polygonWithHole = [TFPolygon polygonWithLineStrings:@[self.exteriorLineString, self.interiorLineString]];
 }
 
 - (void)tearDown;
 {
     [super tearDown];
-    
-    self.emptyPolygon = nil;
-    self.unclosedPolygon = nil;
-    self.closedPolygon = nil;
+
     self.polygonWithHole = nil;
+    self.polygon = nil;
+    self.otherPolygon = nil;
 }
 
-- (void)testRemoveVertex;
-{
-    TFCoordinate *removed = [self.closedPolygon vertexAtIndex:1];
-    
-    [self.closedPolygon removeVertexAtIndex:1];
-    
-    NSUInteger idx, count;
-    
-    for ( idx = 0, count = [self.closedPolygon numberOfVertices]; idx < count; idx++ ) {
-        TFCoordinate *coordinate = [self.closedPolygon vertexAtIndex:idx];
-        XCTAssertNotEqualObjects( removed, coordinate );
-    }
+- (void)testEquality {
+    XCTAssertEqualObjects(self.polygon, self.otherPolygon);
+    XCTAssertNotEqualObjects(self.polygon, self.polygonWithHole);
 }
 
-- (void)testAddVertex;
-{
-    TFCoordinate *newVertex = [TFCoordinate coordinateWithX:2.0 y:0.2];
-    
-    [self.closedPolygon insertVertex:newVertex atIndex:2];
-    
-    BOOL found = NO;
-    NSUInteger idx, count;
-    
-    for ( idx = 0, count = [self.closedPolygon numberOfVertices]; idx < count; idx++ ) {
-        TFCoordinate *coordinate = [self.closedPolygon vertexAtIndex:idx];
-        found = found || [coordinate isEqual:newVertex];
-    }
-
-    XCTAssertTrue( found );
+- (void)testHash {
+    XCTAssertEqual([self.polygon hash], [self.otherPolygon hash]);
+    XCTAssertNotEqual([self.polygon hash], [self.polygonWithHole hash]);
 }
 
-- (void)testClosePolygon;
-{
-    XCTAssertFalse( [self.emptyPolygon isClosed] );
-    XCTAssertFalse( [self.unclosedPolygon isClosed] );
-    XCTAssertTrue( [self.closedPolygon isClosed] );
-    
-    [self.emptyPolygon close];
-    [self.unclosedPolygon close];
-    [self.closedPolygon close];
-    
-    XCTAssertFalse( [self.emptyPolygon isClosed] );
-    XCTAssertTrue( [self.unclosedPolygon isClosed] );
-    XCTAssertTrue( [self.closedPolygon isClosed] );
+- (void)testHasHoles {
+    XCTAssert([self.polygonWithHole hasHoles]);
+    XCTAssert(![self.polygon hasHoles]);
 }
 
-- (void)testContainsPoint;
-{
-    TFPoint *inside = [TFPoint pointWithX:6.0 y:3.0];
-    TFPoint *outside = [TFPoint pointWithX:1.0 y:1.0];
-    TFPoint *inHole = [TFPoint pointWithX:4.0 y:4.5];
-
-    XCTAssertTrue( [self.polygonWithHole contains:inside] );
-    XCTAssertFalse( [self.polygonWithHole contains:outside] );
-    XCTAssertFalse( [self.polygonWithHole contains:inHole] );
+- (void)testNumberOfHoles {
+    XCTAssertEqual([self.polygonWithHole numberOfHoles], 1);
+    XCTAssertEqual([self.polygon numberOfHoles], 0);
 }
 
+- (void)testPolygonSubscripting {
+    XCTAssertEqualObjects(self.exteriorLineString, self.polygon[0]);
+    XCTAssertEqualObjects(self.interiorLineString, self.polygonWithHole[1]);
+}
+
+- (void)testDataFiles {
+    TFPolygon *polygon = (TFPolygon *)[TFTestData polygon];
+    XCTAssertEqualObjects(polygon[0][0][0], @(100));
+    XCTAssert(![polygon hasHoles]);
+
+    TFPolygon *circle = (TFPolygon *)[TFTestData circle];
+    XCTAssert(![circle hasHoles]);
+
+    TFPolygon *polygonWithHoles = (TFPolygon *)[TFTestData polygon_with_holes];
+    XCTAssert([polygonWithHoles hasHoles]);
+}
 @end

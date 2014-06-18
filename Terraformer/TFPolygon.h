@@ -8,30 +8,17 @@
 
 #import "TFGeometry.h"
 
-@class TFCoordinate;
-
 @interface TFPolygon : TFGeometry
 
-- (instancetype)initWithVertices:(NSArray *)coordinates;
-- (instancetype)initWithVertices:(NSArray *)coordinates holes:(NSArray *)polygons;
+@property (copy, nonatomic) NSArray *lineStrings;
+
++ (instancetype)polygonWithLineStrings:(NSArray *)lineStrings;
+- (instancetype)initWithLineStrings:(NSArray *)lineStrings;
 
 - (BOOL)isEqualToPolygon:(TFPolygon *)other;
-- (BOOL)isClosed;
-
-- (void)close;
-
-- (NSUInteger)numberOfVertices;
-- (TFCoordinate *)vertexAtIndex:(NSUInteger)index;
-- (void)insertVertex:(TFCoordinate *)coordinate atIndex:(NSUInteger)index;
-- (void)removeVertexAtIndex:(NSUInteger)index;
-
-// Convenience methods for accessing the polygon's holes as polygon objects. To
-// get holes as coordinate arrays, use polygon.coordinates starting at the
-// second position in the array.
-
+- (BOOL)hasHoles;
 - (NSUInteger)numberOfHoles;
-- (TFPolygon *)holeAtIndex:(NSUInteger)index;
-- (void)insertHole:(TFPolygon *)hole atIndex:(NSUInteger)index;
-- (void)removeHoleAtIndex:(NSUInteger)index;
 
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (NSUInteger)count;
 @end

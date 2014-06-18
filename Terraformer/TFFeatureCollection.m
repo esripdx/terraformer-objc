@@ -10,16 +10,32 @@
 @implementation TFFeatureCollection {
 }
 
++ (instancetype)featureCollectionWithFeatures:(NSArray *)features {
+    return [[self alloc] initWithFeatures:features];
+}
+
 - (instancetype)initWithFeatures:(NSArray *)features {
-    if (self = [super init]) {
-        _features = features;
-        _type = @"FeatureCollection";
+    self = [super initWithType:TFPrimitiveTypeFeatureCollection];
+    if (self) {
+        _features = [features copy];
     }
     return self;
 }
 
-+ (instancetype)decodeJSON:(NSDictionary *)json {
-    return [[self alloc] initWithFeatures:json[TFFeaturesKey]];
+- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+    return self.features[idx];
+}
+
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx {
+    NSParameterAssert([obj isKindOfClass:[TFFeature class]]);
+
+    NSMutableArray *f = [self.features mutableCopy];
+    f[idx] = obj;
+    self.features = f;
+}
+
+- (NSUInteger)count {
+    return [self.features count];
 }
 
 - (void)addFeature:(TFFeature *)feature {
@@ -32,10 +48,10 @@
     self.features = f;
 }
 
-- (NSDictionary *)encodeJSON {
-    return @{TFTypeKey: self.type,
-             TFFeaturesKey: self.features};
+- (void)insertFeature:(TFFeature *)feature atIndex:(NSUInteger)idx {
+    NSMutableArray *f = [self.features mutableCopy];
+    [f insertObject:feature atIndex:idx];
+    self.features = f;
 }
-
 
 @end

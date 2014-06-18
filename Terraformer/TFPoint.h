@@ -7,17 +7,23 @@
 //
 
 #import "TFGeometry.h"
-#import "TFCoordinate.h"
 
 @interface TFPoint : TFGeometry
 
+@property (copy, nonatomic) NSArray *coordinates;
+@property (readonly) double x;
+@property (readonly) double y;
+@property (readonly) double latitude;
+@property (readonly) double longitude;
+
 + (instancetype)pointWithX:(double)x y:(double)y;
 - (instancetype)initWithX:(double)x y:(double)y;
-+ (instancetype)pointWithCoordinate:(TFCoordinate *)coordinate;
-- (instancetype)initWithCoordinate:(TFCoordinate *)coordinate;
++ (instancetype)pointWithCoordinates:(NSArray *)coordinates;
+- (instancetype)initWithCoordinates:(NSArray *)coordinates;
++ (instancetype)pointWithLatitude:(double)lat longitude:(double)lng;
+- (instancetype)initWithLatitude:(double)lat longitude:(double)lng;
 
-- (double)x;
-- (double)y;
-- (TFCoordinate *)coordinate;
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (NSUInteger)count;
 
 @end

@@ -6,20 +6,39 @@
 //  Copyright (c) 2014 ESRI. All rights reserved.
 //
 
-#import "TFGeometryCollection.h"
 #import "TFGeometry.h"
-#import "TFGeometry+Protected.h"
-#import "TFPolygon.h"
+#import "TFGeometryCollection.h"
 
 @implementation TFGeometryCollection {
 
 }
 
++ (instancetype)geometryCollectionWithGeometries:(NSArray *)geometries {
+    return [[self alloc] initWithGeometries:geometries];
+}
+
 - (instancetype)initWithGeometries:(NSArray *)geometries {
-    if (self = [super init]) {
-        _geometries = geometries;
+    self = [super initWithType:TFPrimitiveTypeGeometryCollection];
+    if (self) {
+        _geometries = [geometries copy];
     }
     return self;
+}
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+    return self.geometries[idx];
+}
+
+- (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx {
+    NSParameterAssert([obj isKindOfClass:[TFGeometry class]]);
+
+    NSMutableArray *g = [self.geometries mutableCopy];
+    [g insertObject:obj atIndex:idx];
+    self.geometries = g;
+}
+
+- (NSUInteger)count {
+    return [self.geometries count];
 }
 
 - (void)addGeometry:(TFGeometry *)geometry {
@@ -32,121 +51,10 @@
     self.geometries = geoms;
 }
 
-- (NSArray *)geometriesWhichContain:(TFGeometry *)geometry {
-    NSMutableArray *found = [NSMutableArray new];
-    for (TFGeometry *geo in self.geometries) {
-        if ([geo contains:geometry]) {
-            [found addObject:geo];
-        }
-    }
-    return [NSArray arrayWithArray:found];
-}
-
-- (NSArray *)geometriesWhichIntersect:(TFGeometry *)geometry {
-    NSMutableArray *found = [NSMutableArray new];
-    for (TFGeometry *geo in self.geometries) {
-        if ([geo intersects:geometry]) {
-            [found addObject:geo];
-        }
-    }
-    return [NSArray arrayWithArray:found];
-}
-
-- (NSArray *)geometriesWithin:(TFGeometry *)geometry {
-    NSMutableArray *found = [NSMutableArray new];
-    for (TFGeometry *geo in self.geometries) {
-        if ([geo within:geometry]) {
-            [found addObject:geo];
-        }
-    }
-    return [NSArray arrayWithArray:found];
-}
-
-#pragma mark TFPrimitive
-
-- (TFPrimitiveType)type {
-    return TFPrimitiveTypeGeometryCollection;
-}
-
-- (NSDictionary *)encodeJSON {
-    return @{
-             TFTypeKey: [[self class] geoJSONStringForType:self.type],
-             TFGeometriesKey: self.geometries
-    };
-}
-
-+ (instancetype)decodeJSON:(NSDictionary *)json {
-    NSArray *geoms = json[TFGeometriesKey];
-    if ([geoms isKindOfClass:[NSNull class]]) {
-        return nil;
-    }
-    return [[self alloc] initWithGeometries:geoms];
-}
-
-- (NSArray *)bbox {
-    NSMutableArray *coords = [NSMutableArray new];
-    for (TFGeometry *geom in self.geometries) {
-        [coords addObjectsFromArray:geom.coordinates];
-    }
-    return [TFGeometry boundsForArray:coords];
-}
-
-- (NSArray *)envelope {
-    NSArray *bbox = [self bbox];
-    // Envelope is the xmin, ymin coord with a distance to the corresponding max coord.
-    return @[
-            bbox[0],
-            bbox[1],
-            @(ABS([bbox[0] doubleValue] - [bbox[2] doubleValue])),
-            @(ABS([bbox[1] doubleValue] - [bbox[3] doubleValue]))
-    ];
-}
-
-- (TFPolygon *)convexHull {
-    // TODO
-    return nil;
-}
-
-- (BOOL)contains:(TFGeometry *)geometry {
-    // Check if the passed in geometry is actually one of the geometries in the collection and save ourselves some cycles.
-    if ([self.geometries containsObject:geometry]) {
-        return YES;
-    }
-
-    for (TFGeometry *geom in self.geometries) {
-        if ([geom contains:geometry]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-- (BOOL)within:(TFGeometry *)geometry {
-    // Check if the passed in geometry is actually one of the geometries in the collection and save ourselves some cycles.
-    if ([self.geometries containsObject:geometry]) {
-        return YES;
-    }
-
-    for (TFGeometry *geom in self.geometries) {
-        if ([geom within:geometry]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-- (BOOL)intersects:(TFGeometry *)geometry {
-    // Check if the passed in geometry is actually one of the geometries in the collection and save ourselves some cycles.
-    if ([self.geometries containsObject:geometry]) {
-        return YES;
-    }
-
-    for (TFGeometry *geom in self.geometries) {
-        if ([geom intersects:geometry]) {
-            return YES;
-        }
-    }
-    return NO;
+- (void)insertGeometry:(TFGeometry *)geometry atIndex:(NSUInteger)idx {
+    NSMutableArray *g = [self.geometries mutableCopy];
+    [g insertObject:geometry atIndex:idx];
+    self.geometries = g;
 }
 
 @end

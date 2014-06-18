@@ -4,77 +4,59 @@
 //
 
 #import "TFFeature.h"
-#import "TFGeometry.h"
-#import "TFPolygon.h"
 
 @implementation TFFeature
 
-+ (TFFeature *)featureWithGeometry:(id <TFPrimitive>)geometry {
-    return [[TFFeature alloc] initWithGeometry:geometry];
++ (TFFeature *)featureWithGeometry:(TFGeometry *)geometry {
+    return [[self alloc] initWithGeometry:geometry];
 }
 
-+ (TFFeature *)featureWithGeometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
-    return [[TFFeature alloc] initWithGeometry:geometry properties:properties];
++ (TFFeature *)featureWithGeometry:(TFGeometry *)geometry properties:(NSDictionary *)properties {
+    return [[self alloc] initWithGeometry:geometry properties:properties];
 }
 
-+ (TFFeature *)featureWithIdentifier:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
-    return [[TFFeature alloc] initWithIdentifier:identifier geometry:geometry properties:properties];
++ (TFFeature *)featureWithGeometry:(TFGeometry *)geometry properties:(NSDictionary *)properties identifier:(NSString *)identifier {
+    return [[self alloc] initWithGeometry:geometry properties:properties identifier:identifier];
 }
 
-- (instancetype)initWithGeometry:(id <TFPrimitive>)geometry {
-    return [self initWithIdentifier:nil geometry:geometry properties:[NSDictionary new]];
+- (instancetype)initWithGeometry:(TFGeometry *)geometry {
+    return [self initWithGeometry:geometry properties:nil];
 }
 
-- (instancetype)initWithGeometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
-    return [self initWithIdentifier:nil geometry:geometry properties:properties];
+- (instancetype)initWithGeometry:(TFGeometry *)geometry properties:(NSDictionary *)properties {
+    return [self initWithGeometry:geometry properties:properties identifier:nil];
 }
 
-- (instancetype)initWithIdentifier:(NSString *)identifier geometry:(id <TFPrimitive>)geometry properties:(NSDictionary *)properties {
-    if (self = [super init]) {
-        _identifier = identifier;
+- (instancetype)initWithGeometry:(TFGeometry *)geometry properties:(NSDictionary *)properties identifier:(NSString *)identifier {
+    self = [super initWithType:TFPrimitiveTypeFeature];
+    if (self) {
         _geometry = geometry;
-        _properties = properties;
+        _properties = [properties copy];
+        _identifier = [identifier copy];
     }
     return self;
 }
 
-#pragma mark - TFPrimitive
+- (BOOL)isEqual:(id)other {
+    if (other == self) {
+        return YES;
+    }
+    if (!other || ![[other class] isEqual:[self class]]) {
+        return NO;
+    }
 
-- (NSDictionary *)encodeJSON {
-    return nil;
+    TFFeature *o = other;
+    if (![o.properties isEqualToDictionary:self.properties]) {
+        return NO;
+    }
+    if (![o.identifier isEqualToString:self.identifier]) {
+        return NO;
+    }
+    return [self.geometry isEqual:o.geometry];
 }
 
-+ (id <TFPrimitive>)decodeJSON:(NSDictionary *)json {
-    return nil;
-}
-
-- (NSArray *)bbox {
-    return nil;
-}
-
-- (NSArray *)envelope {
-    return nil;
-}
-
-- (TFPolygon *)convexHull {
-    return nil;
-}
-
-- (BOOL)contains:(TFGeometry *)geometry {
-    return NO;
-}
-
-- (BOOL)within:(TFGeometry *)geometry {
-    return NO;
-}
-
-- (BOOL)intersects:(TFGeometry *)geometry {
-    return NO;
-}
-
-- (TFPrimitiveType)type;
-{
-    return TFPrimitiveTypeFeature;
+- (NSUInteger)hash {
+    return [self.geometry hash] ^ [self.identifier hash] ^ [self.properties hash];
 }
 
 @end

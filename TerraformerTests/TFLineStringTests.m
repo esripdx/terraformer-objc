@@ -8,14 +8,15 @@
 
 #import <XCTest/XCTest.h>
 #import "TFLineString.h"
-#import "TFCoordinate.h"
+#import "TFPoint.h"
+#import "TFTestData.h"
 
 @interface TFLineStringTests : XCTestCase
 
 @property (strong, nonatomic) TFLineString *linestring;
-@property (strong, nonatomic) TFCoordinate *coord1;
-@property (strong, nonatomic) TFCoordinate *coord2;
-@property (strong, nonatomic) NSArray *coords;
+@property (strong, nonatomic) TFPoint *point1;
+@property (strong, nonatomic) TFPoint *point2;
+@property (strong, nonatomic) NSArray *points;
 
 @end
 
@@ -25,10 +26,10 @@
 {
     [super setUp];
 
-    self.coord1 = [TFCoordinate coordinateWithX:5 y:10];
-    self.coord2 = [TFCoordinate coordinateWithX:6 y:11];
-    self.coords = @[self.coord1, self.coord2];
-    self.linestring = [[TFLineString alloc] initWithCoordinates:self.coords];
+    self.point1 = [TFPoint pointWithX:5 y:10];
+    self.point2 = [TFPoint pointWithX:6 y:11];
+    self.points = @[self.point1, self.point2];
+    self.linestring = [TFLineString lineStringWithPoints:self.points];
 
 }
 
@@ -40,91 +41,52 @@
 
 - (void)testInitsWithCoordinates
 {
-
-    XCTAssertEqual(self.linestring.coordinates, self.coords);
-    XCTAssertEqual(self.linestring.coordinates[0], self.coord1);
-    XCTAssertEqual(self.linestring.coordinates[1], self.coord2);
-    XCTAssertEqual([self.linestring.coordinates[0] x], [self.coord1 x]);
-    XCTAssertEqual([self.linestring.coordinates[1] x], [self.coord2 x]);
+    XCTAssertEqual(self.linestring.points, self.points);
+    XCTAssertEqual(self.linestring.points[0], self.point1);
+    XCTAssertEqual(self.linestring.points[1], self.point2);
+    XCTAssertEqual([self.linestring.points[0] x], [self.point1 x]);
+    XCTAssertEqual([self.linestring.points[1] x], [self.point2 x]);
 
 }
 
-- (void)testInitsWithXYs
-{
-
-    NSArray *coord1 = @[@5, @10];
-    NSArray *coord2 = @[@6, @11];
-    NSArray *coords = @[coord1, coord2];
-    TFLineString *ls = [[TFLineString alloc] initWithXYs:coords];
-
-    XCTAssertTrue([ls.coordinates isEqual:self.coords]);
-    XCTAssertTrue([ls.coordinates[0] isEqual:self.coord1]);
-    XCTAssertTrue([ls.coordinates[1] isEqual:self.coord2]);
-    XCTAssertEqual([ls.coordinates[0] x], [self.coord1 x]);
-    XCTAssertEqual([ls.coordinates[1] x], [self.coord2 x]);
-    
-}
 
 - (void)testCoordinateAtIndex;
 {
-    TFCoordinate *coordinateAtIndex = [self.linestring coordinateAtIndex:1];
-    XCTAssertTrue([coordinateAtIndex isEqual:self.linestring.coordinates[1]]);
+    XCTAssertTrue([self.linestring[1] isEqual:self.linestring.points[1]]);
 }
 
-
-- (void)testRemoveCoordinate;
-{
-    TFCoordinate *removed = [self.linestring coordinateAtIndex:1];
-
-    [self.linestring removeCoordinateAtIndex:1];
-
-    for ( TFCoordinate *coord in self.linestring.coordinates ) {
-        XCTAssertNotEqualObjects( removed, coord );
-    }
-}
-
-- (void)testAddCoordinate;
-{
-    TFCoordinate *newVertex = [TFCoordinate coordinateWithX:2.0 y:0.2];
-
-    [self.linestring insertCoordinate:newVertex atIndex:2];
-
-    BOOL found = NO;
-
-    for ( TFCoordinate *coord in self.linestring.coordinates ) {
-        found = (coord == newVertex) ? YES : NO;
-    }
-
-    XCTAssertTrue( found );
-}
-
-/* TODO!
 - (void)testEquality
 {
-    TFCoordinate *c1 = [TFCoordinate coordinateWithX:5 y:10];
-    TFCoordinate *c2 = [TFCoordinate coordinateWithX:5 y:10];
-    NSArray *coords = @[c1, c2];
+    TFPoint *p1 = [TFPoint pointWithX:5 y:10];
+    TFPoint *p2 = [TFPoint pointWithX:5 y:10];
+    NSArray *points = @[p1, p2];
 
-    TFLineString *ls1 = [[TFLineString alloc] initWithCoordinates:coords];
-    TFLineString *ls2 = [[TFLineString alloc] initWithCoordinates:coords];
+    TFLineString *ls1 = [TFLineString lineStringWithPoints:points];
+    TFLineString *ls2 = [TFLineString lineStringWithPoints:points];
 
-    XCTAssertTrue([ls1 isEqual:ls2]);
+    XCTAssertEqualObjects(ls1, ls2);
 }
-*/
 
 - (void)testInequality
 {
-    TFCoordinate *c1 = [TFCoordinate coordinateWithX:5 y:10];
-    TFCoordinate *c2 = [TFCoordinate coordinateWithX:5 y:10];
-    NSArray *coords1 = @[c1, c2];
+    TFPoint *p1 = [TFPoint pointWithX:5 y:10];
+    TFPoint *p2 = [TFPoint pointWithX:5 y:10];
+    NSArray *points1 = @[p1, p2];
 
-    TFCoordinate *c3 = [TFCoordinate coordinateWithX:1 y:2];
-    NSArray *coords2 = @[c1, c3];
+    TFPoint *p3 = [TFPoint pointWithX:1 y:2];
+    NSArray *points2 = @[p1, p3];
 
-    TFLineString *ls1 = [[TFLineString alloc] initWithCoordinates:coords1];
-    TFLineString *ls2 = [[TFLineString alloc] initWithCoordinates:coords2];
+    TFLineString *ls1 = [TFLineString lineStringWithPoints:points1];
+    TFLineString *ls2 = [TFLineString lineStringWithPoints:points2];
 
     XCTAssertFalse([ls1 isEqual:ls2]);
+}
+
+- (void)testDataFiles {
+    TFLineString *lineString = (TFLineString *)[TFTestData line_string];
+    XCTAssert(lineString.type == TFPrimitiveTypeLineString);
+    XCTAssert(lineString.count == 4);
+    XCTAssertEqualObjects(lineString[0][0], @(100));
 }
 
 @end

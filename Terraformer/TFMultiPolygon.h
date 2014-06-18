@@ -12,15 +12,11 @@
 
 @interface TFMultiPolygon : TFGeometry
 
-- (instancetype)initWithPolygonCoordinateArrays:(NSArray *)polygons;
+@property (copy, nonatomic) NSArray *polygons;
+
++ (instancetype)multiPolygonWithPolygons:(NSArray *)polygons;
 - (instancetype)initWithPolygons:(NSArray *)polygons;
 
-// Convenience methods to polygons as TFPolygon objects. Use
-// multiPolygon.coordinates to access the coordinates array directly.
-
-- (NSUInteger)numberOfPolygons;
-- (TFPolygon *)polygonAtIndex:(NSUInteger)index;
-- (void)insertPolygon:(TFPolygon *)polygon atIndex:(NSUInteger)index;
-- (void)removePolygonAtIndex:(NSUInteger)index;
-
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (NSUInteger)count;
 @end

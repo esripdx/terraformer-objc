@@ -7,44 +7,47 @@
 //
 
 #import "TFMultiLineString.h"
-#import "TFCoordinate.h"
-#import "TFGeometry+Protected.h"
+#import "TFLineString.h"
 
 @implementation TFMultiLineString
 
 #pragma mark TFMultiLineString
 
-+ (instancetype)lineStringsWithCoordinateArrays:(NSArray *)lines
-{
-    return [[self alloc] initWithCoordinateArrays:lines];
++ (instancetype)multiLineStringWithLineStrings:(NSArray *)lineStrings {
+    return [[self alloc] initWithLineStrings:lineStrings];
 }
 
-- (instancetype)initWithCoordinateArrays:(NSArray *)lines;
-{
-    if ([lines count] > 0 && [lines[0] isKindOfClass:[NSArray class]]) {
-        // each linestring much be an array of coordinates
-        for (NSArray *array in lines) {
-            if (![array isKindOfClass:[NSArray class]]) {
-                return nil;
-            }
-        }
-
-        if ([lines[0] count] > 0) {
-            // some coords are in thar
-            if ([TFCoordinate isTFCoordinate:lines[0][0]]) {
-                return [super initSubclassWithCoordinates:lines];
-            }
-        }
+- (instancetype)initWithLineStrings:(NSArray *)lineStrings {
+    self = [super initWithType:TFPrimitiveTypeMultiLineString];
+    if (self) {
+        _lineStrings = [lineStrings copy];
     }
 
-    return nil;
+    return self;
 }
 
-#pragma mark TFPrimitive
-
-- (TFPrimitiveType)type;
-{
-    return TFPrimitiveTypeMultiLineString;
+- (id)objectAtIndexedSubscript:(NSUInteger)idx {
+    return self.lineStrings[idx];
 }
 
+- (NSUInteger)count {
+    return [self.lineStrings count];
+}
+
+- (BOOL)isEqual:(id)object {
+    if ( object == self ) {
+        return YES;
+    }
+
+    if ( object == nil || ![object isKindOfClass:[self class]] ) {
+        return NO;
+    }
+
+    TFMultiLineString *other = object;
+    return [self.lineStrings isEqualToArray:other.lineStrings];
+}
+
+- (NSUInteger)hash {
+    return [self.lineStrings hash];
+}
 @end

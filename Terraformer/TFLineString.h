@@ -8,18 +8,15 @@
 
 #import "TFGeometry.h"
 
-@class TFCoordinate;
-
 @interface TFLineString : TFGeometry
 
-+ (instancetype)lineStringWithCoordinates:(NSArray*)coordinates;
-+ (instancetype)lineStringWithXYs:(NSArray *)xys;
-- (instancetype)initWithCoordinates:(NSArray *)coordinates;
-- (instancetype)initWithXYs:(NSArray *)xys;
-- (BOOL)isLinearRing;
-- (NSUInteger)numberOfCoordinates;
-- (TFCoordinate *)coordinateAtIndex:(NSUInteger)index;
-- (void)insertCoordinate:(TFCoordinate *)coordinate atIndex:(NSUInteger)index;
-- (void)removeCoordinateAtIndex:(NSUInteger)index;
+@property (copy, nonatomic) NSArray *points;
 
++ (instancetype)lineStringWithPoints:(NSArray *)points;
+- (instancetype)initWithPoints:(NSArray *)points;
+
+- (id)objectAtIndexedSubscript:(NSUInteger)idx;
+- (NSUInteger)count;
+
+- (BOOL)isLinearRing;
 @end

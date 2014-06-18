@@ -7,8 +7,6 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "TFCoordinate.h"
-#import "TFGeometry.h"
 
 @interface TerraformerTests : XCTestCase
 
