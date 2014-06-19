@@ -22,6 +22,22 @@
     return [self initWithCoordinates:@[@(x), @(y)]];
 }
 
++ (instancetype)pointWithX:(double)x y:(double)y z:(double)z {
+    return [[self alloc] initWithX:x y:y z:z];
+}
+
+- (instancetype)initWithX:(double)x y:(double)y z:(double)z {
+    return [self initWithCoordinates:@[@(x), @(y), @(z)]];
+}
+
++ (instancetype)pointWithX:(double)x y:(double)y z:(double)z m:(double)m {
+    return [[self alloc] initWithX:x y:y z:z m:m];
+}
+
+- (instancetype)initWithX:(double)x y:(double)y z:(double)z m:(double)m {
+    return [self initWithCoordinates:@[@(x), @(y), @(z), @(m)]];
+}
+
 + (instancetype)pointWithLatitude:(double)lat longitude:(double)lng {
     return [[self alloc] initWithLatitude:lat longitude:lng];
 }
@@ -57,6 +73,16 @@
 
 - (double)longitude {
     return [self.coordinates[0] doubleValue];
+}
+
+- (double)z {
+    NSAssert([self.coordinates count] > 2, @"'z' accessor can only be called if TFPoint's coordinates array has a coordinate at index 2");
+    return [self.coordinates[2] doubleValue];
+}
+
+- (double)m {
+    NSAssert([self.coordinates count] > 3, @"'m' accessor can only be called if TFPoint's coordinates array has a coordinate at index 3");
+    return [self.coordinates[3] doubleValue];
 }
 
 - (id)objectAtIndexedSubscript:(NSUInteger)idx {
