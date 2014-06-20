@@ -35,35 +35,14 @@ static NSString *const TFPropertiesKey = @"properties";
     dict[TFTypeKey] = [self stringForType:primitive.type];
 
     switch(primitive.type) {
-        case TFPrimitiveTypePoint: {
-            TFPoint *p = (TFPoint *)primitive;
-            dict[TFCoordinatesKey] = p.coordinates;
-            break;
-        }
-        case TFPrimitiveTypeMultiPoint: {
-            TFMultiPoint *mp = (TFMultiPoint *)primitive;
-            dict[TFCoordinatesKey] = [self arrayOfPointCoordinates:mp.points];
-            break;
-        }
-        case TFPrimitiveTypeLineString: {
-            TFLineString *ls = (TFLineString *)primitive;
-            dict[TFCoordinatesKey] = [self arrayOfPointCoordinates:ls.points];
-            break;
-        }
-        case TFPrimitiveTypeMultiLineString: {
-            TFMultiLineString *mls = (TFMultiLineString *)primitive;
-            dict[TFCoordinatesKey] = [self arrayOfLineStringCoordinates:mls.lineStrings];
-            break;
-        }
-        case TFPrimitiveTypePolygon: {
-            TFPolygon *polygon = (TFPolygon *)primitive;
-            dict[TFCoordinatesKey] = [self arrayOfLineStringCoordinates:polygon.lineStrings];
-            break;
-        }
+        case TFPrimitiveTypePoint:
+        case TFPrimitiveTypeMultiPoint:
+        case TFPrimitiveTypeLineString:
+        case TFPrimitiveTypeMultiLineString:
+        case TFPrimitiveTypePolygon:
         case TFPrimitiveTypeMultiPolygon: {
-            TFMultiPolygon *mp = (TFMultiPolygon *)primitive;
-            dict[TFCoordinatesKey] = [self arrayOfPolygonCoordinates:mp.polygons];
-            break;
+            TFGeometry *geometry = (TFGeometry *)primitive;
+            dict[TFCoordinatesKey] = [geometry coordinateArray];
         }
         case TFPrimitiveTypeFeature: {
             TFFeature *feature = (TFFeature *)primitive;
@@ -372,14 +351,6 @@ static NSString *const TFPropertiesKey = @"properties";
     return [TFPoint pointWithCoordinates:coords];
 }
 
-- (NSArray *)arrayOfPointCoordinates:(NSArray *)points {
-    NSMutableArray *coords = [NSMutableArray new];
-    for (TFPoint *point in points) {
-        [coords addObject:point.coordinates];
-    }
-    return [coords copy];
-}
-
 - (TFLineString *)parseLineStringCoordinates:(NSArray *)coords error:(NSError **)error {
     // we need at least 2 points to make a lineString
     if ([coords count] < 2) {
@@ -401,14 +372,6 @@ static NSString *const TFPropertiesKey = @"properties";
     return [TFLineString lineStringWithPoints:points];
 }
 
-- (NSArray *)arrayOfLineStringCoordinates:(NSArray *)lineStrings {
-    NSMutableArray *coords = [NSMutableArray new];
-    for (TFLineString *ls in lineStrings) {
-        [coords addObjectsFromArray:[self arrayOfPointCoordinates:ls.points]];
-    }
-    return [coords copy];
-}
-
 - (TFPolygon *)parsePolygonCoordinates:(NSArray *)coords error:(NSError **)error {
     NSMutableArray *lineStrings = [NSMutableArray new];
     for (NSArray *lsCoords in coords) {
@@ -419,14 +382,6 @@ static NSString *const TFPropertiesKey = @"properties";
         [lineStrings addObject:lineString];
     }
     return [TFPolygon polygonWithLineStrings:lineStrings];
-}
-
-- (NSArray *)arrayOfPolygonCoordinates:(NSArray *)polygons {
-    NSMutableArray *coords = [NSMutableArray new];
-    for (TFPolygon *poly in polygons) {
-        [coords addObjectsFromArray:[self arrayOfLineStringCoordinates:poly.lineStrings]];
-    }
-    return [coords copy];
 }
 
 - (NSString *)stringForType:(TFPrimitiveType)type {

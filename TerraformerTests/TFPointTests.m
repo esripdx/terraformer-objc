@@ -31,8 +31,8 @@
 
 - (void)testCreatePoint {
     // check the coordinates of p1
-    XCTAssertEqual(self.point1.x, 1);
-    XCTAssertEqual(self.point1.y, 10);
+    XCTAssertEqualObjects(self.point1.x, @(1));
+    XCTAssertEqualObjects(self.point1.y, @(10));
 
     // make sure all the other points are equal
     XCTAssertEqualObjects(self.point1, self.point2);

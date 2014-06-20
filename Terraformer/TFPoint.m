@@ -59,30 +59,40 @@
     return self;
 }
 
-- (double)x {
-    return [self.coordinates[0] doubleValue];
+- (NSNumber *)x {
+    if ([self.coordinates count] == 0) {
+        return nil;
+    }
+    return self.coordinates[0];
 }
 
-- (double)y {
-    return [self.coordinates[1] doubleValue];
+- (NSNumber *)y {
+    if ([self.coordinates count] < 2) {
+        return nil;
+    }
+    return self.coordinates[1];
 }
 
-- (double)latitude {
-    return [self.coordinates[1] doubleValue];
+- (NSNumber *)latitude {
+    return self.y;
 }
 
-- (double)longitude {
-    return [self.coordinates[0] doubleValue];
+- (NSNumber *)longitude {
+    return self.x;
 }
 
-- (double)z {
-    NSAssert([self.coordinates count] > 2, @"'z' accessor can only be called if TFPoint's coordinates array has a coordinate at index 2");
-    return [self.coordinates[2] doubleValue];
+- (NSNumber *)z {
+    if ([self.coordinates count] < 3) {
+        return nil;
+    }
+    return self.coordinates[2];
 }
 
-- (double)m {
-    NSAssert([self.coordinates count] > 3, @"'m' accessor can only be called if TFPoint's coordinates array has a coordinate at index 3");
-    return [self.coordinates[3] doubleValue];
+- (NSNumber *)m {
+    if ([self.coordinates count] < 4) {
+        return nil;
+    }
+    return self.coordinates[3];
 }
 
 - (id)objectAtIndexedSubscript:(NSUInteger)idx {
@@ -105,7 +115,11 @@
     }
 
     TFPoint *otherPoint = object;
-    return (self.x == otherPoint.x && self.y == otherPoint.y);
+
+    return ([self.x doubleValue] == [otherPoint.x doubleValue] &&
+            [self.y doubleValue] == [otherPoint.y doubleValue] &&
+            [self.z doubleValue] == [otherPoint.z doubleValue] &&
+            [self.m doubleValue] == [otherPoint.m doubleValue]);
 }
 
 - (NSUInteger)hash;
@@ -113,15 +127,25 @@
     NSUInteger prime = 31;
     NSUInteger result = 1;
 
-    result += prime * result + [self.coordinates[0] hash];
-    result += prime * result + [self.coordinates[1] hash];
+    if ([self.coordinates count] > 0) {
+        result += prime * result + [self.coordinates[0] hash];
+        if ([self.coordinates count] > 1) {
+            result += prime * result + [self.coordinates[1] hash];
+            if ([self.coordinates count] > 2) {
+                result += prime * result + [self.coordinates[2] hash];
+                if ([self.coordinates count] > 3) {
+                    result += prime * result + [self.coordinates[3] hash];
+                }
+            }
+        }
+    }
 
     return result;
 }
 
 - (NSString *)debugDescription;
 {
-    return [NSString stringWithFormat:@"<%@: %p, x=%f y=%f>", NSStringFromClass( [self class] ), self, self.x, self.y];
+    return [NSString stringWithFormat:@"<%@: %p, x=%f y=%f>", NSStringFromClass( [self class] ), self, [self.x doubleValue], [self.y doubleValue]];
 }
 
 @end
