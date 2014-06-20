@@ -30,7 +30,7 @@ static NSString *const TFPropertiesKey = @"properties";
 
 }
 
-+ (NSData *)encodePrimitive:(TFPrimitive *)primitive error:(NSError **)error {
+- (NSData *)encodePrimitive:(TFPrimitive *)primitive error:(NSError **)error {
     NSMutableDictionary *dict = [NSMutableDictionary new];
     dict[TFTypeKey] = [self stringForType:primitive.type];
 
@@ -130,7 +130,7 @@ static NSString *const TFPropertiesKey = @"properties";
     return [NSJSONSerialization dataWithJSONObject:dict options:0 error:error];
 }
 
-+ (TFPrimitive *)decode:(NSData *)data error:(NSError **)error {
+- (TFPrimitive *)decode:(NSData *)data error:(NSError **)error {
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
 
     switch([self typeForString:dict[TFTypeKey]]) {
@@ -337,7 +337,7 @@ static NSString *const TFPropertiesKey = @"properties";
     return nil;
 }
 
-+ (NSArray *)coordsFromDict:(NSDictionary *)dict error:(NSError **)error {
+- (NSArray *)coordsFromDict:(NSDictionary *)dict error:(NSError **)error {
     NSArray *coords = dict[TFCoordinatesKey];
     if (!coords) {
         [self populateError:error withMessage:@"No coordinates property found."];
@@ -350,7 +350,7 @@ static NSString *const TFPropertiesKey = @"properties";
     return coords;
 }
 
-+ (void)populateError:(NSError **)error withMessage:(NSString *)message {
+- (void)populateError:(NSError **)error withMessage:(NSString *)message {
     if (error != NULL) {
         *error = [NSError errorWithDomain:TFTerraformerErrorDomain code:kTFTerraformerParseError userInfo:@{
                 NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Could not parse GeoJSON: %@", message]
@@ -358,7 +358,7 @@ static NSString *const TFPropertiesKey = @"properties";
     }
 }
 
-+ (TFPoint *)parsePointCoordinates:(NSArray *)coords error:(NSError **)error {
+- (TFPoint *)parsePointCoordinates:(NSArray *)coords error:(NSError **)error {
     if ([coords count] < 2) {
         [self populateError:error withMessage:@"Not enough coordinates"];
         return nil;
@@ -372,7 +372,7 @@ static NSString *const TFPropertiesKey = @"properties";
     return [TFPoint pointWithCoordinates:coords];
 }
 
-+ (NSArray *)arrayOfPointCoordinates:(NSArray *)points {
+- (NSArray *)arrayOfPointCoordinates:(NSArray *)points {
     NSMutableArray *coords = [NSMutableArray new];
     for (TFPoint *point in points) {
         [coords addObject:point.coordinates];
@@ -380,7 +380,7 @@ static NSString *const TFPropertiesKey = @"properties";
     return [coords copy];
 }
 
-+ (TFLineString *)parseLineStringCoordinates:(NSArray *)coords error:(NSError **)error {
+- (TFLineString *)parseLineStringCoordinates:(NSArray *)coords error:(NSError **)error {
     // we need at least 2 points to make a lineString
     if ([coords count] < 2) {
         [self populateError:error withMessage:@"Not enough points in coordinates array."];
@@ -401,7 +401,7 @@ static NSString *const TFPropertiesKey = @"properties";
     return [TFLineString lineStringWithPoints:points];
 }
 
-+ (NSArray *)arrayOfLineStringCoordinates:(NSArray *)lineStrings {
+- (NSArray *)arrayOfLineStringCoordinates:(NSArray *)lineStrings {
     NSMutableArray *coords = [NSMutableArray new];
     for (TFLineString *ls in lineStrings) {
         [coords addObjectsFromArray:[self arrayOfPointCoordinates:ls.points]];
@@ -409,7 +409,7 @@ static NSString *const TFPropertiesKey = @"properties";
     return [coords copy];
 }
 
-+ (TFPolygon *)parsePolygonCoordinates:(NSArray *)coords error:(NSError **)error {
+- (TFPolygon *)parsePolygonCoordinates:(NSArray *)coords error:(NSError **)error {
     NSMutableArray *lineStrings = [NSMutableArray new];
     for (NSArray *lsCoords in coords) {
         TFLineString *lineString = [self parseLineStringCoordinates:lsCoords error:error];
@@ -421,7 +421,7 @@ static NSString *const TFPropertiesKey = @"properties";
     return [TFPolygon polygonWithLineStrings:lineStrings];
 }
 
-+ (NSArray *)arrayOfPolygonCoordinates:(NSArray *)polygons {
+- (NSArray *)arrayOfPolygonCoordinates:(NSArray *)polygons {
     NSMutableArray *coords = [NSMutableArray new];
     for (TFPolygon *poly in polygons) {
         [coords addObjectsFromArray:[self arrayOfLineStringCoordinates:poly.lineStrings]];
@@ -429,7 +429,7 @@ static NSString *const TFPropertiesKey = @"properties";
     return [coords copy];
 }
 
-+ (NSString *)stringForType:(TFPrimitiveType)type {
+- (NSString *)stringForType:(TFPrimitiveType)type {
     NSString *name;
 
     switch ( type ) {
@@ -467,7 +467,7 @@ static NSString *const TFPropertiesKey = @"properties";
     return name;
 }
 
-+ (TFPrimitiveType)typeForString:(NSString *)string; {
+- (TFPrimitiveType)typeForString:(NSString *)string; {
     TFPrimitiveType type;
 
     if ( [string isEqualToString:@"Point"] ) {

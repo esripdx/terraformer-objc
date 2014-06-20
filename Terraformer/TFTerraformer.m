@@ -13,7 +13,7 @@
 
 }
 
-- (instancetype)initWithEncoder:(Class<TFEncoder>)encoder decoder:(Class<TFDecoder>)decoder {
+- (instancetype)initWithEncoder:(id <TFEncoder>)encoder decoder:(id <TFDecoder>)decoder {
     self = [super init];
     if (self) {
         _encoder = encoder;
