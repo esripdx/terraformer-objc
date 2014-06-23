@@ -134,6 +134,45 @@ static NSString *const TFAttributesKey = @"attributes";
             }
             break;
         }
+        case TFPrimitiveTypeGeometryCollection: {
+            // EsriJSON doesn't have an equivalent for the collection types, so we just build an array of the items
+            // in the collection and serialize that. Note that this case returns the array that it creates, and does
+            // not continue beyond this switch block.
+
+            TFGeometryCollection *gc = (TFGeometryCollection *) primitive;
+            NSMutableArray *geometries = [NSMutableArray new];
+            for (TFGeometry *geometry in gc.geometries) {
+                NSData *geometryData = [self encodePrimitive:geometry error:error];
+                if (!geometryData) {
+                    return nil;
+                }
+                NSDictionary *geometryDict = [NSJSONSerialization JSONObjectWithData:geometryData options:0 error:error];
+                if (!geometryDict) {
+                    return nil;
+                }
+                [geometries addObject:geometryDict];
+            }
+            return [NSJSONSerialization dataWithJSONObject:geometries options:0 error:error];
+        }
+        case TFPrimitiveTypeFeatureCollection: {
+            // EsriJSON doesn't have an equivalent for the collection types, so we just build an array of the items
+            // in the collection and serialize that. Note that this case returns the array that it creates, and does
+            // not continue beyond this switch block.
+            TFFeatureCollection *fc = (TFFeatureCollection *)primitive;
+            NSMutableArray *features = [NSMutableArray new];
+            for (TFFeature *f in fc.features) {
+                NSData *featureData = [self encodePrimitive:f error:error];
+                if (!featureData) {
+                    return nil;
+                }
+                NSDictionary *featureDict = [NSJSONSerialization JSONObjectWithData:featureData options:0 error:error];
+                if (!featureDict) {
+                    return nil;
+                }
+                [features addObject:featureDict];
+            }
+            return [NSJSONSerialization dataWithJSONObject:features options:0 error:error];
+        }
         default:
             NSAssert(NO, @"not yet implemented");
     }
