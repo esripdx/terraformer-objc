@@ -4,7 +4,6 @@
 //
 
 #import "TFGeometry.h"
-#import "TFConstants.h"
 
 @interface TFFeature : TFPrimitive
 
