@@ -26,10 +26,21 @@
     "wkt": <wkt>
   }
 */
-@property (copy, nonatomic, readonly) NSDictionary *spatialReference;
+@property (copy, nonatomic) NSDictionary *spatialReference;
 
-- (instancetype)initWithSpatialReference:(NSDictionary *)spatialReference;
+/**
+* Convenience accessor/setter for the WKID key in the spatialReference dictionary.
+*/
+@property (copy, nonatomic) NSNumber *wkid;
 
-+ (instancetype)esriJSONWithSpatialReference:(NSDictionary *)spatialReference;
+/**
+* Convenience accessor/setter for the WKT key in the spatialReference dictionary.
+*/
+@property (copy, nonatomic) NSString *wkt;
+
+/**
+* Set a key to use for `TFFeature`'s identifier property in the `attributes` object.
+*/
+@property (copy, nonatomic) NSString *featureIdentifierKey;
 
 @end

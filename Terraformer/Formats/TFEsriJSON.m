@@ -33,31 +33,35 @@ static NSString *const TFHasZKey = @"hasZ";
 
 static NSString *const TFPathsKey = @"paths";
 static NSString *const TFGeometryKey = @"geometry";
-static NSString *const TFAttributesKey = @"attributes":
+static NSString *const TFAttributesKey = @"attributes";
 
-- (instancetype)initWithSpatialReference:(NSDictionary *)spatialReference {
+- (instancetype)init {
     self = [super init];
-    if (self) {
-        _spatialReference = [spatialReference copy];
+    if (self != nil) {
+        _spatialReference = @{ TFWKIDKey: @(4326) };
+        _featureIdentifierKey = @"geojson_id";
     }
-
     return self;
 }
 
-+ (instancetype)esriJSONWithSpatialReference:(NSDictionary *)spatialReference {
-    return [[self alloc] initWithSpatialReference:spatialReference];
+- (NSNumber *)wkid {
+    return self.spatialReference[TFWKIDKey];
 }
 
-- (instancetype)initWithWKID:(NSInteger)wkid {
-    return [self initWithSpatialReference:@{TFWKIDKey: @(wkid)}];
+- (void)setWkid:(NSNumber *)wkid {
+    NSMutableDictionary *sr = [self.spatialReference mutableCopy];
+    sr[TFWKIDKey] = wkid;
+    self.spatialReference = sr;
 }
 
-+ (instancetype)esriJSONWithWKID:(NSInteger)wkid {
-    return [[self alloc] initWithWKID:wkid];
+- (NSString *)wkt {
+    return self.spatialReference[TFWKTKey];
 }
 
-- (instancetype)init {
-    return [self initWithWKID:4326];
+- (void)setWkt:(NSString *)wkt {
+    NSMutableDictionary *sr = [self.spatialReference mutableCopy];
+    sr[TFWKTKey] = wkt;
+    self.spatialReference = sr;
 }
 
 - (NSData *)encodePrimitive:(TFPrimitive *)primitive error:(NSError **)error {
@@ -115,8 +119,14 @@ static NSString *const TFAttributesKey = @"attributes":
             }
             dict[TFGeometryKey] = geometryDict;
 
-            if (feature.identifier != nil) {
-                // TODO: Not sure what to do here.
+            if (feature.identifier != nil && self.featureIdentifierKey != nil) {
+                if (feature.properties == nil) {
+                    feature.properties = @{};
+                }
+
+                NSMutableDictionary *props = [feature.properties mutableCopy];
+                props[self.featureIdentifierKey] = feature.identifier;
+                feature.properties = props;
             }
 
             if (feature.properties != nil) {
