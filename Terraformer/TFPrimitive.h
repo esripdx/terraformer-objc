@@ -9,6 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "TFTerraformer.h"
 
+typedef NS_ENUM( NSInteger, TFPrimitiveType )
+{
+    TFPrimitiveTypeUnknown,
+    TFPrimitiveTypePoint,
+    TFPrimitiveTypeMultiPoint,
+    TFPrimitiveTypeLineString,
+    TFPrimitiveTypeMultiLineString,
+    TFPrimitiveTypePolygon,
+    TFPrimitiveTypeMultiPolygon,
+    TFPrimitiveTypeGeometryCollection,
+    TFPrimitiveTypeFeature,
+    TFPrimitiveTypeFeatureCollection
+};
+
 /***
 * Base class for all primitive types (geometries, features, and collections).
 */
