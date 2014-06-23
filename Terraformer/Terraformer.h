@@ -7,7 +7,15 @@
 //
 
 #import "TFTerraformer.h"
-
-@interface Terraformer : NSObject
-
-@end
+#import "TFGeoJSON.h"
+#import "TFLineString.h"
+#import "TFMultiLineString.h"
+#import "TFPolygon.h"
+#import "TFMultiPolygon.h"
+#import "TFPoint.h"
+#import "TFGeometryCollection.h"
+#import "TFFeatureCollection.h"
+#import "TFFeature.h"
+#import "TFPrimitive.h"
+#import "TFMultiPoint.h"
+#import "TFGeometry.h"

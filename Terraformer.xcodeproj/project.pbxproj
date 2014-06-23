@@ -10,6 +10,19 @@
 		0361DF74192E78A300386F4A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AE3192C06A400A8E6F8 /* XCTest.framework */; };
 		202A6209192D613000A0E84F /* TFPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = 202A6208192D613000A0E84F /* TFPoint.m */; };
 		31DE52725BC7EBA01CB8148D /* TFPointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DE543BBE86E425E6A8187A /* TFPointTests.m */; };
+		48CED1611958E69500B7D5FB /* TFLineString.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = BDED1CA5192D3730005F7477 /* TFLineString.h */; };
+		48CED1621958E69800B7D5FB /* TFMultiLineString.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = BD9F7F501934F87E0037C015 /* TFMultiLineString.h */; };
+		48CED1631958E6A100B7D5FB /* TFPolygon.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9442E129192C183E00CAC58B /* TFPolygon.h */; };
+		48CED1641958E6A600B7D5FB /* TFMultiPolygon.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4890CBF3192EBFF200C467DF /* TFMultiPolygon.h */; };
+		48CED1651958E6AA00B7D5FB /* TFPoint.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 202A6207192D613000A0E84F /* TFPoint.h */; };
+		48CED1661958E6AE00B7D5FB /* TFGeometryCollection.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 48838E58192EB2A400EB093A /* TFGeometryCollection.h */; };
+		48CED1671958E6B200B7D5FB /* TFFeatureCollection.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 67EF2643A4373444E1B09147 /* TFFeatureCollection.h */; };
+		48CED1681958E6B500B7D5FB /* TFFeature.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 67EF2C50903138CDA266348C /* TFFeature.h */; };
+		48CED1691958E6B900B7D5FB /* TFPrimitive.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 67EF205D4A4CFC0C8025E5B5 /* TFPrimitive.h */; };
+		48CED16A1958E6BD00B7D5FB /* TFMultiPoint.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 67EF2FBD353791F50AB5DD30 /* TFMultiPoint.h */; };
+		48CED16B1958E6C100B7D5FB /* TFGeometry.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 67EF2AC53E5BF9457E6B7146 /* TFGeometry.h */; };
+		48CED16C1958E6C700B7D5FB /* TFGeoJSON.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 67EF2FF4F8DF2E3756E52E9E /* TFGeoJSON.h */; };
+		48CED16D1958E6D200B7D5FB /* TFTerraformer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 67EF2496E7AC9821B148138C /* TFTerraformer.h */; };
 		67EF200D6ADE1BDBA36761B1 /* multi_line_string.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 67EF22D834EFF66C1AF21827 /* multi_line_string.geojson */; };
 		67EF2055D80D3943251F484D /* TFMultiPointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF291D94BE7DFBD96B43E0 /* TFMultiPointTests.m */; };
 		67EF219FDD0D2A56029B6348 /* multi_polygon.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 67EF2ED4200B7451704252E0 /* multi_polygon.geojson */; };
@@ -41,7 +54,6 @@
 		94CDD52E1950DD9900F58B73 /* TFGeometryCollectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF2721182CD736DD336732 /* TFGeometryCollectionTests.m */; };
 		94D59AD6192C06A400A8E6F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AD5192C06A400A8E6F8 /* Foundation.framework */; };
 		94D59ADB192C06A400A8E6F8 /* Terraformer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 94D59ADA192C06A400A8E6F8 /* Terraformer.h */; };
-		94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 94D59ADC192C06A400A8E6F8 /* Terraformer.m */; };
 		94D59AE5192C06A400A8E6F8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AD5192C06A400A8E6F8 /* Foundation.framework */; };
 		94D59AEA192C06A400A8E6F8 /* libTerraformer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 94D59AD2192C06A400A8E6F8 /* libTerraformer.a */; };
 		94D59AF0192C06A400A8E6F8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 94D59AEE192C06A400A8E6F8 /* InfoPlist.strings */; };
@@ -70,6 +82,19 @@
 			dstSubfolderSpec = 16;
 			files = (
 				94D59ADB192C06A400A8E6F8 /* Terraformer.h in CopyFiles */,
+				48CED1611958E69500B7D5FB /* TFLineString.h in CopyFiles */,
+				48CED1621958E69800B7D5FB /* TFMultiLineString.h in CopyFiles */,
+				48CED1631958E6A100B7D5FB /* TFPolygon.h in CopyFiles */,
+				48CED1641958E6A600B7D5FB /* TFMultiPolygon.h in CopyFiles */,
+				48CED1651958E6AA00B7D5FB /* TFPoint.h in CopyFiles */,
+				48CED1661958E6AE00B7D5FB /* TFGeometryCollection.h in CopyFiles */,
+				48CED1671958E6B200B7D5FB /* TFFeatureCollection.h in CopyFiles */,
+				48CED1681958E6B500B7D5FB /* TFFeature.h in CopyFiles */,
+				48CED1691958E6B900B7D5FB /* TFPrimitive.h in CopyFiles */,
+				48CED16A1958E6BD00B7D5FB /* TFMultiPoint.h in CopyFiles */,
+				48CED16B1958E6C100B7D5FB /* TFGeometry.h in CopyFiles */,
+				48CED16C1958E6C700B7D5FB /* TFGeoJSON.h in CopyFiles */,
+				48CED16D1958E6D200B7D5FB /* TFTerraformer.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,7 +148,6 @@
 		94D59AD5192C06A400A8E6F8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		94D59AD9192C06A400A8E6F8 /* Terraformer-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Terraformer-Prefix.pch"; sourceTree = "<group>"; };
 		94D59ADA192C06A400A8E6F8 /* Terraformer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Terraformer.h; sourceTree = "<group>"; };
-		94D59ADC192C06A400A8E6F8 /* Terraformer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Terraformer.m; sourceTree = "<group>"; };
 		94D59AE2192C06A400A8E6F8 /* TerraformerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TerraformerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		94D59AE3192C06A400A8E6F8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		94D59AED192C06A400A8E6F8 /* TerraformerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TerraformerTests-Info.plist"; sourceTree = "<group>"; };
@@ -203,15 +227,15 @@
 				48838E58192EB2A400EB093A /* TFGeometryCollection.h */,
 				48838E59192EB2A400EB093A /* TFGeometryCollection.m */,
 				67EF2643A4373444E1B09147 /* TFFeatureCollection.h */,
-				67EF2546060CC116F239D168 /* TFFeature.m */,
-				67EF2C50903138CDA266348C /* TFFeature.h */,
 				67EF2E93E002226CD2B28E5F /* TFFeatureCollection.m */,
-				67EF2A362C5BE92FDB639999 /* TFPrimitive.m */,
+				67EF2C50903138CDA266348C /* TFFeature.h */,
+				67EF2546060CC116F239D168 /* TFFeature.m */,
 				67EF205D4A4CFC0C8025E5B5 /* TFPrimitive.h */,
+				67EF2A362C5BE92FDB639999 /* TFPrimitive.m */,
 				67EF2FBD353791F50AB5DD30 /* TFMultiPoint.h */,
 				67EF2FB0FB062863EE961514 /* TFMultiPoint.m */,
-				67EF20F933CC489B5138720A /* TFGeometry.m */,
 				67EF2AC53E5BF9457E6B7146 /* TFGeometry.h */,
+				67EF20F933CC489B5138720A /* TFGeometry.m */,
 			);
 			name = Primitives;
 			sourceTree = "<group>";
@@ -220,6 +244,7 @@
 			isa = PBXGroup;
 			children = (
 				94D59AD7192C06A400A8E6F8 /* Terraformer */,
+				94D59AD8192C06A400A8E6F8 /* Supporting Files */,
 				94D59AEB192C06A400A8E6F8 /* TerraformerTests */,
 				94D59AD4192C06A400A8E6F8 /* Frameworks */,
 				94D59AD3192C06A400A8E6F8 /* Products */,
@@ -248,12 +273,10 @@
 			isa = PBXGroup;
 			children = (
 				9442E12C192C188600CAC58B /* Primitives */,
-				94D59ADA192C06A400A8E6F8 /* Terraformer.h */,
-				94D59ADC192C06A400A8E6F8 /* Terraformer.m */,
-				94D59AD8192C06A400A8E6F8 /* Supporting Files */,
-				67EF271474F5F5536C98E13A /* TFTerraformer.m */,
-				67EF2496E7AC9821B148138C /* TFTerraformer.h */,
 				67EF2814F0A92A2F76569012 /* Formats */,
+				94D59ADA192C06A400A8E6F8 /* Terraformer.h */,
+				67EF2496E7AC9821B148138C /* TFTerraformer.h */,
+				67EF271474F5F5536C98E13A /* TFTerraformer.m */,
 			);
 			path = Terraformer;
 			sourceTree = "<group>";
@@ -264,6 +287,7 @@
 				94D59AD9192C06A400A8E6F8 /* Terraformer-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			path = Terraformer;
 			sourceTree = "<group>";
 		};
 		94D59AEB192C06A400A8E6F8 /* TerraformerTests */ = {
@@ -397,7 +421,6 @@
 				94CDD52819501E1100F58B73 /* TFMultiPolygon.m in Sources */,
 				94CDD52519500A3200F58B73 /* TFPolygon.m in Sources */,
 				BD9F7F521934F87E0037C015 /* TFMultiLineString.m in Sources */,
-				94D59ADD192C06A400A8E6F8 /* Terraformer.m in Sources */,
 				BDED1CA7192D3730005F7477 /* TFLineString.m in Sources */,
 				202A6209192D613000A0E84F /* TFPoint.m in Sources */,
 				67EF256E18DA5B0316D5012C /* TFTerraformer.m in Sources */,
