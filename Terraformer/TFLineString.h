@@ -12,6 +12,8 @@
 
 @property (copy, nonatomic) NSArray *points;
 
++ (instancetype)lineStringWithCoords:(NSArray *)coords;
+- (instancetype)initWithCoords:(NSArray *)coords;
 + (instancetype)lineStringWithPoints:(NSArray *)points;
 - (instancetype)initWithPoints:(NSArray *)points;
 
