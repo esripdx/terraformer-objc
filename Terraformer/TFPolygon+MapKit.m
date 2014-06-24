@@ -14,12 +14,12 @@
 
 - (MKPolygon *)mapKitPolygon;
 {
-    NSInteger index, count = [self numberOfHoles];
+    NSInteger idx, count = [self numberOfHoles];
     NSMutableArray *holePolygons = [[NSMutableArray alloc] initWithCapacity:count];
     
-    for ( index = 1; index <= count; index++ ) {
+    for ( idx = 1; idx <= count; idx++ ) {
         
-        TFLineString *lineString = self.lineStrings[index];
+        TFLineString *lineString = self.lineStrings[idx];
         [holePolygons addObject:[lineString mapKitPolygon]];
     }
     
@@ -27,9 +27,9 @@
     count = [linestring.points count];
     CLLocationCoordinate2D coordinates[count];
     
-    for ( index = 0; index < count; index++ ) {
+    for ( idx = 0; idx < count; idx++ ) {
         
-        coordinates[index] = [linestring.points[index] coreLocationCoordinateValue];
+        coordinates[idx] = [linestring.points[idx] coreLocationCoordinateValue];
     }
     
     return [MKPolygon polygonWithCoordinates:coordinates count:count interiorPolygons:holePolygons];

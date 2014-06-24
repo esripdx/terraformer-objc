@@ -13,11 +13,11 @@
 
 - (MKPolyline *)mapKitPolyline;
 {
-    NSInteger index, count = [self.points count];
+    NSInteger idx, count = [self.points count];
     CLLocationCoordinate2D coordinates[count];
     
-    for ( index = 0; index < count; index++ ) {
-        coordinates[index] = [self.points[index] coreLocationCoordinateValue];
+    for ( idx = 0; idx < count; idx++ ) {
+        coordinates[idx] = [self.points[idx] coreLocationCoordinateValue];
     }
     
     return [MKPolyline polylineWithCoordinates:coordinates count:count];
@@ -28,11 +28,11 @@
     if ( !self.isLinearRing )
         return nil;
     
-    NSInteger index, count = [self.points count];
+    NSInteger idx, count = [self.points count];
     CLLocationCoordinate2D coordinates[count];
     
-    for ( index = 0; index < count; index++ ) {
-        coordinates[index] = [self.points[index] coreLocationCoordinateValue];
+    for ( idx = 0; idx < count; idx++ ) {
+        coordinates[idx] = [self.points[idx] coreLocationCoordinateValue];
     }
     
     return [MKPolygon polygonWithCoordinates:coordinates count:count];
