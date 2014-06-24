@@ -305,10 +305,10 @@ static NSString *const TFAttributesKey = @"attributes";
 
 /** Determines whether or not the direction of the coordinates in a ring is clockwise. */
 - (BOOL)isRingClockwise:(TFLineString *)ring {
-    int total = 0;
+    NSUInteger total = 0;
     TFPoint *p1, *p2;
     p1 = ring[0];
-    for (int i = 0; i < ring.count - 1; i++) {
+    for (NSUInteger i = 0; i < ring.count - 1; i++) {
         p2 = ring[i + 1];
         total += ([p2.x doubleValue] - [p1.x doubleValue]) * ([p2.y doubleValue] + [p1.y doubleValue]);
         p1 = p2;
@@ -326,14 +326,13 @@ static NSString *const TFAttributesKey = @"attributes";
     NSUInteger l = ring.count;
     NSUInteger j = l - 1;
 
-    for (int i = -1; ++i < l; j = i) {
+    for (NSUInteger i = 0; i+1 < l; j = ++i) {
         double p_x = [point.x doubleValue];
         double p_y = [point.y doubleValue];
         double ring_i_x = [((TFPoint *) ring[i]).x doubleValue];
         double ring_i_y = [((TFPoint *) ring[i]).y doubleValue];
         double ring_j_x = [((TFPoint *) ring[j]).x doubleValue];
         double ring_j_y = [((TFPoint *) ring[j]).y doubleValue];
-
 
         if (((ring_i_y <= p_y && p_y < ring_j_y) ||
                 (ring_j_y <= p_y && p_y < ring_i_y)) &&
@@ -388,8 +387,8 @@ static NSString *const TFAttributesKey = @"attributes";
 
 /** Determines whether one linestring intersects with another */
 - (BOOL)isLineString:(TFLineString *)a intersectingLineString:(TFLineString *)b {
-    for (int i = 0; i < a.count - 1; i++) {
-        for (int j = 0; j < b.count - 1; j++) {
+    for (NSUInteger i = 0; i < a.count - 1; i++) {
+        for (NSUInteger j = 0; j < b.count - 1; j++) {
             if ([self isLineLineIntersection:@[a[i], a[i + 1], b[j], b[j + 1]]]) {
                 return YES;
             }
