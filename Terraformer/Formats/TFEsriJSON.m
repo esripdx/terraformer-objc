@@ -25,10 +25,16 @@
 - (BOOL)containsPoint:(TFPoint *)point;
 - (BOOL)contains:(TFLineString *)ring;
 - (BOOL)isIntersectingLineString:(TFLineString *)lineString;
+- (TFLineString *)reversed;
 @end
 
 @interface TFPolygon (esrijson)
 - (BOOL)containsLineString:(TFLineString *)lineString;
+- (NSArray *)orientedRings;
+@end
+
+@interface TFMultiPolygon (esrijson)
+- (NSArray *)orientedRings;
 @end
 
 @implementation TFEsriJSON {
@@ -163,9 +169,17 @@ static NSString *const TFAttributesKey = @"attributes";
             // EsriJSON doesn't have an equivalent for the collection types, so we just build an array of the items
             // in the collection, therefore there is no NSDictionary version of these.
             return nil;
-        case TFPrimitiveTypePolygon:
-        case TFPrimitiveTypeMultiPolygon:
-            #warning unimplemented types.
+        case TFPrimitiveTypePolygon: {
+            TFPolygon *p = (TFPolygon *)primitive;
+            [self populateHasZAndMKeysForLineStrings:p.lineStrings inDict:dict];
+            dict[TFRingsKey] = [p orientedRings];
+            break;
+        }
+        case TFPrimitiveTypeMultiPolygon: {
+            TFMultiPolygon *mp = (TFMultiPolygon *)primitive;
+            [self populateHasZAndMKeysForLineStrings:((TFPolygon *)mp.polygons[0]).lineStrings inDict:dict];
+            dict[TFRingsKey] = [mp orientedRings];
+        }
         default:
             NSAssert(NO, @"not yet implemented");
     }
@@ -369,6 +383,8 @@ static NSString *const TFAttributesKey = @"attributes";
 
 @end
 
+#pragma mark TFPrimitive Categories
+
 @implementation TFLineString (esrijson)
 
 /** Determines whether or not the direction of the coordinates in a ring is clockwise. */
@@ -458,6 +474,10 @@ static NSString *const TFAttributesKey = @"attributes";
     return NO;
 }
 
+- (TFLineString *)reversed {
+    return [TFLineString lineStringWithPoints:[[self.points reverseObjectEnumerator] allObjects]];
+}
+
 @end
 
 @implementation TFPolygon (esrijson)
@@ -468,5 +488,42 @@ static NSString *const TFAttributesKey = @"attributes";
     }
     return [self[0] contains:lineString];
 }
+
+- (NSArray *)orientedRings {
+    NSMutableArray *rings = [NSMutableArray new];
+    for (NSUInteger i=0; i < [self count]; i++) {
+        TFLineString *lineString = self[i];
+        TFLineString *ring;
+
+        // ignore invalid rings
+        if ([lineString count] < 4) {
+            continue;
+        }
+
+        // if the first lineString (the outer ring) is not clockwise, or any other lineString (holes) *is* clockwise, reverse it.
+        if ((i == 0) != [lineString isClockwise]) {
+            ring = [lineString reversed];
+        } else {
+            ring = [lineString copy];
+        }
+
+        [ring closeRing];
+        [rings addObject:ring];
+    }
+    return [rings copy];
+}
+
+@end
+
+@implementation TFMultiPolygon (esrijson)
+
+- (NSArray *)orientedRings {
+    NSMutableArray *rings = [NSMutableArray new];
+    for (TFPolygon *p in self.polygons) {
+        [rings addObject:[p orientedRings]];
+    }
+    return [rings copy];
+}
+
 @end
 
