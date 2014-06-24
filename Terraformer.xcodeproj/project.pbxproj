@@ -26,6 +26,7 @@
 		48CED1831958FC9700B7D5FB /* TFLineString+MapKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CED1801958FC9700B7D5FB /* TFLineString+MapKit.m */; };
 		48CED1841958FC9700B7D5FB /* TFPoint+MapKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CED1821958FC9700B7D5FB /* TFPoint+MapKit.m */; };
 		48CED1871959F29A00B7D5FB /* TFPolygon+MapKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CED1861959F29A00B7D5FB /* TFPolygon+MapKit.m */; };
+		48CED18B195A1F8F00B7D5FB /* TFMapKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48CED18A195A1F8F00B7D5FB /* TFMapKitTests.m */; };
 		67EF200D6ADE1BDBA36761B1 /* multi_line_string.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 67EF22D834EFF66C1AF21827 /* multi_line_string.geojson */; };
 		67EF2055D80D3943251F484D /* TFMultiPointTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 67EF291D94BE7DFBD96B43E0 /* TFMultiPointTests.m */; };
 		67EF219FDD0D2A56029B6348 /* multi_polygon.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 67EF2ED4200B7451704252E0 /* multi_polygon.geojson */; };
@@ -120,6 +121,7 @@
 		48CED1821958FC9700B7D5FB /* TFPoint+MapKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFPoint+MapKit.m"; sourceTree = "<group>"; };
 		48CED1851959F29A00B7D5FB /* TFPolygon+MapKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TFPolygon+MapKit.h"; sourceTree = "<group>"; };
 		48CED1861959F29A00B7D5FB /* TFPolygon+MapKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TFPolygon+MapKit.m"; sourceTree = "<group>"; };
+		48CED18A195A1F8F00B7D5FB /* TFMapKitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFMapKitTests.m; sourceTree = "<group>"; };
 		48CFCC95192D632D00028043 /* TFPolygonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFPolygonTests.m; sourceTree = "<group>"; };
 		67EF205D4A4CFC0C8025E5B5 /* TFPrimitive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFPrimitive.h; sourceTree = "<group>"; };
 		67EF20CA053EDF8FC9907611 /* circle.geojson */ = {isa = PBXFileReference; lastKnownFileType = file.geojson; path = circle.geojson; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 				94D59AEC192C06A400A8E6F8 /* Supporting Files */,
 				67EF2E3DEA7C8124AE78A7F5 /* examples */,
 				67EF291D94BE7DFBD96B43E0 /* TFMultiPointTests.m */,
+				48CED18A195A1F8F00B7D5FB /* TFMapKitTests.m */,
 			);
 			path = TerraformerTests;
 			sourceTree = "<group>";
@@ -466,6 +469,7 @@
 				94CDD52A1950A6FF00F58B73 /* TFFeatureTests.m in Sources */,
 				94CDD52719501E0400F58B73 /* TFMultiPolygonTests.m in Sources */,
 				94CDD52619500FA600F58B73 /* TFPolygonTests.m in Sources */,
+				48CED18B195A1F8F00B7D5FB /* TFMapKitTests.m in Sources */,
 				BDED1CA9192D5677005F7477 /* TFLineStringTests.m in Sources */,
 				BD9F7F54193536940037C015 /* TFMultiLineStringTests.m in Sources */,
 				94D59AF2192C06A400A8E6F8 /* TerraformerTests.m in Sources */,
