@@ -208,25 +208,6 @@ static NSString *const TFAttributesKey = @"attributes";
     }
 }
 
-- (void)populateHasZAndMKeysForPoints:(NSArray *)points inDict:(NSMutableDictionary *)dict {
-    if ([points count] > 0) {
-        TFPoint *p = points[0];
-        if (p.m != nil) {
-            dict[TFHasMKey] = @YES;
-        }
-        if (p.z != nil) {
-            dict[TFHasZKey] = @YES;
-        }
-    }
-}
-
-- (void)populateHasZAndMKeysForLineStrings:(NSArray *)lineStrings inDict:(NSMutableDictionary *)dict {
-    if ([lineStrings count] > 0) {
-        TFLineString *ls = lineStrings[0];
-        [self populateHasZAndMKeysForPoints:ls.points inDict:dict];
-    }
-}
-
 - (TFPrimitive *)decodeDict:(NSDictionary *)dict error:(NSError **)error {
     if (!dict) {
         return nil;
@@ -299,6 +280,122 @@ static NSString *const TFAttributesKey = @"attributes";
 - (TFPrimitive *)decode:(NSData *)data error:(NSError **)error {
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
     return [self decodeDict:dict error:error];
+}
+
+#pragma mark Helpers
+
+- (void)populateHasZAndMKeysForPoints:(NSArray *)points inDict:(NSMutableDictionary *)dict {
+    if ([points count] > 0) {
+        TFPoint *p = points[0];
+        if (p.m != nil) {
+            dict[TFHasMKey] = @YES;
+        }
+        if (p.z != nil) {
+            dict[TFHasZKey] = @YES;
+        }
+    }
+}
+
+- (void)populateHasZAndMKeysForLineStrings:(NSArray *)lineStrings inDict:(NSMutableDictionary *)dict {
+    if ([lineStrings count] > 0) {
+        TFLineString *ls = lineStrings[0];
+        [self populateHasZAndMKeysForPoints:ls.points inDict:dict];
+    }
+}
+
+/** Determines whether or not the direction of the coordinates in a ring is clockwise. */
+- (BOOL)isRingClockwise:(TFLineString *)ring {
+    int total = 0;
+    TFPoint *p1, *p2;
+    p1 = ring[0];
+    for (int i = 0; i < ring.count - 1; i++) {
+        p2 = ring[i + 1];
+        total += ([p2.x doubleValue] - [p1.x doubleValue]) * ([p2.y doubleValue] + [p1.y doubleValue]);
+        p1 = p2;
+    }
+    return (total >= 0);
+}
+
+/** Determines whether ot not the given point is contained by the ring. */
+- (BOOL)isPoint:(TFPoint *)point containedByRing:(TFLineString *)ring {
+    if (ring == nil || point == nil || !ring.isLinearRing) {
+        return NO;
+    }
+
+    BOOL retVal = NO;
+    NSUInteger l = ring.count;
+    NSUInteger j = l - 1;
+
+    for (int i = -1; ++i < l; j = i) {
+        double p_x = [point.x doubleValue];
+        double p_y = [point.y doubleValue];
+        double ring_i_x = [((TFPoint *) ring[i]).x doubleValue];
+        double ring_i_y = [((TFPoint *) ring[i]).y doubleValue];
+        double ring_j_x = [((TFPoint *) ring[j]).x doubleValue];
+        double ring_j_y = [((TFPoint *) ring[j]).y doubleValue];
+
+
+        if (((ring_i_y <= p_y && p_y < ring_j_y) ||
+                (ring_j_y <= p_y && p_y < ring_i_y)) &&
+                (p_x < (ring_j_x - ring_i_x)) * (p_y - ring_i_y) / (ring_j_y - ring_i_y) + ring_i_x) {
+
+            retVal = !retVal;
+        }
+    }
+    return retVal;
+}
+
+/** Tests for line-line intersection of an array containing 4 points [a1, a2, b1, b2] */
+- (BOOL)isLineLineIntersection:(NSArray *)points {
+    TFPoint *a1 = (TFPoint *) points[0];
+    TFPoint *a2 = (TFPoint *) points[1];
+    TFPoint *b1 = (TFPoint *) points[2];
+    TFPoint *b2 = (TFPoint *) points[3];
+
+    double a1_x = [a1.x doubleValue];
+    double a1_y = [a1.y doubleValue];
+    double a2_x = [a2.x doubleValue];
+    double a2_y = [a2.y doubleValue];
+    double b1_x = [b1.x doubleValue];
+    double b1_y = [b1.y doubleValue];
+    double b2_x = [b2.x doubleValue];
+    double b2_y = [b2.y doubleValue];
+
+    // compute determinants
+    double ua_t = (b2_x - b1_x) * (a1_y - b1_y) - (b2_y - b1_y) * (a1_x - b1_x);
+    double ub_t = (a2_x - a1_x) * (a1_y - b1_y) - (a2_y - a1_y) * (a1_x - b1_x);
+    double u_b = (b2_y - b1_y) * (a2_x - a1_x) - (b2_x - b1_x) * (a2_y - a1_y);
+
+    // if segments are not parallel
+    if (u_b != 0) {
+        double ua = ua_t / u_b;
+        double ub = ub_t / u_b;
+
+        // check for segment intersection only, not infinite line intersection
+        return (0 <= ua && ua <= 1 && 0 <= ub && ub <= 1);
+    }
+
+    return NO;
+}
+
+/** Determines whether or not the coordinates of one ring are contained by the other */
+- (BOOL)isRing:(TFLineString *)outer containedByRing:(TFLineString *)inner {
+    BOOL intersects = [self isLineString:outer intersectingLineString:inner];
+    BOOL contains = [self isPoint:((TFPoint *) inner[0]) containedByRing:outer];
+
+    return (!intersects && contains);
+}
+
+/** Determines whether one linestring intersects with another */
+- (BOOL)isLineString:(TFLineString *)a intersectingLineString:(TFLineString *)b {
+    for (int i = 0; i < a.count - 1; i++) {
+        for (int j = 0; j < b.count - 1; j++) {
+            if ([self isLineLineIntersection:@[a[i], a[i + 1], b[j], b[j + 1]]]) {
+                return YES;
+            }
+        }
+    }
+    return NO;
 }
 
 @end
