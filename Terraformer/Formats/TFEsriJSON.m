@@ -19,6 +19,18 @@
 #import "TFGeometryCollection.h"
 
 
+// Class Categories for additional functionality on the primitives to help with encoding/decoding of EsriJSON
+@interface TFLineString (esrijson)
+- (BOOL)isClockwise;
+- (BOOL)containsPoint:(TFPoint *)point;
+- (BOOL)contains:(TFLineString *)ring;
+- (BOOL)isIntersectingLineString:(TFLineString *)lineString;
+@end
+
+@interface TFPolygon (esrijson)
+- (BOOL)containsLineString:(TFLineString *)lineString;
+@end
+
 @implementation TFEsriJSON {
 
 }
@@ -258,7 +270,59 @@ static NSString *const TFAttributesKey = @"attributes";
 
     // Polygon/MultiPolygon
     if (dict[TFRingsKey] != nil) {
-        #warning stub
+        // In summary, this is how we handle EsriJSON Polygon interpretation:
+        // * In esrijson, each ring is either an outerRing or a hole, determined by whether they are counter-/clockwise.
+        // * They can come in any order.
+        // * Each outer ring we find is stored in a TFPolygon in the outerRings array.
+        // * Each hole we find is stored in a TFLineString in the holes array.
+        // * We iterate over the holes and find the the outerRing that contains them and add the hole to that outerRing
+        // * If we end up with multiple outerRings, we have a MultiPolygon, otherwise just a Polygon.
+
+        NSArray *rings = dict[TFRingsKey];
+        NSMutableArray *outerRings = [NSMutableArray new];
+        NSMutableArray *holes = [NSMutableArray new];
+
+        // Separate rings into outerRing TFPolygons and TFLineString holes.
+        for (NSDictionary *ring in rings) {
+            TFLineString *r = (TFLineString *)[self decodeDict:ring error:error];
+            if (!r) {
+                return nil;
+            }
+
+            [r closeRing]; // no-op on an already closed ring.
+            if ([r count] < 4) {
+                continue;
+            }
+
+            if ([r isClockwise]) {
+                [outerRings addObject:[TFPolygon polygonWithLineStrings:@[r]]];
+            } else {
+                [holes addObject:r];
+            }
+        }
+
+        // Iterate over each of our holes and see if we have an outerRing that contains it. Add it to that polygon if we
+        // do, or reverse it and make it into its own polygon if we don't.
+        for (TFLineString *h in holes) {
+            BOOL contained = NO;
+            for (TFPolygon *polygon in outerRings) {
+                if ([polygon containsLineString:h]) {
+                    polygon.lineStrings = [polygon.lineStrings arrayByAddingObject:h];
+                    contained = YES;
+                    break;
+                }
+            }
+
+            if (!contained) {
+                [outerRings addObject:[TFPolygon polygonWithLineStrings:@[h]]];
+            }
+        }
+
+        if ([outerRings count] == 1) {
+            return outerRings[0];
+        } else {
+            return [TFMultiPolygon multiPolygonWithPolygons:outerRings];
+        }
     }
 
     // Feature
@@ -303,13 +367,17 @@ static NSString *const TFAttributesKey = @"attributes";
     }
 }
 
+@end
+
+@implementation TFLineString (esrijson)
+
 /** Determines whether or not the direction of the coordinates in a ring is clockwise. */
-- (BOOL)isRingClockwise:(TFLineString *)ring {
+- (BOOL)isClockwise {
     NSUInteger total = 0;
     TFPoint *p1, *p2;
-    p1 = ring[0];
-    for (NSUInteger i = 0; i < ring.count - 1; i++) {
-        p2 = ring[i + 1];
+    p1 = self[0];
+    for (NSUInteger i = 0; i < self.count - 1; i++) {
+        p2 = self[i + 1];
         total += ([p2.x doubleValue] - [p1.x doubleValue]) * ([p2.y doubleValue] + [p1.y doubleValue]);
         p1 = p2;
     }
@@ -317,22 +385,22 @@ static NSString *const TFAttributesKey = @"attributes";
 }
 
 /** Determines whether ot not the given point is contained by the ring. */
-- (BOOL)isPoint:(TFPoint *)point containedByRing:(TFLineString *)ring {
-    if (ring == nil || point == nil || !ring.isLinearRing) {
+- (BOOL)containsPoint:(TFPoint *)point {
+    if (point == nil || ![self isLinearRing]) {
         return NO;
     }
 
     BOOL retVal = NO;
-    NSUInteger l = ring.count;
+    NSUInteger l = [self count];
     NSUInteger j = l - 1;
 
     for (NSUInteger i = 0; i+1 < l; j = ++i) {
         double p_x = [point.x doubleValue];
         double p_y = [point.y doubleValue];
-        double ring_i_x = [((TFPoint *) ring[i]).x doubleValue];
-        double ring_i_y = [((TFPoint *) ring[i]).y doubleValue];
-        double ring_j_x = [((TFPoint *) ring[j]).x doubleValue];
-        double ring_j_y = [((TFPoint *) ring[j]).y doubleValue];
+        double ring_i_x = [((TFPoint *) self[i]).x doubleValue];
+        double ring_i_y = [((TFPoint *) self[i]).y doubleValue];
+        double ring_j_x = [((TFPoint *) self[j]).x doubleValue];
+        double ring_j_y = [((TFPoint *) self[j]).y doubleValue];
 
         if (((ring_i_y <= p_y && p_y < ring_j_y) ||
                 (ring_j_y <= p_y && p_y < ring_i_y)) &&
@@ -344,53 +412,46 @@ static NSString *const TFAttributesKey = @"attributes";
     return retVal;
 }
 
-/** Tests for line-line intersection of an array containing 4 points [a1, a2, b1, b2] */
-- (BOOL)isLineLineIntersection:(NSArray *)points {
-    TFPoint *a1 = (TFPoint *) points[0];
-    TFPoint *a2 = (TFPoint *) points[1];
-    TFPoint *b1 = (TFPoint *) points[2];
-    TFPoint *b2 = (TFPoint *) points[3];
-
-    double a1_x = [a1.x doubleValue];
-    double a1_y = [a1.y doubleValue];
-    double a2_x = [a2.x doubleValue];
-    double a2_y = [a2.y doubleValue];
-    double b1_x = [b1.x doubleValue];
-    double b1_y = [b1.y doubleValue];
-    double b2_x = [b2.x doubleValue];
-    double b2_y = [b2.y doubleValue];
-
-    // compute determinants
-    double ua_t = (b2_x - b1_x) * (a1_y - b1_y) - (b2_y - b1_y) * (a1_x - b1_x);
-    double ub_t = (a2_x - a1_x) * (a1_y - b1_y) - (a2_y - a1_y) * (a1_x - b1_x);
-    double u_b = (b2_y - b1_y) * (a2_x - a1_x) - (b2_x - b1_x) * (a2_y - a1_y);
-
-    // if segments are not parallel
-    if (u_b != 0) {
-        double ua = ua_t / u_b;
-        double ub = ub_t / u_b;
-
-        // check for segment intersection only, not infinite line intersection
-        return (0 <= ua && ua <= 1 && 0 <= ub && ub <= 1);
-    }
-
-    return NO;
-}
-
 /** Determines whether or not the coordinates of one ring are contained by the other */
-- (BOOL)isRing:(TFLineString *)outer containedByRing:(TFLineString *)inner {
-    BOOL intersects = [self isLineString:outer intersectingLineString:inner];
-    BOOL contains = [self isPoint:((TFPoint *) inner[0]) containedByRing:outer];
+- (BOOL)contains:(TFLineString *)ring {
+    BOOL intersects = [self isIntersectingLineString:ring];
+    BOOL contains = [self containsPoint:ring[0]];
 
     return (!intersects && contains);
 }
 
 /** Determines whether one linestring intersects with another */
-- (BOOL)isLineString:(TFLineString *)a intersectingLineString:(TFLineString *)b {
-    for (NSUInteger i = 0; i < a.count - 1; i++) {
-        for (NSUInteger j = 0; j < b.count - 1; j++) {
-            if ([self isLineLineIntersection:@[a[i], a[i + 1], b[j], b[j + 1]]]) {
-                return YES;
+- (BOOL)isIntersectingLineString:(TFLineString *)lineString {
+    for (NSUInteger i = 0; i < [self count] - 1; i++) {
+        for (NSUInteger j = 0; j < [lineString count] - 1; j++) {
+            TFPoint *a1 = (TFPoint *) self[i];
+            TFPoint *a2 = (TFPoint *) self[i + 1];
+            TFPoint *b1 = (TFPoint *) lineString[j];
+            TFPoint *b2 = (TFPoint *) lineString[j + 1];
+
+            double a1_x = [a1.x doubleValue];
+            double a1_y = [a1.y doubleValue];
+            double a2_x = [a2.x doubleValue];
+            double a2_y = [a2.y doubleValue];
+            double b1_x = [b1.x doubleValue];
+            double b1_y = [b1.y doubleValue];
+            double b2_x = [b2.x doubleValue];
+            double b2_y = [b2.y doubleValue];
+
+            // compute determinants
+            double ua_t = (b2_x - b1_x) * (a1_y - b1_y) - (b2_y - b1_y) * (a1_x - b1_x);
+            double ub_t = (a2_x - a1_x) * (a1_y - b1_y) - (a2_y - a1_y) * (a1_x - b1_x);
+            double u_b = (b2_y - b1_y) * (a2_x - a1_x) - (b2_x - b1_x) * (a2_y - a1_y);
+
+            // if segments are not parallel
+            if (u_b != 0) {
+                double ua = ua_t / u_b;
+                double ub = ub_t / u_b;
+
+                // check for segment intersection only, not infinite line intersection
+                if (0 <= ua && ua <= 1 && 0 <= ub && ub <= 1) {
+                    return YES;
+                }
             }
         }
     }
@@ -398,3 +459,14 @@ static NSString *const TFAttributesKey = @"attributes";
 }
 
 @end
+
+@implementation TFPolygon (esrijson)
+
+- (BOOL)containsLineString:(TFLineString *)lineString {
+    if ([self count] < 1) {
+        return NO;
+    }
+    return [self[0] contains:lineString];
+}
+@end
+

@@ -21,4 +21,5 @@
 - (NSUInteger)count;
 
 - (BOOL)isLinearRing;
+- (void)closeRing;
 @end

@@ -78,4 +78,10 @@
     return NO;
 }
 
+- (void)closeRing {
+    if (![self isLinearRing]) {
+        self.points = [self.points arrayByAddingObject:self.points[0]];
+    }
+}
+
 @end
