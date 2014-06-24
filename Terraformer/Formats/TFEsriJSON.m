@@ -31,6 +31,8 @@ static NSString *const TFPointsKey = @"points";
 static NSString *const TFHasMKey = @"hasM";
 static NSString *const TFHasZKey = @"hasZ";
 
+static NSString *const TFRingsKey = @"rings";
+
 static NSString *const TFPathsKey = @"paths";
 static NSString *const TFGeometryKey = @"geometry";
 static NSString *const TFAttributesKey = @"attributes";
@@ -39,7 +41,7 @@ static NSString *const TFAttributesKey = @"attributes";
     self = [super init];
     if (self != nil) {
         _spatialReference = @{ TFWKIDKey: @(4326) };
-        _featureIdentifierKey = @"geojson_id";
+        _featureIdentifierKey = @"OBJECTID";
     }
     return self;
 }
@@ -64,7 +66,7 @@ static NSString *const TFAttributesKey = @"attributes";
     self.spatialReference = sr;
 }
 
-- (NSData *)encodePrimitive:(TFPrimitive *)primitive error:(NSError **)error {
+- (NSDictionary *)encodePrimitiveToDictionary:(TFPrimitive *)primitive error:(NSError **)error {
     NSMutableDictionary *dict = [NSMutableDictionary new];
 
     if ([primitive isKindOfClass:[TFGeometry class]]) {
@@ -109,11 +111,21 @@ static NSString *const TFAttributesKey = @"attributes";
         case TFPrimitiveTypeFeature: {
             TFFeature *feature = (TFFeature *)primitive;
 
-            NSData *geometryData = [self encodePrimitive:feature.geometry error:error];
-            if (!geometryData) {
-                return nil;
+            NSDictionary *geometryDict;
+            NSAssert(![feature.geometry isKindOfClass:[TFGeometryCollection class]], @"Can't encode a Feature with a geometry of type GeometryCollection to EsriJSON. You will need to separate the geometries into separate features in order to produce valid EsriJSON with this object.");
+            // in a non DEBUG build we will still make it to here, so we still have to check for the GeometryCollection type and handle it.
+            // We do so by creating technically invalid esriJSON (but still valid JSON).
+            if ([feature.geometry isKindOfClass:[TFGeometryCollection class]]) {
+                NSData *geometryData = [self encodePrimitive:feature.geometry error:error];
+                if (!geometryData) {
+                    return nil;
+                }
+                geometryDict = [NSJSONSerialization JSONObjectWithData:geometryData options:0 error:error];
+                // TODO: Not sure this log call is necessary, and even if it is, there's probably a nicer way to log it than NSLog.
+                NSLog(@"Encoding an EsriJSON Feature with an array of geometries in the geometry key. This is not valid EsriJSON.");
+            } else {
+                geometryDict = [self encodePrimitiveToDictionary:feature.geometry error:error];
             }
-            NSDictionary *geometryDict = [NSJSONSerialization JSONObjectWithData:geometryData options:0 error:error];
             if (!geometryDict) {
                 return nil;
             }
@@ -134,10 +146,26 @@ static NSString *const TFAttributesKey = @"attributes";
             }
             break;
         }
+        case TFPrimitiveTypeGeometryCollection:
+        case TFPrimitiveTypeFeatureCollection:
+            // EsriJSON doesn't have an equivalent for the collection types, so we just build an array of the items
+            // in the collection, therefore there is no NSDictionary version of these.
+            return nil;
+        case TFPrimitiveTypePolygon:
+        case TFPrimitiveTypeMultiPolygon:
+            #warning unimplemented types.
+        default:
+            NSAssert(NO, @"not yet implemented");
+    }
+
+    return dict;
+}
+
+- (NSData *)encodePrimitive:(TFPrimitive *)primitive error:(NSError **)error {
+    switch(primitive.type) {
         case TFPrimitiveTypeGeometryCollection: {
             // EsriJSON doesn't have an equivalent for the collection types, so we just build an array of the items
-            // in the collection and serialize that. Note that this case returns the array that it creates, and does
-            // not continue beyond this switch block.
+            // in the collection and serialize that.
 
             TFGeometryCollection *gc = (TFGeometryCollection *) primitive;
             NSMutableArray *geometries = [NSMutableArray new];
@@ -156,8 +184,8 @@ static NSString *const TFAttributesKey = @"attributes";
         }
         case TFPrimitiveTypeFeatureCollection: {
             // EsriJSON doesn't have an equivalent for the collection types, so we just build an array of the items
-            // in the collection and serialize that. Note that this case returns the array that it creates, and does
-            // not continue beyond this switch block.
+            // in the collection and serialize that.
+
             TFFeatureCollection *fc = (TFFeatureCollection *)primitive;
             NSMutableArray *features = [NSMutableArray new];
             for (TFFeature *f in fc.features) {
@@ -173,11 +201,11 @@ static NSString *const TFAttributesKey = @"attributes";
             }
             return [NSJSONSerialization dataWithJSONObject:features options:0 error:error];
         }
-        default:
-            NSAssert(NO, @"not yet implemented");
+        default: {
+            NSDictionary *dict = [self encodePrimitiveToDictionary:primitive error:error];
+            return [NSJSONSerialization dataWithJSONObject:dict options:0 error:error];
+        }
     }
-
-    return [NSJSONSerialization dataWithJSONObject:dict options:0 error:error];
 }
 
 - (void)populateHasZAndMKeysForPoints:(NSArray *)points inDict:(NSMutableDictionary *)dict {
@@ -199,8 +227,78 @@ static NSString *const TFAttributesKey = @"attributes";
     }
 }
 
-- (TFPrimitive *)decode:(NSData *)data error:(NSError **)error {
+- (TFPrimitive *)decodeDict:(NSDictionary *)dict error:(NSError **)error {
+    if (!dict) {
+        return nil;
+    }
+
+    // Point
+    if (dict[@"x"] != nil && dict[@"y"] != nil) {
+        NSMutableArray *coords = [@[dict[@"x"], dict[@"y"]] mutableCopy];
+        NSNumber *z = dict[@"z"];
+        if (z != nil) {
+            [coords addObject:z];
+            NSNumber *m = dict[@"m"];
+            if (m != nil) {
+                [coords addObject:m];
+            }
+        }
+        return [TFPoint pointWithCoordinates:coords];
+    }
+
+    // MultiPoint
+    if (dict[TFPointsKey] != nil) {
+        NSArray *points = dict[TFPointsKey];
+        NSMutableArray *decodedPoints = [NSMutableArray new];
+        for (NSDictionary *p in points) {
+            TFPoint *point = (TFPoint *)[self decodeDict:p error:error];
+            if (!point) {
+                return nil;
+            }
+            [decodedPoints addObject:point];
+        }
+        return [TFMultiPoint multiPointWithPoints:decodedPoints];
+    }
+
+    // LineString/MultiLineString
+    if (dict[TFPathsKey] != nil) {
+        NSArray *paths = dict[TFPathsKey];
+        NSMutableArray *lineStrings = [NSMutableArray new];
+        for (NSArray *ls in paths) {
+            [lineStrings addObject:[TFLineString lineStringWithCoords:ls]];
+        }
+
+        if ([lineStrings count] == 1) {
+            return lineStrings[0];
+        }
+
+        return [TFMultiLineString multiLineStringWithLineStrings:lineStrings];
+    }
+
+    // Polygon/MultiPolygon
+    if (dict[TFRingsKey] != nil) {
+        #warning stub
+    }
+
+    // Feature
+    if (dict[TFGeometryKey] != nil && dict[TFAttributesKey] != nil) {
+        TFGeometry *geometry = (TFGeometry *)[self decodeDict:dict[TFGeometryKey] error:error];
+        if (!geometry) {
+            return nil;
+        }
+        NSDictionary *attributes = dict[TFAttributesKey];
+        return [TFFeature featureWithGeometry:geometry
+                                   properties:attributes
+                                   identifier:attributes[self.featureIdentifierKey]];
+    }
+
+    NSAssert(NO, @"Unable to detect geometry type.");
     return nil;
+}
+
+- (TFPrimitive *)decode:(NSData *)data error:(NSError **)error {
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:error];
+    return [self decodeDict:dict error:error];
 }
 
 @end
