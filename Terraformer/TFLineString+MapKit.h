@@ -12,5 +12,6 @@
 @interface TFLineString (MapKit)
 
 - (MKPolyline *)mapKitPolyline;
+- (MKPolygon *)mapKitPolygon;
 
 @end
