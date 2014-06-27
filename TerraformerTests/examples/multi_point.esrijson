@@ -1,0 +1,10 @@
+{
+  "hasM": false,
+  "hasZ": false,
+  "points": [
+    [100, 0], [101, 1], [100, 1], [99, 0]
+  ],
+  "spatialReference": {
+    "wkid": 4326
+  }
+}

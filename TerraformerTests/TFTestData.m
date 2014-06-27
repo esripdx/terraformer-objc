@@ -17,7 +17,11 @@
 }
 
 + (NSData *)loadFile:(NSString *)name {
-    return [NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"geojson"]];
+    return [self loadFile:name extension:@"geojson"];
+}
+
++ (NSData *)loadFile:(NSString *)name extension:(NSString *)extension {
+    return [NSData dataWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:name ofType:extension]];
 }
 
 + (TFPrimitive *)circle {
