@@ -389,7 +389,7 @@ static NSString *const TFAttributesKey = @"attributes";
 
 /** Determines whether or not the direction of the coordinates in a ring is clockwise. */
 - (BOOL)isClockwise {
-    NSUInteger total = 0;
+    NSInteger total = 0;
     TFPoint *p1, *p2;
     p1 = self[0];
     for (NSUInteger i = 0; i < self.count - 1; i++) {
