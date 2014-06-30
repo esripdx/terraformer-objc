@@ -11,11 +11,17 @@
 #import "TFTerraformer.h"
 #import "TFEsriJSON.h"
 #import "TFPoint.h"
+#import "TFLineString.h"
+
+#define DEFAULT_SR @"spatialReference": @{ @"wkid": @(4326) }
 
 @interface TFEsriJSONTests : XCTestCase
 
 @property (strong, nonatomic) TFTerraformer *terraformer;
-@property (strong, nonatomic) NSData *data;
+@property (copy, nonatomic) NSData *fileData;
+@property (copy, nonatomic) NSData *outputData;
+@property (copy, nonatomic) NSDictionary *outputDictionary;
+@property (strong, nonatomic) TFPrimitive *outputPrimitive;
 
 @end
 
@@ -35,40 +41,74 @@
     [super tearDown];
 }
 
-- (void)hydrateData:(NSString *)name {
-    self.data = [TFTestData loadFile:name extension:@"esrijson"];
+- (void)hydrateFileData:(NSString *)name {
+    self.fileData = [TFTestData loadFile:name extension:@"esrijson"];
+}
+
+
+- (void)performDecodingTestForFileName:(NSString *)name withExpected:(TFPrimitive *)expected {
+    [self hydrateFileData:name];
+
+    NSError *error;
+    self.outputPrimitive = [self.terraformer.decoder decode:self.fileData error:&error];
+
+    XCTAssertNil(error);
+    XCTAssertEqualObjects(self.outputPrimitive, expected);
+}
+
+- (void)performEncodingTestForFileName:(NSString *)name input:(TFPrimitive *)input withExpected:(NSDictionary *)expected {
+    [self hydrateFileData:name];
+
+    NSError *error;
+    self.outputData = [self.terraformer.encoder encodePrimitive:input error:&error];
+    XCTAssertNil(error);
+
+    self.outputDictionary = [NSJSONSerialization JSONObjectWithData:self.outputData options:0 error:&error];
+    XCTAssertNil(error);
+
+    XCTAssertEqualObjects(self.outputDictionary, expected);
 }
 
 - (void)testPointEncoding {
-    [self hydrateData:@"point"];
-
-    NSError *e;
-    TFPoint *point = [TFPoint pointWithX:100 y:0];
-    NSData *output = [self.terraformer.encoder encodePrimitive:point error:&e];
-    XCTAssertNil(e);
-
-    NSDictionary *outputDict = [NSJSONSerialization JSONObjectWithData:output options:0 error:&e];
-    XCTAssertNil(e);
-
     NSDictionary *expected = @{
             @"x": @(100),
             @"y": @(0),
-            @"spatialReference": @{
-                    @"wkid": @(4326)
-            }
+            DEFAULT_SR
     };
-    XCTAssertEqualObjects(outputDict, expected);
+
+    [self performEncodingTestForFileName:@"point"
+                                   input:[TFPoint pointWithX:100 y:0]
+                            withExpected:expected];
 }
 
 - (void)testPointDecoding {
-    [self hydrateData:@"point"];
-
-    NSError *e;
-    TFPoint *output = (TFPoint *)[self.terraformer.decoder decode:self.data error:&e];
     TFPoint *expected = [TFPoint pointWithX:100 y:0];
 
-    XCTAssertNil(e);
-    XCTAssertEqualObjects(output, expected);
+    [self performDecodingTestForFileName:@"point" withExpected:expected];
+}
+
+- (NSArray *)lineStringCoords {
+    return @[
+            @[@(100), @(0)],
+            @[@(101), @(1)],
+            @[@(100), @(1)],
+            @[@(99), @(0)]
+    ];
+}
+
+- (void)testLineStringEncoding {
+    TFLineString *input = [TFLineString lineStringWithCoords:[self lineStringCoords]];
+    NSDictionary *expected = @{
+            @"paths": [self lineStringCoords],
+            DEFAULT_SR
+    };
+
+    [self performEncodingTestForFileName:@"line_string" input:input withExpected:expected];
+}
+
+- (void)testLineStringDecoding {
+    [self performDecodingTestForFileName:@"line_string"
+                            withExpected:[TFLineString lineStringWithCoords:[self lineStringCoords]]];
 }
 
 @end
