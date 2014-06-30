@@ -12,8 +12,9 @@
 #import "TFEsriJSON.h"
 #import "TFPoint.h"
 #import "TFLineString.h"
+#import "TFMultiLineString.h"
 
-#define DEFAULT_SR @"spatialReference": @{ @"wkid": @(4326) }
+#define DEFAULT_SR @"spatialReference": @{ @"wkid": @4326 }
 
 @interface TFEsriJSONTests : XCTestCase
 
@@ -40,6 +41,8 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
     [super tearDown];
 }
+
+#pragma mark - helpers
 
 - (void)hydrateFileData:(NSString *)name {
     self.fileData = [TFTestData loadFile:name extension:@"esrijson"];
@@ -69,10 +72,12 @@
     XCTAssertEqualObjects(self.outputDictionary, expected);
 }
 
+# pragma mark - Point
+
 - (void)testPointEncoding {
     NSDictionary *expected = @{
-            @"x": @(100),
-            @"y": @(0),
+            @"x": @100.0,
+            @"y": @0.0,
             DEFAULT_SR
     };
 
@@ -87,12 +92,14 @@
     [self performDecodingTestForFileName:@"point" withExpected:expected];
 }
 
+#pragma mark - LineString (Polyline)
+
 - (NSArray *)lineStringCoords {
     return @[
-            @[@(100), @(0)],
-            @[@(101), @(1)],
-            @[@(100), @(1)],
-            @[@(99), @(0)]
+            @[@100.0, @0.0],
+            @[@101.0, @1.0],
+            @[@100.0, @1.0],
+            @[@99.0, @0.0]
     ];
 }
 
@@ -109,6 +116,38 @@
 - (void)testLineStringDecoding {
     [self performDecodingTestForFileName:@"line_string"
                             withExpected:[TFLineString lineStringWithCoords:[self lineStringCoords]]];
+}
+
+#pragma mark - MultiLineString (an array of Polylines)
+
+- (NSArray *)multiLineStringCoords {
+    return @[
+            @[ @[@100.0, @0.0], @[@101.0, @1.0] ],
+            @[ @[@102.0, @2.0], @[@103.0, @3.0] ]
+    ];
+}
+
+- (NSArray *)multiLineStrings {
+    NSMutableArray *lineStrings = [NSMutableArray new];
+    for (NSArray *ls in [self multiLineStringCoords]) {
+        [lineStrings addObject:[TFLineString lineStringWithCoords:ls]];
+    }
+    return [lineStrings copy];
+}
+
+- (void)testMultiLineStringEncoding {
+    TFMultiLineString *input = [TFMultiLineString multiLineStringWithLineStrings:[self multiLineStrings]];
+    NSDictionary *expected = @{
+            @"paths": [self multiLineStringCoords],
+            DEFAULT_SR
+    };
+
+    [self performEncodingTestForFileName:@"multi_line_string" input:input withExpected:expected];
+}
+
+- (void)testMultiLineStringDecoding {
+    [self performDecodingTestForFileName:@"multi_line_string"
+                            withExpected:[TFMultiLineString multiLineStringWithLineStrings:[self multiLineStrings]]];
 }
 
 @end
