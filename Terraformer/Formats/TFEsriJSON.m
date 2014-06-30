@@ -257,8 +257,8 @@ static NSString *const TFAttributesKey = @"attributes";
     if (dict[TFPointsKey] != nil) {
         NSArray *points = dict[TFPointsKey];
         NSMutableArray *decodedPoints = [NSMutableArray new];
-        for (NSDictionary *p in points) {
-            TFPoint *point = (TFPoint *)[self decodeDict:p error:error];
+        for (NSArray *p in points) {
+            TFPoint *point = [TFPoint pointWithCoordinates:p];
             if (!point) {
                 return nil;
             }
