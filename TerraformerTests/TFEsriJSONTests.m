@@ -14,6 +14,7 @@
 #import "TFLineString.h"
 #import "TFMultiLineString.h"
 #import "TFMultiPoint.h"
+#import "TFPolygon.h"
 
 #define DEFAULT_SR @"spatialReference": @{ @"wkid": @4326 }
 
@@ -173,5 +174,66 @@
 - (void)testMultiPointDecoding {
     [self performDecodingTestForFileName:@"multi_point"
                             withExpected:[TFMultiPoint multiPointWithPoints:[self multiPointPoints]]];
+}
+
+#pragma mark - Polygon
+
+- (NSArray *)polygonExteriorRing {
+    return @[ @[@100.0, @0.0], @[@100.0, @1.0], @[@101.0, @1.0], @[@101.0, @0.0], @[@100.0, @0.0] ];
+}
+
+- (NSArray *)polygonLineStringWithRings:(NSArray *)rings {
+    NSMutableArray *lineStrings = [NSMutableArray new];
+    for (NSArray *ring in rings) {
+        [lineStrings addObject:[TFLineString lineStringWithCoords:ring]];
+    }
+    return [lineStrings copy];
+}
+
+- (void)testPolygonEncoding {
+    NSDictionary *expected = @{
+            @"rings": @[[self polygonExteriorRing]],
+            DEFAULT_SR
+    };
+    TFPolygon *input = [TFPolygon polygonWithLineStrings:[self polygonLineStringWithRings:@[[self polygonExteriorRing]]]];
+
+    [self performEncodingTestForFileName:@"polygon" input:input withExpected:expected];
+}
+
+- (void)testPolygonDecoding {
+    TFPolygon *expected = [TFPolygon polygonWithLineStrings:[self polygonLineStringWithRings:@[[self polygonExteriorRing]]]];
+    [self performDecodingTestForFileName:@"polygon" withExpected:expected];
+}
+
+- (void)testReversePolygon {
+    TFLineString *clockwise = [TFLineString lineStringWithCoords:@[
+            @[@0, @2],
+            @[@1, @1],
+            @[@2, @0],
+            @[@1, @-1],
+            @[@0, @-2],
+            @[@-1, @-1],
+            @[@-2, @0],
+            @[@-1, @1],
+            @[@0, @2]
+    ]];
+    TFLineString *expected = [TFLineString lineStringWithCoords:@[
+            @[@0, @2],
+            @[@-1, @1],
+            @[@-2, @0],
+            @[@-1, @-1],
+            @[@0, @-2],
+            @[@1, @-1],
+            @[@2, @0],
+            @[@1, @1],
+            @[@0, @2]
+    ]];
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    TFLineString *output = [clockwise performSelector:@selector(reversed)];
+#pragma clang diagnostic pop
+
+    XCTAssertEqualObjects(output, expected);
 }
 @end

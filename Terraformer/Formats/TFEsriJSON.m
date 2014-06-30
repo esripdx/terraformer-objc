@@ -297,8 +297,8 @@ static NSString *const TFAttributesKey = @"attributes";
         NSMutableArray *holes = [NSMutableArray new];
 
         // Separate rings into outerRing TFPolygons and TFLineString holes.
-        for (NSDictionary *ring in rings) {
-            TFLineString *r = (TFLineString *)[self decodeDict:ring error:error];
+        for (NSArray *ring in rings) {
+            TFLineString *r = [TFLineString lineStringWithCoords:ring];
             if (!r) {
                 return nil;
             }
@@ -504,11 +504,11 @@ static NSString *const TFAttributesKey = @"attributes";
         if ((i == 0) != [lineString isClockwise]) {
             ring = [lineString reversed];
         } else {
-            ring = [lineString copy];
+            ring = lineString;
         }
 
         [ring closeRing];
-        [rings addObject:ring];
+        [rings addObject:[ring coordinateArray]];
     }
     return [rings copy];
 }
