@@ -13,6 +13,7 @@
 #import "TFPoint.h"
 #import "TFLineString.h"
 #import "TFMultiLineString.h"
+#import "TFMultiPoint.h"
 
 #define DEFAULT_SR @"spatialReference": @{ @"wkid": @4326 }
 
@@ -87,9 +88,7 @@
 }
 
 - (void)testPointDecoding {
-    TFPoint *expected = [TFPoint pointWithX:100 y:0];
-
-    [self performDecodingTestForFileName:@"point" withExpected:expected];
+    [self performDecodingTestForFileName:@"point" withExpected:[TFPoint pointWithX:100 y:0]];
 }
 
 #pragma mark - LineString (Polyline)
@@ -118,7 +117,7 @@
                             withExpected:[TFLineString lineStringWithCoords:[self lineStringCoords]]];
 }
 
-#pragma mark - MultiLineString (an array of Polylines)
+#pragma mark - MultiLineString
 
 - (NSArray *)multiLineStringCoords {
     return @[
@@ -150,4 +149,29 @@
                             withExpected:[TFMultiLineString multiLineStringWithLineStrings:[self multiLineStrings]]];
 }
 
+#pragma mark - MultiPoint
+
+- (NSArray *)multiPointPoints {
+    NSMutableArray *points = [NSMutableArray new];
+    for (NSArray *coords in [self lineStringCoords]) {
+        [points addObject:[TFPoint pointWithCoordinates:coords]];
+    }
+    return [points copy];
+}
+
+- (void)testMultiPointEncoding {
+    NSDictionary *expected = @{
+            @"points": [self lineStringCoords],
+            DEFAULT_SR
+    };
+
+    [self performEncodingTestForFileName:@"multi_point"
+                                   input:[TFMultiPoint multiPointWithPoints:[self multiPointPoints]]
+                            withExpected:expected];
+}
+
+- (void)testMultiPointDecoding {
+    [self performDecodingTestForFileName:@"multi_point"
+                            withExpected:[TFMultiPoint multiPointWithPoints:[self multiPointPoints]]];
+}
 @end
