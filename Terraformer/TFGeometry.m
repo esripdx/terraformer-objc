@@ -43,7 +43,7 @@
 + (NSArray *)coordinateArrayFromGeometryArray:(NSArray *)array {
     NSMutableArray *coords = [NSMutableArray new];
     for (TFGeometry *geometry in array) {
-        [coords addObjectsFromArray:[geometry coordinateArray]];
+        [coords addObject:[geometry coordinateArray]];
     }
     return [coords copy];
 }
