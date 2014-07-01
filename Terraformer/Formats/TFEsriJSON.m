@@ -408,26 +408,42 @@ static NSString *const TFAttributesKey = @"attributes";
         return NO;
     }
 
-    BOOL retVal = NO;
-    NSUInteger l = [self count];
-    NSUInteger j = l - 1;
+    BOOL contains = NO;
+    NSUInteger i, j, nvert = [self count];
 
-    for (NSUInteger i = 0; i+1 < l; j = ++i) {
-        double p_x = [point.x doubleValue];
-        double p_y = [point.y doubleValue];
-        double ring_i_x = [((TFPoint *) self[i]).x doubleValue];
-        double ring_i_y = [((TFPoint *) self[i]).y doubleValue];
-        double ring_j_x = [((TFPoint *) self[j]).x doubleValue];
-        double ring_j_y = [((TFPoint *) self[j]).y doubleValue];
+    // Ray casting algorithm to determine if the point is inside the
+    // ring. For each segment with the coordinates a and b, check to see if
+    // point.y is within a.y and b.y. If so, check to see if the point is
+    // to the left of the edge. If this is also true, a line drawn from the
+    // point to the right will intersect the edge-- if the line intersects
+    // the polygon an odd number of times, it is inside.
 
-        if (((ring_i_y <= p_y && p_y < ring_j_y) ||
-                (ring_j_y <= p_y && p_y < ring_i_y)) &&
-                (p_x < (ring_j_x - ring_i_x)) * (p_y - ring_i_y) / (ring_j_y - ring_i_y) + ring_i_x) {
+    // If an edge is horizontal it will not pass the checkY test. This is
+    // important, since otherwise you run the risk of dividing by zero in
+    // the horizontal check.
 
-            retVal = !retVal;
+    // This stackoverflow answer explains it nicely: http://stackoverflow.com/a/218081/52561
+    // This is good too: http://geomalgorithms.com/a03-_inclusion.html
+    for (i = 0, j = nvert - 1; i < nvert; j = i++) {
+        TFPoint *a = self[i];
+        TFPoint *b = self[j];
+
+        double ax = [a.x doubleValue];
+        double ay = [a.y doubleValue];
+        double bx = [b.x doubleValue];
+        double by = [b.y doubleValue];
+        double px = [point.x doubleValue];
+        double py = [point.y doubleValue];
+
+        BOOL checkY = ((ay >= py) != (by >= py));
+        BOOL checkX = (px <= ( bx - ax ) * (py - ay) / (by - ay) + ax);
+
+        if (checkY && checkX) {
+            contains = !contains;
         }
     }
-    return retVal;
+
+    return contains;
 }
 
 /** Determines whether or not the coordinates of one ring are contained by the other */
@@ -438,38 +454,77 @@ static NSString *const TFAttributesKey = @"attributes";
     return (!intersects && contains);
 }
 
-/** Determines whether one linestring intersects with another */
+/**
+* Determines whether two line segments intersect.
+* See: http://geomalgorithms.com/a05-_intersect-1.html
+*/
++ (BOOL)lineSegmentsIntersect:(TFPoint *)a1 a2:(TFPoint *)a2 b1:(TFPoint *)b1 b2:(TFPoint *)b2 {
+    TFLineString *a = [TFLineString lineStringWithPoints:@[a1, b2]];
+    TFLineString *b = [TFLineString lineStringWithPoints:@[b1, b2]];
+
+    double a1x = [a1.x doubleValue];
+    double a1y = [a1.y doubleValue];
+    double a2x = [a2.x doubleValue];
+    double a2y = [a2.y doubleValue];
+    double b1x = [b1.x doubleValue];
+    double b1y = [b1.y doubleValue];
+    double b2x = [b2.x doubleValue];
+    double b2y = [b2.y doubleValue];
+
+    double a_xLength = a2x - a1x;
+    double a_yLength = a2y - a1y;
+    double b_xLength = b2x - b1x;
+    double b_yLength = b2y - b1y;
+    double ab_xLength = a1x - b1x;
+    double ab_yLength = a1y - b1y;
+    double a_bPerpProduct = (a_xLength * b_yLength - a_yLength * b_xLength);
+    double a_abPerpProduct = (a_xLength * ab_yLength - a_yLength * ab_xLength);
+    double b_abPerpProduct = (b_xLength * ab_yLength - b_yLength * ab_xLength);
+
+    // check for parallels / 0 length segments
+    if (fabs(a_bPerpProduct) < 0.0000000001) {
+        // they are parallel, check if they are on the same line
+        if (a_abPerpProduct != 0 || b_abPerpProduct != 0) {
+            return NO;
+        }
+
+        // parallel and on the same line, make sure the segment actually has a length > 0
+        BOOL aIsPoint = a_xLength == 0 && a_yLength == 0;
+        BOOL bIsPoint = b_xLength == 0 && b_yLength == 0;
+        if (aIsPoint && bIsPoint) {
+            // both line segments have a length of 0 (treat them like a Point for the sake of intersection).
+            return [a1 isEqual:b1];
+        } else if (aIsPoint) {
+            return [b containsPoint:a1];
+        } else if (bIsPoint) {
+            return [a containsPoint:b1];
+        }
+
+        // they are both line segments with a length > 0, parallel, and on the same line. Do they overlap?
+        return ([a containsPoint:b1] || [a containsPoint:b2]);
+    }
+
+    // not parallel, find the intersection (or lack thereof)
+    double aIntersection = b_abPerpProduct / a_bPerpProduct;
+    if (aIntersection < 0 || aIntersection > 1) {
+        return NO;
+    }
+
+    double bIntersection = a_abPerpProduct / a_bPerpProduct;
+    return !(0 > bIntersection || bIntersection > 1);
+}
+
+/** Determines whether this linestring intersects with another */
 - (BOOL)isIntersectingLineString:(TFLineString *)lineString {
+    // For each line segment in this lineString, check if it intersects any line segment in the given lineString
     for (NSUInteger i = 0; i < [self count] - 1; i++) {
         for (NSUInteger j = 0; j < [lineString count] - 1; j++) {
             TFPoint *a1 = (TFPoint *) self[i];
             TFPoint *a2 = (TFPoint *) self[i + 1];
             TFPoint *b1 = (TFPoint *) lineString[j];
             TFPoint *b2 = (TFPoint *) lineString[j + 1];
-
-            double a1_x = [a1.x doubleValue];
-            double a1_y = [a1.y doubleValue];
-            double a2_x = [a2.x doubleValue];
-            double a2_y = [a2.y doubleValue];
-            double b1_x = [b1.x doubleValue];
-            double b1_y = [b1.y doubleValue];
-            double b2_x = [b2.x doubleValue];
-            double b2_y = [b2.y doubleValue];
-
-            // compute determinants
-            double ua_t = (b2_x - b1_x) * (a1_y - b1_y) - (b2_y - b1_y) * (a1_x - b1_x);
-            double ub_t = (a2_x - a1_x) * (a1_y - b1_y) - (a2_y - a1_y) * (a1_x - b1_x);
-            double u_b = (b2_y - b1_y) * (a2_x - a1_x) - (b2_x - b1_x) * (a2_y - a1_y);
-
-            // if segments are not parallel
-            if (u_b != 0) {
-                double ua = ua_t / u_b;
-                double ub = ub_t / u_b;
-
-                // check for segment intersection only, not infinite line intersection
-                if (0 <= ua && ua <= 1 && 0 <= ub && ub <= 1) {
-                    return YES;
-                }
+            if ([[self class] lineSegmentsIntersect:a1 a2:a2 b1:b1 b2:b2]) {
+                return YES;
             }
         }
     }
@@ -485,10 +540,25 @@ static NSString *const TFAttributesKey = @"attributes";
 @implementation TFPolygon (esrijson)
 
 - (BOOL)containsLineString:(TFLineString *)lineString {
+    // I am not a real polygon, I contain no LineStrings.
     if ([self count] < 1) {
         return NO;
     }
-    return [self[0] contains:lineString];
+
+    // Is the given LineString inside this polygon?
+    if (![self[0] contains:lineString]) {
+        return NO;
+    }
+
+    // Is the given LineString inside one of the holes in this polygon?
+    for (NSUInteger i = 1; i < [self count]; i++) {
+        if ([self[i] contains:lineString]) {
+            return NO;
+        }
+    }
+
+    // The LineString is inside my boundary and outside of all of my holes' boundaries.
+    return YES;
 }
 
 - (NSArray *)orientedRings {

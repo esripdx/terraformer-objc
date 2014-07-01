@@ -17,6 +17,17 @@
 #import "TFPolygon.h"
 
 #define DEFAULT_SR @"spatialReference": @{ @"wkid": @4326 }
+@interface TFLineString (esrijson)
+- (BOOL)isClockwise;
+- (BOOL)containsPoint:(TFPoint *)point;
+- (BOOL)contains:(TFLineString *)ring;
+- (BOOL)isIntersectingLineString:(TFLineString *)lineString;
+- (TFLineString *)reversed;
+@end
+
+@interface TFPolygon (esrijson)
+- (BOOL)containsLineString:(TFLineString *)lineString;
+@end
 
 @interface TFEsriJSONTests : XCTestCase
 
@@ -182,6 +193,10 @@
     return @[ @[@100.0, @0.0], @[@100.0, @1.0], @[@101.0, @1.0], @[@101.0, @0.0], @[@100.0, @0.0] ];
 }
 
+- (NSArray *)polygonHole {
+    return @[ @[@100.2, @0.2], @[@100.8, @0.2], @[@100.8, @0.8], @[@100.2, @0.8], @[@100.2, @0.2] ];
+}
+
 - (NSArray *)polygonLineStringWithRings:(NSArray *)rings {
     NSMutableArray *lineStrings = [NSMutableArray new];
     for (NSArray *ring in rings) {
@@ -191,6 +206,7 @@
 }
 
 - (void)testPolygonEncoding {
+    // without holes
     NSDictionary *expected = @{
             @"rings": @[[self polygonExteriorRing]],
             DEFAULT_SR
@@ -198,42 +214,160 @@
     TFPolygon *input = [TFPolygon polygonWithLineStrings:[self polygonLineStringWithRings:@[[self polygonExteriorRing]]]];
 
     [self performEncodingTestForFileName:@"polygon" input:input withExpected:expected];
+
+    // with holes
+    expected = @{
+            @"rings": @[
+                    [self polygonExteriorRing],
+                    [self polygonHole]
+            ],
+            DEFAULT_SR
+    };
+    input = [TFPolygon polygonWithLineStrings:[self polygonLineStringWithRings:@[
+            [self polygonExteriorRing],
+            [self polygonHole]
+    ]]];
+
+    [self performEncodingTestForFileName:@"polygon_with_holes" input:input withExpected:expected];
 }
 
 - (void)testPolygonDecoding {
+    // without holes
     TFPolygon *expected = [TFPolygon polygonWithLineStrings:[self polygonLineStringWithRings:@[[self polygonExteriorRing]]]];
     [self performDecodingTestForFileName:@"polygon" withExpected:expected];
+
+    // with holes
+    expected = [TFPolygon polygonWithLineStrings:[self polygonLineStringWithRings:@[
+            [self polygonExteriorRing],
+            [self polygonHole]
+    ]]];
+    [self performDecodingTestForFileName:@"polygon_with_holes" withExpected:expected];
 }
 
-- (void)testReversePolygon {
-    TFLineString *clockwise = [TFLineString lineStringWithCoords:@[
-            @[@0, @2],
-            @[@1, @1],
-            @[@2, @0],
-            @[@1, @-1],
-            @[@0, @-2],
-            @[@-1, @-1],
-            @[@-2, @0],
-            @[@-1, @1],
-            @[@0, @2]
+- (NSArray *)clockwiseCoords {
+    return @[
+            @[@0, @0],
+            @[@0, @0.9],
+            @[@0.9, @0.9],
+            @[@0.9, @0],
+            @[@0, @0]
+    ];
+}
+
+- (NSArray *)counterClockwiseCoords {
+    return @[
+            @[@0, @0],
+            @[@0.9, @0],
+            @[@0.9, @0.9],
+            @[@0, @0.9],
+            @[@0, @0]
+    ];
+}
+
+- (void)testReversedLineString {
+    TFLineString *clockwise = [TFLineString lineStringWithCoords:[self clockwiseCoords]];
+    TFLineString *expected = [TFLineString lineStringWithCoords:[self counterClockwiseCoords]];
+
+    XCTAssertEqualObjects([clockwise reversed], expected);
+}
+
+- (void)testIsClockwise {
+    TFLineString *clockwise = [TFLineString lineStringWithCoords:[self clockwiseCoords]];
+    XCTAssertEqual([clockwise isClockwise], YES);
+
+    TFLineString *counterClockwise = [TFLineString lineStringWithCoords:[self counterClockwiseCoords]];
+    XCTAssertEqual([counterClockwise isClockwise], NO);
+}
+
+- (void)testContainsPoint {
+    TFLineString *ring = [TFLineString lineStringWithCoords:@[
+            @[@-10, @-10],
+            @[@-10, @10],
+            @[@10,  @10],
+            @[@10,  @-10],
+            @[@-10, @-10]
     ]];
-    TFLineString *expected = [TFLineString lineStringWithCoords:@[
-            @[@0, @2],
-            @[@-1, @1],
-            @[@-2, @0],
-            @[@-1, @-1],
-            @[@0, @-2],
-            @[@1, @-1],
-            @[@2, @0],
-            @[@1, @1],
-            @[@0, @2]
+    TFPoint *center = [TFPoint pointWithX:0 y:0];
+    TFPoint *outside = [TFPoint pointWithX:100 y:100];
+
+    XCTAssertTrue([ring containsPoint:center]);
+    XCTAssertFalse([ring containsPoint:outside]);
+}
+
+- (void)testIsIntersectingLineString {
+    TFLineString *horizontal = [TFLineString lineStringWithCoords:@[
+            @[@-1, @0], @[@1, @0]
+    ]];
+    TFLineString *vertical = [TFLineString lineStringWithCoords:@[
+            @[@0, @1], @[@0, @-1]
+    ]];
+    TFLineString *ls = [TFLineString lineStringWithCoords:@[
+            @[@-10, @2], @[@10, @2]
     ]];
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    TFLineString *output = [clockwise performSelector:@selector(reversed)];
-#pragma clang diagnostic pop
+    XCTAssertTrue([horizontal isIntersectingLineString:vertical]);
+    XCTAssertTrue([vertical isIntersectingLineString:horizontal]);
+    XCTAssertFalse([horizontal isIntersectingLineString:ls]);
+    XCTAssertFalse([vertical isIntersectingLineString:ls]);
+    XCTAssertFalse([ls isIntersectingLineString:vertical]);
+    XCTAssertFalse([ls isIntersectingLineString:horizontal]);
+}
 
-    XCTAssertEqualObjects(output, expected);
+- (void)testContains {
+    TFLineString *outer = [TFLineString lineStringWithCoords:@[
+            @[@-10, @10], @[@10, @10],
+            @[@10, @-10], @[@-10, @-10],
+            @[@-10, @10]
+    ]];
+    TFLineString *inner = [TFLineString lineStringWithCoords:@[
+            @[@-1, @1], @[@1, @1],
+            @[@1, @-1], @[@-1, @-1],
+            @[@-1, @1]
+    ]];
+    TFLineString *external = [TFLineString lineStringWithCoords:@[
+            @[@100, @101], @[@101, @101],
+            @[@101, @100], @[@100, @100],
+            @[@100, @101]
+    ]];
+
+    XCTAssertTrue([outer contains:inner]);
+    XCTAssertFalse([inner contains:outer]);
+    XCTAssertFalse([external contains:outer]);
+    XCTAssertFalse([outer contains:external]);
+}
+
+- (void)testContainsLineString {
+    TFPolygon *outer = [TFPolygon polygonWithLineStrings:@[
+            [TFLineString lineStringWithCoords:@[
+                    @[@-10, @10], @[@10, @10],
+                    @[@10, @-10], @[@-10, @-10],
+                    @[@-10, @10]
+            ]],
+            [TFLineString lineStringWithCoords:@[
+                    @[@-5, @5], @[@-5, @0],
+                    @[@5, @0], @[@5, @5],
+                    @[@-5, @5]
+            ]]
+    ]];
+
+    TFLineString *insideHole = [TFLineString lineStringWithCoords:@[
+            @[@-4, @1], @[@4, @1],
+            @[@4, @2], @[@-4, @2],
+            @[@-4, @1]
+    ]];
+    TFLineString *insidePoly = [TFLineString lineStringWithCoords:@[
+            @[@8, @-1], @[@9, @-1],
+            @[@9, @-2], @[@8, @-2],
+            @[@8, @-1]
+    ]];
+    TFLineString *external = [TFLineString lineStringWithCoords:@[
+            @[@100, @101], @[@101, @101],
+            @[@101, @100], @[@100, @100],
+            @[@100, @101]
+    ]];
+
+    XCTAssertTrue([outer containsLineString:insidePoly]);
+    XCTAssertFalse([outer containsLineString:external]);
+    XCTAssertFalse([outer containsLineString:insideHole]);
 }
 @end
