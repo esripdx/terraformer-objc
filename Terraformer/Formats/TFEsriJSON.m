@@ -455,75 +455,79 @@ static NSString *const TFAttributesKey = @"attributes";
 }
 
 /**
-* Determines whether two line segments intersect.
+* Determines whether one linestring intersects with another
 * See: http://geomalgorithms.com/a05-_intersect-1.html
 */
-+ (BOOL)lineSegmentsIntersect:(TFPoint *)a1 a2:(TFPoint *)a2 b1:(TFPoint *)b1 b2:(TFPoint *)b2 {
-    TFLineString *a = [TFLineString lineStringWithPoints:@[a1, b2]];
-    TFLineString *b = [TFLineString lineStringWithPoints:@[b1, b2]];
-
-    double a1x = [a1.x doubleValue];
-    double a1y = [a1.y doubleValue];
-    double a2x = [a2.x doubleValue];
-    double a2y = [a2.y doubleValue];
-    double b1x = [b1.x doubleValue];
-    double b1y = [b1.y doubleValue];
-    double b2x = [b2.x doubleValue];
-    double b2y = [b2.y doubleValue];
-
-    double a_xLength = a2x - a1x;
-    double a_yLength = a2y - a1y;
-    double b_xLength = b2x - b1x;
-    double b_yLength = b2y - b1y;
-    double ab_xLength = a1x - b1x;
-    double ab_yLength = a1y - b1y;
-    double a_bPerpProduct = (a_xLength * b_yLength - a_yLength * b_xLength);
-    double a_abPerpProduct = (a_xLength * ab_yLength - a_yLength * ab_xLength);
-    double b_abPerpProduct = (b_xLength * ab_yLength - b_yLength * ab_xLength);
-
-    // check for parallels / 0 length segments
-    if (fabs(a_bPerpProduct) < 0.0000000001) {
-        // they are parallel, check if they are on the same line
-        if (a_abPerpProduct != 0 || b_abPerpProduct != 0) {
-            return NO;
-        }
-
-        // parallel and on the same line, make sure the segment actually has a length > 0
-        BOOL aIsPoint = a_xLength == 0 && a_yLength == 0;
-        BOOL bIsPoint = b_xLength == 0 && b_yLength == 0;
-        if (aIsPoint && bIsPoint) {
-            // both line segments have a length of 0 (treat them like a Point for the sake of intersection).
-            return [a1 isEqual:b1];
-        } else if (aIsPoint) {
-            return [b containsPoint:a1];
-        } else if (bIsPoint) {
-            return [a containsPoint:b1];
-        }
-
-        // they are both line segments with a length > 0, parallel, and on the same line. Do they overlap?
-        return ([a containsPoint:b1] || [a containsPoint:b2]);
-    }
-
-    // not parallel, find the intersection (or lack thereof)
-    double aIntersection = b_abPerpProduct / a_bPerpProduct;
-    if (aIntersection < 0 || aIntersection > 1) {
-        return NO;
-    }
-
-    double bIntersection = a_abPerpProduct / a_bPerpProduct;
-    return !(0 > bIntersection || bIntersection > 1);
-}
-
-/** Determines whether this linestring intersects with another */
 - (BOOL)isIntersectingLineString:(TFLineString *)lineString {
-    // For each line segment in this lineString, check if it intersects any line segment in the given lineString
     for (NSUInteger i = 0; i < [self count] - 1; i++) {
+        TFLineString *a = [TFLineString lineStringWithPoints:@[self[i], self[i + 1]]];
+        TFPoint *a1 = (TFPoint *)a[0];
+        TFPoint *a2 = (TFPoint *)a[1];
+        double a1_x = [a1.x doubleValue];
+        double a1_y = [a1.y doubleValue];
+        double a2_x = [a2.x doubleValue];
+        double a2_y = [a2.y doubleValue];
+
+        double aVector[2] = { a2_x - a1_x, a2_y - a1_y };
+        BOOL aIsPoint = (aVector[0] == 0 && aVector[1] == 0);
+
         for (NSUInteger j = 0; j < [lineString count] - 1; j++) {
-            TFPoint *a1 = (TFPoint *) self[i];
-            TFPoint *a2 = (TFPoint *) self[i + 1];
-            TFPoint *b1 = (TFPoint *) lineString[j];
-            TFPoint *b2 = (TFPoint *) lineString[j + 1];
-            if ([[self class] lineSegmentsIntersect:a1 a2:a2 b1:b1 b2:b2]) {
+            TFLineString *b = [TFLineString lineStringWithPoints:@[lineString[j], lineString[j + 1]]];
+            TFPoint *b1 = (TFPoint *)b[0];
+            TFPoint *b2 = (TFPoint *)b[1];
+
+            double b1_x = [b1.x doubleValue];
+            double b1_y = [b1.y doubleValue];
+            double b2_x = [b2.x doubleValue];
+            double b2_y = [b2.y doubleValue];
+
+            double bVector[2] = { b2_x - b1_x, b2_y - b1_y };
+            BOOL bIsPoint = (bVector[0] == 0 && bVector[1] == 0);
+
+            // Determine if a and b are parallel. They are parallel if they are both perpendicular to the same vector,
+            // which can be boiled down to checking if the difference of the perp products of the two vectors is equal
+            // to 0.
+            if ((aVector[0] * bVector[1] - aVector[1] * bVector[0]) == 0) {
+                // If both segments are points they can only intersect if they are equivalent
+                if (aIsPoint && bIsPoint) {
+                    if ([a1 isEqual:b1]) {
+                        return YES;
+                    }
+                    continue;
+                }
+
+                // If only one segment is a point check whether it lies no the other line segment
+                if (aIsPoint && [b containsPoint:a1]) {
+                    return YES;
+                }
+                if (bIsPoint && [a containsPoint:b1]) {
+                    return YES;
+                }
+
+                // Segments are parallel and have a length > 0. Check if any of the end points lie on the other segment
+                if ([a containsPoint:b1] || [a containsPoint:b2] || [b containsPoint:a1] || [b containsPoint:a2]) {
+                    return YES;
+                }
+
+                // These two segments are parallel but not collinear... next!
+                continue;
+            }
+
+            // At this point we have 2 non-parallel lines, get the direction vector for the difference between their
+            // first points, which is used to calculate the distance from those points along their corresponding line
+            // at which the intersection occurs. This distance is presented as a ratio of the line segment's length,
+            // so if that distance is between 0 and 1, the intersection happens on that line segment. Therefore both
+            // the a and the b intersection distance ratio must be between 0 and 1 for this to be a valid intersection.
+
+            // See the Non-Parallel Lines section in the link above for a detailed explanation.
+            double abVector[2] = { a1_x - b1_x, a1_y - b1_y };
+            double aIntersectionDistance = (bVector[1] * abVector[0] - bVector[0] * abVector[1]) /
+                    (bVector[0] * aVector[1] - bVector[1] * aVector[0]);
+            double bIntersectionDistance = (aVector[0] * abVector[1] - aVector[1] * abVector[0]) /
+                    (aVector[0] * bVector[1] - aVector[1] * bVector[0]);
+
+            if (aIntersectionDistance >= 0 && aIntersectionDistance <= 1 &&
+                    bIntersectionDistance >= 0 && bIntersectionDistance <= 1) {
                 return YES;
             }
         }
