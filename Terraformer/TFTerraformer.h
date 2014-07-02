@@ -49,6 +49,6 @@ static NSInteger const kTFTerraformerParseError = 1;
 /**
 * Parses the given input and returns the `TFPrimitive` representation of it.
 */
-- (TFPrimitive *)parse:(NSData *)input error:(NSError **)error;
+- (TFPrimitive *)decode:(NSData *)input error:(NSError **)error;
 
 @end

@@ -496,7 +496,7 @@ static NSString *const TFAttributesKey = @"attributes";
                     continue;
                 }
 
-                // If only one segment is a point check whether it lies no the other line segment
+                // If only one segment is a point check whether it lies on the other line segment
                 if (aIsPoint && [b containsPoint:a1]) {
                     return YES;
                 }
@@ -513,7 +513,7 @@ static NSString *const TFAttributesKey = @"attributes";
                 continue;
             }
 
-            // At this point we have 2 non-parallel lines, get the direction vector for the difference between their
+            // At this point we have 2 non-parallel lines. Get the direction vector for the difference between their
             // first points, which is used to calculate the distance from those points along their corresponding line
             // at which the intersection occurs. This distance is presented as a ratio of the line segment's length,
             // so if that distance is between 0 and 1, the intersection happens on that line segment. Therefore both

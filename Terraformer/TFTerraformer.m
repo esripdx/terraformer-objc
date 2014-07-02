@@ -31,7 +31,7 @@
     return [self.encoder encodePrimitive:primitive error:error];
 }
 
-- (TFPrimitive *)parse:(NSData *)input error:(NSError **)error {
+- (TFPrimitive *)decode:(NSData *)input error:(NSError **)error {
     return [self.decoder decode:input error:error];
 }
 
