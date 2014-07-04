@@ -44,6 +44,7 @@
 static NSString *const TFSRKey = @"spatialReference";
 static NSString *const TFWKIDKey = @"wkid";
 static NSString *const TFWKTKey = @"wkt";
+static NSInteger const TFWKIDWebMercator = 4326;
 
 static NSString *const TFPointsKey = @"points";
 static NSString *const TFHasMKey = @"hasM";
@@ -58,7 +59,7 @@ static NSString *const TFAttributesKey = @"attributes";
 - (instancetype)init {
     self = [super init];
     if (self != nil) {
-        _spatialReference = @{ TFWKIDKey: @(4326) };
+        _spatialReference = @{ TFWKIDKey: @(TFWKIDWebMercator) };
         _featureIdentifierKey = @"OBJECTID";
     }
     return self;
@@ -179,6 +180,7 @@ static NSString *const TFAttributesKey = @"attributes";
             TFMultiPolygon *mp = (TFMultiPolygon *)primitive;
             [self populateHasZAndMKeysForLineStrings:((TFPolygon *)mp.polygons[0]).lineStrings inDict:dict];
             dict[TFRingsKey] = [mp orientedRings];
+            break;
         }
         default:
             NSAssert(NO, @"not yet implemented");
@@ -194,7 +196,7 @@ static NSString *const TFAttributesKey = @"attributes";
             // in the collection and serialize that.
 
             TFGeometryCollection *gc = (TFGeometryCollection *) primitive;
-            NSMutableArray *geometries = [NSMutableArray new];
+            NSMutableArray *geometries = [NSMutableArray arrayWithCapacity:[gc count]];
             for (TFGeometry *geometry in gc.geometries) {
                 NSData *geometryData = [self encodePrimitive:geometry error:error];
                 if (!geometryData) {

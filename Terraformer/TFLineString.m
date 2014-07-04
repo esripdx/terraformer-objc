@@ -79,7 +79,7 @@
 }
 
 - (void)closeRing {
-    if (![self isLinearRing]) {
+    if (![self isLinearRing] && [self.points count] >= 3) {
         self.points = [self.points arrayByAddingObject:self.points[0]];
     }
 }
