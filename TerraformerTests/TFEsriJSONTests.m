@@ -304,6 +304,12 @@
     TFLineString *ls = [TFLineString lineStringWithCoords:@[
             @[@-10, @2], @[@10, @2]
     ]];
+    TFLineString *pointOnLS = [TFLineString lineStringWithCoords:@[
+            @[@-8, @2], @[@-8, @2]
+    ]];
+    TFLineString *pointOffLS = [TFLineString lineStringWithCoords:@[
+            @[@-8, @20], @[@-8, @20]
+    ]];
 
     XCTAssertTrue([horizontal isIntersectingLineString:vertical]);
     XCTAssertTrue([vertical isIntersectingLineString:horizontal]);
@@ -311,6 +317,10 @@
     XCTAssertFalse([vertical isIntersectingLineString:ls]);
     XCTAssertFalse([ls isIntersectingLineString:vertical]);
     XCTAssertFalse([ls isIntersectingLineString:horizontal]);
+    XCTAssertTrue([ls isIntersectingLineString:pointOnLS]);
+    XCTAssertTrue([pointOnLS isIntersectingLineString:ls]);
+    XCTAssertFalse([ls isIntersectingLineString:pointOffLS]);
+    XCTAssertFalse([pointOffLS isIntersectingLineString:ls]);
 }
 
 - (void)testContains {

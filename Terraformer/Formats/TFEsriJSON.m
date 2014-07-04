@@ -484,10 +484,18 @@ static NSString *const TFAttributesKey = @"attributes";
             double bVector[2] = { b2_x - b1_x, b2_y - b1_y };
             BOOL bIsPoint = (bVector[0] == 0 && bVector[1] == 0);
 
+            double abVector[2] = { a1_x - b1_x, a1_y - b1_y };
+
             // Determine if a and b are parallel. They are parallel if they are both perpendicular to the same vector,
             // which can be boiled down to checking if the difference of the perp products of the two vectors is equal
             // to 0.
-            if ((aVector[0] * bVector[1] - aVector[1] * bVector[0]) == 0) {
+            BOOL parallel = (fabs(aVector[0] * bVector[1] - aVector[1] * bVector[0]) <= 0.0000001);
+            if (parallel) {
+                if (aVector[0] * abVector[1] - aVector[1] * abVector[0] != 0 || bVector[0] * abVector[1] - bVector[1] * abVector[0] != 0) {
+                    // parallel but not collinear, intersection not possible.
+                    continue;
+                }
+
                 // If both segments are points they can only intersect if they are equivalent
                 if (aIsPoint && bIsPoint) {
                     if ([a1 isEqual:b1]) {
@@ -496,20 +504,53 @@ static NSString *const TFAttributesKey = @"attributes";
                     continue;
                 }
 
-                // If only one segment is a point check whether it lies on the other line segment
-                if (aIsPoint && [b containsPoint:a1]) {
-                    return YES;
+                // If only one segment is a point check whether it lies on the other line segment. Note that at this
+                // point we know they are collinear, so we only need to check a single dimension.
+                if (aIsPoint) {
+                    if (b1_x != b2_x) {
+                        // not vertical, use X
+                        if (b1_x <= a1_x && a1_x <= b2_x) {
+                            return YES;
+                        }
+                        if (b1_x >= a1_x && a1_x >= b2_x) {
+                            return YES;
+                        }
+                    } else {
+                        // vertical, use Y
+                        if (b1_y <= a1_y && a1_y <= b2_y) {
+                            return YES;
+                        }
+                        if (b1_y >= a1_y && a1_y >= b2_y) {
+                            return YES;
+                        }
+                    }
+
+                    // No intersection here
+                    continue;
                 }
-                if (bIsPoint && [a containsPoint:b1]) {
-                    return YES;
+                if (bIsPoint) {
+                    if (a1_x != a2_x) {
+                        // not vertical, use X
+                        if (a1_x <= b1_x && b1_x <= a2_x) {
+                            return YES;
+                        }
+                        if (a1_x >= b1_x && b1_x >= a2_x) {
+                            return YES;
+                        }
+                    } else {
+                        // vertical, use Y
+                        if (a1_y <= b1_y && b1_y <= a2_y) {
+                            return YES;
+                        }
+                        if (a1_y >= b1_y && b1_y >= a2_y) {
+                            return YES;
+                        }
+                    }
+                    // No intersection here
+                    continue;
                 }
 
-                // Segments are parallel and have a length > 0. Check if any of the end points lie on the other segment
-                if ([a containsPoint:b1] || [a containsPoint:b2] || [b containsPoint:a1] || [b containsPoint:a2]) {
-                    return YES;
-                }
-
-                // These two segments are parallel but not collinear... next!
+                // These two segments are parallel and collinear but not intersecting... next!
                 continue;
             }
 
@@ -520,7 +561,6 @@ static NSString *const TFAttributesKey = @"attributes";
             // the a and the b intersection distance ratio must be between 0 and 1 for this to be a valid intersection.
 
             // See the Non-Parallel Lines section in the link above for a detailed explanation.
-            double abVector[2] = { a1_x - b1_x, a1_y - b1_y };
             double aIntersectionDistance = (bVector[1] * abVector[0] - bVector[0] * abVector[1]) /
                     (bVector[0] * aVector[1] - bVector[1] * aVector[0]);
             double bIntersectionDistance = (aVector[0] * abVector[1] - aVector[1] * abVector[0]) /
