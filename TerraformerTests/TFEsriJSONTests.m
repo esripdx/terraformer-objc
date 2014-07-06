@@ -298,6 +298,12 @@
     TFLineString *horizontal = [TFLineString lineStringWithCoords:@[
             @[@-1, @0], @[@1, @0]
     ]];
+    TFLineString *parallel = [TFLineString lineStringWithCoords:@[
+            @[@-1, @1], @[@1, @1]
+    ]];
+    TFLineString *overlapping = [TFLineString lineStringWithCoords:@[
+            @[@-2, @0], @[@0, @0]
+    ]];
     TFLineString *vertical = [TFLineString lineStringWithCoords:@[
             @[@0, @1], @[@0, @-1]
     ]];
@@ -313,6 +319,8 @@
 
     XCTAssertTrue([horizontal isIntersectingLineString:vertical]);
     XCTAssertTrue([vertical isIntersectingLineString:horizontal]);
+    XCTAssertFalse([horizontal isIntersectingLineString:parallel]);
+    XCTAssertTrue([horizontal isIntersectingLineString:overlapping]);
     XCTAssertFalse([horizontal isIntersectingLineString:ls]);
     XCTAssertFalse([vertical isIntersectingLineString:ls]);
     XCTAssertFalse([ls isIntersectingLineString:vertical]);

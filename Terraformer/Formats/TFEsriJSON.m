@@ -552,6 +552,17 @@ static NSString *const TFAttributesKey = @"attributes";
                     continue;
                 }
 
+                // Segments are parallel and collinear and both have a length > 0, do they intersect?
+                if (a1_x != a2_x) {
+                    if ((a1_x >= b1_x && a1_x <= b2_x) || (a2_x >= b1_x && a2_x <= b2_x)) {
+                        return YES;
+                    }
+                } else {
+                    if ((a1_y <= b1_y && a1_y >= b2_y) || (a2_y <= b1_y && a2_y >= b2_y)) {
+                        return YES;
+                    }
+                }
+
                 // These two segments are parallel and collinear but not intersecting... next!
                 continue;
             }
