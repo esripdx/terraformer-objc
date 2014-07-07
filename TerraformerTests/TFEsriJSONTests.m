@@ -304,8 +304,20 @@
     TFLineString *overlapping = [TFLineString lineStringWithCoords:@[
             @[@-2, @0], @[@0, @0]
     ]];
+    TFLineString *overlapping2 = [TFLineString lineStringWithCoords:@[
+            @[@0, @0], @[@-2, @0]
+    ]];
     TFLineString *vertical = [TFLineString lineStringWithCoords:@[
             @[@0, @1], @[@0, @-1]
+    ]];
+    TFLineString *parallelVert = [TFLineString lineStringWithCoords:@[
+            @[@-1, @1], @[@-1, @1]
+    ]];
+    TFLineString *overlappingVert = [TFLineString lineStringWithCoords:@[
+            @[@0, @2], @[@0, @0]
+    ]];
+    TFLineString *overlappingVert2 = [TFLineString lineStringWithCoords:@[
+            @[@0, @0], @[@0, @2]
     ]];
     TFLineString *ls = [TFLineString lineStringWithCoords:@[
             @[@-10, @2], @[@10, @2]
@@ -318,11 +330,17 @@
     ]];
 
     XCTAssertTrue([horizontal isIntersectingLineString:vertical]);
-    XCTAssertTrue([vertical isIntersectingLineString:horizontal]);
     XCTAssertFalse([horizontal isIntersectingLineString:parallel]);
     XCTAssertTrue([horizontal isIntersectingLineString:overlapping]);
+    XCTAssertTrue([horizontal isIntersectingLineString:overlapping2]);
     XCTAssertFalse([horizontal isIntersectingLineString:ls]);
+
+    XCTAssertTrue([vertical isIntersectingLineString:horizontal]);
+    XCTAssertFalse([vertical isIntersectingLineString:parallelVert]);
+    XCTAssertTrue([vertical isIntersectingLineString:overlappingVert]);
+    XCTAssertTrue([vertical isIntersectingLineString:overlappingVert2]);
     XCTAssertFalse([vertical isIntersectingLineString:ls]);
+
     XCTAssertFalse([ls isIntersectingLineString:vertical]);
     XCTAssertFalse([ls isIntersectingLineString:horizontal]);
     XCTAssertTrue([ls isIntersectingLineString:pointOnLS]);
