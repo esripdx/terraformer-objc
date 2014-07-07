@@ -11,13 +11,17 @@
 @interface TFPoint : TFGeometry
 
 @property (copy, nonatomic) NSArray *coordinates;
-@property (readonly) double x;
-@property (readonly) double y;
-@property (readonly) double latitude;
-@property (readonly) double longitude;
+@property (readonly) NSNumber *x;
+@property (readonly) NSNumber *y;
+@property (readonly) NSNumber *z;
+@property (readonly) NSNumber *m;
+@property (readonly) NSNumber *latitude;
+@property (readonly) NSNumber *longitude;
 
 + (instancetype)pointWithX:(double)x y:(double)y;
 - (instancetype)initWithX:(double)x y:(double)y;
++ (instancetype)pointWithX:(double)x y:(double)y z:(double)z;
+- (instancetype)initWithX:(double)x y:(double)y z:(double)z;
 + (instancetype)pointWithCoordinates:(NSArray *)coordinates;
 - (instancetype)initWithCoordinates:(NSArray *)coordinates;
 + (instancetype)pointWithLatitude:(double)lat longitude:(double)lng;

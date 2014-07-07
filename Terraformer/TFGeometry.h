@@ -9,4 +9,6 @@
 #import "TFPrimitive.h"
 
 @interface TFGeometry : TFPrimitive
+
+- (NSArray *)coordinateArray;
 @end

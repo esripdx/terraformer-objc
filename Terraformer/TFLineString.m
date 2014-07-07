@@ -11,6 +11,18 @@
 
 @implementation TFLineString
 
++ (instancetype)lineStringWithCoords:(NSArray *)coords {
+    return [[self alloc] initWithCoords:coords];
+}
+
+- (instancetype)initWithCoords:(NSArray *)coords {
+    NSMutableArray *points = [NSMutableArray new];
+    for (NSArray *coord in coords) {
+        [points addObject:[TFPoint pointWithCoordinates:coord]];
+    }
+    return [self initWithPoints:points];
+}
+
 - (instancetype)initWithPoints:(NSArray *)points {
     self = [super initWithType:TFPrimitiveTypeLineString];
     if (self) {
@@ -64,6 +76,12 @@
         return [first isEqual:last];
     }
     return NO;
+}
+
+- (void)closeRing {
+    if (![self isLinearRing] && [self.points count] >= 3) {
+        self.points = [self.points arrayByAddingObject:self.points[0]];
+    }
 }
 
 @end

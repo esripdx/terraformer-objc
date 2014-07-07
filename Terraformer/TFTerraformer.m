@@ -13,7 +13,7 @@
 
 }
 
-- (instancetype)initWithEncoder:(Class<TFEncoder>)encoder decoder:(Class<TFDecoder>)decoder {
+- (instancetype)initWithEncoder:(id <TFEncoder>)encoder decoder:(id <TFDecoder>)decoder {
     self = [super init];
     if (self) {
         _encoder = encoder;
@@ -31,7 +31,7 @@
     return [self.encoder encodePrimitive:primitive error:error];
 }
 
-- (TFPrimitive *)parse:(NSData *)input error:(NSError **)error {
+- (TFPrimitive *)decode:(NSData *)input error:(NSError **)error {
     return [self.decoder decode:input error:error];
 }
 

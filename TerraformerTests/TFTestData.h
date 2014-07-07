@@ -14,6 +14,7 @@
 @interface TFTestData : NSObject
 
 + (NSData *)loadFile:(NSString *)name;
++ (NSData *)loadFile:(NSString *)name extension:(NSString *)extension;
 
 + (TFPrimitive *)circle;
 + (TFPrimitive *)geometry_collection;

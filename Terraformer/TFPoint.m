@@ -22,6 +22,22 @@
     return [self initWithCoordinates:@[@(x), @(y)]];
 }
 
++ (instancetype)pointWithX:(double)x y:(double)y z:(double)z {
+    return [[self alloc] initWithX:x y:y z:z];
+}
+
+- (instancetype)initWithX:(double)x y:(double)y z:(double)z {
+    return [self initWithCoordinates:@[@(x), @(y), @(z)]];
+}
+
++ (instancetype)pointWithX:(double)x y:(double)y z:(double)z m:(double)m {
+    return [[self alloc] initWithX:x y:y z:z m:m];
+}
+
+- (instancetype)initWithX:(double)x y:(double)y z:(double)z m:(double)m {
+    return [self initWithCoordinates:@[@(x), @(y), @(z), @(m)]];
+}
+
 + (instancetype)pointWithLatitude:(double)lat longitude:(double)lng {
     return [[self alloc] initWithLatitude:lat longitude:lng];
 }
@@ -43,20 +59,40 @@
     return self;
 }
 
-- (double)x {
-    return [self.coordinates[0] doubleValue];
+- (NSNumber *)x {
+    if ([self.coordinates count] == 0) {
+        return nil;
+    }
+    return self.coordinates[0];
 }
 
-- (double)y {
-    return [self.coordinates[1] doubleValue];
+- (NSNumber *)y {
+    if ([self.coordinates count] < 2) {
+        return nil;
+    }
+    return self.coordinates[1];
 }
 
-- (double)latitude {
-    return [self.coordinates[1] doubleValue];
+- (NSNumber *)latitude {
+    return self.y;
 }
 
-- (double)longitude {
-    return [self.coordinates[0] doubleValue];
+- (NSNumber *)longitude {
+    return self.x;
+}
+
+- (NSNumber *)z {
+    if ([self.coordinates count] < 3) {
+        return nil;
+    }
+    return self.coordinates[2];
+}
+
+- (NSNumber *)m {
+    if ([self.coordinates count] < 4) {
+        return nil;
+    }
+    return self.coordinates[3];
 }
 
 - (id)objectAtIndexedSubscript:(NSUInteger)idx {
@@ -79,7 +115,11 @@
     }
 
     TFPoint *otherPoint = object;
-    return (self.x == otherPoint.x && self.y == otherPoint.y);
+
+    return ([self.x doubleValue] == [otherPoint.x doubleValue] &&
+            [self.y doubleValue] == [otherPoint.y doubleValue] &&
+            [self.z doubleValue] == [otherPoint.z doubleValue] &&
+            [self.m doubleValue] == [otherPoint.m doubleValue]);
 }
 
 - (NSUInteger)hash;
@@ -87,15 +127,25 @@
     NSUInteger prime = 31;
     NSUInteger result = 1;
 
-    result += prime * result + [self.coordinates[0] hash];
-    result += prime * result + [self.coordinates[1] hash];
+    if ([self.coordinates count] > 0) {
+        result += prime * result + [self.coordinates[0] hash];
+        if ([self.coordinates count] > 1) {
+            result += prime * result + [self.coordinates[1] hash];
+            if ([self.coordinates count] > 2) {
+                result += prime * result + [self.coordinates[2] hash];
+                if ([self.coordinates count] > 3) {
+                    result += prime * result + [self.coordinates[3] hash];
+                }
+            }
+        }
+    }
 
     return result;
 }
 
 - (NSString *)debugDescription;
 {
-    return [NSString stringWithFormat:@"<%@: %p, x=%f y=%f>", NSStringFromClass( [self class] ), self, self.x, self.y];
+    return [NSString stringWithFormat:@"<%@: %p, x=%f y=%f>", NSStringFromClass( [self class] ), self, [self.x doubleValue], [self.y doubleValue]];
 }
 
 @end
